@@ -1,0 +1,15 @@
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.Repositories\bin\Debug\net9.0\CourseApp.Repositories.deps.json
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.Repositories\bin\Debug\net9.0\CourseApp.Repositories.runtimeconfig.json
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.Repositories\bin\Debug\net9.0\CourseApp.Repositories.dll
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.Repositories\bin\Debug\net9.0\CourseApp.Repositories.pdb
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.Repositories\obj\Debug\net9.0\CourseApp.Repositories.csproj.AssemblyReference.cache
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.Repositories\obj\Debug\net9.0\CourseApp.Repositories.GeneratedMSBuildEditorConfig.editorconfig
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.Repositories\obj\Debug\net9.0\CourseApp.Repositories.AssemblyInfoInputs.cache
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.Repositories\obj\Debug\net9.0\CourseApp.Repositories.AssemblyInfo.cs
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.Repositories\obj\Debug\net9.0\CourseApp.Repositories.csproj.CoreCompileInputs.cache
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.Repositories\obj\Debug\net9.0\CourseApp.Repositories.sourcelink.json
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.Repositories\obj\Debug\net9.0\CourseApp.Repositories.dll
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.Repositories\obj\Debug\net9.0\refint\CourseApp.Repositories.dll
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.Repositories\obj\Debug\net9.0\CourseApp.Repositories.pdb
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.Repositories\obj\Debug\net9.0\CourseApp.Repositories.genruntimeconfig.cache
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.Repositories\obj\Debug\net9.0\ref\CourseApp.Repositories.dll
