@@ -9,10 +9,6 @@ namespace CourseApp.Repositories.Courses
 {
     public class CourseRepository(CourseAppDbContext context) : GenericRepository<Course>(context), ICourseRepository
     {
-        public Task<List<Course>> GetTopPriceProductsAsync(int count)
-        {
-            return Context.Courses.OrderByDescending(x=>x.Price).Take(count).ToListAsync();
 
-        }
     }
 }

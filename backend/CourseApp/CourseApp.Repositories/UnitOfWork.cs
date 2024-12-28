@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace CourseApp.Repositories;
 
-namespace CourseApp.Repositories
-{
-    internal class UnitOfWork
+public class UnitOfWork(CourseAppDbContext context) : IUnitOfWork
     {
+        public Task<int> SaveChangesAsync() => context.SaveChangesAsync();
+        
     }
-}
+
