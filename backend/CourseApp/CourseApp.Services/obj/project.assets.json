@@ -1000,7 +1000,10 @@
         },
         "runtime": {
           "bin/placeholder/CourseApp.Repositories.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       }
     }
   },

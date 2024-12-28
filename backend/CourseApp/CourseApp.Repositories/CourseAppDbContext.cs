@@ -10,8 +10,8 @@ namespace CourseApp.Repositories;
 
 public class CourseAppDbContext(DbContextOptions<CourseAppDbContext> options) : DbContext(options)
 {
-    DbSet<Course> Courses { get; set; } = default!;
-    DbSet<Order> Orders { get; set; } = default!;
+    public DbSet<Course> Courses { get; set; } = default!;
+    public DbSet<Order> Orders { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

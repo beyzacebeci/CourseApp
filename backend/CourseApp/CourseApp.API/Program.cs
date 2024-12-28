@@ -1,3 +1,8 @@
+using CourseApp.Repositories;
+using CourseApp.Repositories.Extensions;
+using CourseApp.Services.Extensions;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +12,10 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer(); 
 builder.Services.AddSwaggerGen();
+
+
+builder.Services.AddRepositories(builder.Configuration).AddServices(builder.Configuration);
+
 
 var app = builder.Build();
 
