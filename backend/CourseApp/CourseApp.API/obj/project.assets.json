@@ -1729,7 +1729,10 @@
         },
         "runtime": {
           "bin/placeholder/CourseApp.Services.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       }
     }
   },
