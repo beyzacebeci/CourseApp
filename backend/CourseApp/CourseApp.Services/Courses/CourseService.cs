@@ -6,6 +6,7 @@ using CourseApp.Services.Courses.Update;
 using CourseApp.Services.Courses.UpdatePrice;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using System.Net;
 
 namespace CourseApp.Services.Courses;
@@ -43,7 +44,7 @@ public class CourseService(ICourseRepository courseRepository,
         var course = await courseRepository.GetByIdAsync(id);
         if (course is null)
         {
-            ServiceResult<CourseDto>.Fail("Course not found", HttpStatusCode.NotFound);
+            return ServiceResult<CourseDto?>.Fail("Course not found", HttpStatusCode.NotFound);
         }
 
         var courseDto = mapper.Map<CourseDto>(course);
@@ -55,6 +56,7 @@ public class CourseService(ICourseRepository courseRepository,
 
     public async Task<ServiceResult<CreateCourseResponse>> CreateAsync(CreateCourseRequest request)
     {
+        //async manuel service businnes check
         var anyProduct = await courseRepository.Where(x => x.Name == request.Name).AnyAsync();
 
         if (anyProduct)

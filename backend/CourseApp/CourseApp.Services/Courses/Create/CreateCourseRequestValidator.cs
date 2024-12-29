@@ -21,6 +21,7 @@ public class CreateCourseRequestValidator : AbstractValidator<CreateCourseReques
             .MaximumLength(200).WithMessage("Description must not exceed 200 characters.");
 
         RuleFor(x => x.Price)
+                    .NotEmpty().WithMessage("Price is required.")
             .GreaterThanOrEqualTo(0).WithMessage("Product price must be greater than or equal to 0.");
     }
 

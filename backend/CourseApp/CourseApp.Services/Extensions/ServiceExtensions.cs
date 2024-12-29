@@ -1,4 +1,5 @@
 ﻿using CourseApp.Services.Courses;
+using CourseApp.Services.ExeptionHandlers;
 using CourseApp.Services.Orders;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -20,7 +21,11 @@ public static class ServiceExtensions
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-       
+
+
+
+
+        services.AddExceptionHandler<GlobalExceptionHandler>();
         return services;
 
     }
