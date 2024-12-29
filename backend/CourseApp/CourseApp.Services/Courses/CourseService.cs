@@ -11,7 +11,8 @@ using System.Net;
 
 namespace CourseApp.Services.Courses;
 
-public class CourseService(ICourseRepository courseRepository,
+public class CourseService(
+    ICourseRepository courseRepository,
     IUnitOfWork unitOfWork,
     IMapper mapper) : ICourseService
 {
@@ -42,9 +43,10 @@ public class CourseService(ICourseRepository courseRepository,
     public async Task<ServiceResult<CourseDto?>> GetByIdAsync(int id)
     {
         var course = await courseRepository.GetByIdAsync(id);
+       
         if (course is null)
         {
-            return ServiceResult<CourseDto?>.Fail("Course not found", HttpStatusCode.NotFound);
+            return ServiceResult<CourseDto?>.Fail("Course not found.", HttpStatusCode.NotFound);
         }
 
         var courseDto = mapper.Map<CourseDto>(course);
@@ -56,22 +58,17 @@ public class CourseService(ICourseRepository courseRepository,
 
     public async Task<ServiceResult<CreateCourseResponse>> CreateAsync(CreateCourseRequest request)
     {
-        //async manuel service businnes check
-        var anyProduct = await courseRepository.Where(x => x.Name == request.Name).AnyAsync();
+        var isCourseNameExist = await courseRepository.Where(x => x.Name == request.Name).AnyAsync();
 
-        if (anyProduct)
+        if (isCourseNameExist)
         {
-            return ServiceResult<CreateCourseResponse>.Fail("kurs ismi veritabanında bulunmaktadır.",
+            return ServiceResult<CreateCourseResponse>.Fail("The same course name already exists in the database.",
                 HttpStatusCode.NotFound);
         }
 
-         
-        var course = new Course()
-        {
-            Name = request.Name,
-            Description = request.Description,
-            Price = request.Price
-        };
+
+        var course = mapper.Map<Course>(request);
+
         await courseRepository.AddAsync(course);
         await unitOfWork.SaveChangesAsync();
         return ServiceResult<CreateCourseResponse>.SuccessAsCreated(new CreateCourseResponse(course.Id),$"api/courses/{course.Id}");
@@ -79,15 +76,16 @@ public class CourseService(ICourseRepository courseRepository,
 
     public async Task<ServiceResult> UpdateAsync(int id, UpdateCourseRequest request)
     {
-        var course = await courseRepository.GetByIdAsync(id);
-        if(course is null)
+        var isCourseNameExist = await courseRepository.Where(x => x.Name == request.Name && x.Id != x.Id).AnyAsync();
+
+        if (isCourseNameExist)
         {
-            return ServiceResult.Fail("Course not found",HttpStatusCode.NotFound);
+            return ServiceResult.Fail("The same course name already exists in the database.",
+                HttpStatusCode.BadRequest);
         }
-        
-        course.Name = request.Name;
-        course.Description = request.Description;
-        course.Price = request.Price;
+
+        var course = mapper.Map<Course>(request);
+        course.Id = id;
 
         courseRepository.Update(course);
         await unitOfWork.SaveChangesAsync();
@@ -116,10 +114,6 @@ public class CourseService(ICourseRepository courseRepository,
     public async Task<ServiceResult> DeleteAsync(int id)
     {
         var course = await courseRepository.GetByIdAsync(id);
-        if (course is null)
-        {
-            return ServiceResult.Fail("Course not found", HttpStatusCode.NotFound);
-        }
 
         courseRepository.Delete(course);
         await unitOfWork.SaveChangesAsync();

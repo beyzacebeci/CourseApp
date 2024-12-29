@@ -1,4 +1,5 @@
-﻿using CourseApp.Services.Courses;
+﻿using CourseApp.Services.Categories;
+using CourseApp.Services.Courses;
 using CourseApp.Services.ExeptionHandlers;
 using CourseApp.Services.Orders;
 using FluentValidation;
@@ -15,6 +16,7 @@ public static class ServiceExtensions
     {
 
         services.AddScoped<ICourseService, CourseService>();
+        services.AddScoped<ICategoryService,CategoryService>();
         services.AddScoped<IOrderService, OrderService>();
 
         services.AddFluentValidationAutoValidation();

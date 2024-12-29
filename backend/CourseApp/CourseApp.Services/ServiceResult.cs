@@ -17,6 +17,7 @@ namespace CourseApp.Services
         [JsonIgnore] public bool IsFail => !IsSuccess;
         [JsonIgnore] public HttpStatusCode StatusCode { get; set; }
         [JsonIgnore] public string? UrlAsCreated { get; set; }
+       
         public static ServiceResult<T> Success(T data, HttpStatusCode statusCode = HttpStatusCode.OK)
         {
             return new ServiceResult<T>

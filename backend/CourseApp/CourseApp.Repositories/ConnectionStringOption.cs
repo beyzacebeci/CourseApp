@@ -1,6 +1,4 @@
-﻿
-
-namespace CourseApp.Repositories;
+﻿namespace CourseApp.Repositories;
 
 public class ConnectionStringOption
 {

@@ -1,4 +1,5 @@
-﻿using CourseApp.Repositories.Courses;
+﻿using CourseApp.Repositories.Categories;
+using CourseApp.Repositories.Courses;
 using CourseApp.Repositories.Orders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,8 +26,9 @@ public static class RepositoryExtensions
 
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<ICourseRepository, CourseRepository>();
-        services.AddScoped<IOrderRepository, OrderRepository>();
        
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IUnitOfWork,UnitOfWork>();
 
         return services;
