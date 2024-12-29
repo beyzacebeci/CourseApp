@@ -1,4 +1,5 @@
-﻿using CourseApp.Repositories.Courses;
+﻿using CourseApp.Repositories.Categories;
+using CourseApp.Repositories.Courses;
 using CourseApp.Repositories.Orders;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -10,8 +11,10 @@ namespace CourseApp.Repositories;
 
 public class CourseAppDbContext(DbContextOptions<CourseAppDbContext> options) : DbContext(options)
 {
-    DbSet<Course> Courses { get; set; } = default!;
-    DbSet<Order> Orders { get; set; } = default!;
+    public DbSet<Course> Courses { get; set; } = default!;
+    public DbSet<Category> Categories { get; set; } = default!;
+
+    public DbSet<Order> Orders { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
