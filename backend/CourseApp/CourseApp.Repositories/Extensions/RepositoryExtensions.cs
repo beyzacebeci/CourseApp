@@ -1,5 +1,6 @@
 ﻿using CourseApp.Repositories.Categories;
 using CourseApp.Repositories.Courses;
+using CourseApp.Repositories.Interceptors;
 using CourseApp.Repositories.Orders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +22,8 @@ public static class RepositoryExtensions
             {
                 sqlServerOptionsAction.MigrationsAssembly(typeof(RepositoryAssembly).Assembly.FullName);
             });
+
+            opt.AddInterceptors(new AuditDbContextInterceptor());
 
         });
 

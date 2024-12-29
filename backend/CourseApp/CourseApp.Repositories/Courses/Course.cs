@@ -2,7 +2,7 @@
 
 namespace CourseApp.Repositories.Courses;
 
-public class Course
+public class Course : IAuditEntity
 {
     public int Id { get; set; }
     public string Name { get; set; } = default!;
@@ -11,6 +11,7 @@ public class Course
 
     public int CategoryId { get; set; }
     public Category Category { get; set; } = default!;
-
+    public DateTime CreatedTime { get; set ; }
+    public DateTime? UpdatedTime { get; set; }
 }
 
