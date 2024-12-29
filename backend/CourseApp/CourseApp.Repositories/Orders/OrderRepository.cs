@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CourseApp.Repositories.Orders
 {
-    public class OrderRepository(CourseAppDbContext context) : GenericRepository<Order>(context), IOrderRepository
+    public class OrderRepository(CourseAppDbContext context) : GenericRepository<Order,int>(context), IOrderRepository
     {
     }
 }

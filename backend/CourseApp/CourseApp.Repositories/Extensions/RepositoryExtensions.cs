@@ -26,14 +26,13 @@ public static class RepositoryExtensions
             opt.AddInterceptors(new AuditDbContextInterceptor());
 
         });
-
-        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        
         services.AddScoped<ICourseRepository, CourseRepository>();
-       
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
-        services.AddScoped<IUnitOfWork,UnitOfWork>();
+        services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
 
+        services.AddScoped<IUnitOfWork,UnitOfWork>();
         return services;
 
     }

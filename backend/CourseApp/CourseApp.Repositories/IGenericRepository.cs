@@ -1,9 +1,11 @@
 ﻿using System.Linq.Expressions;
+using System.Security.Cryptography;
 
 namespace CourseApp.Repositories;
 
-public interface IGenericRepository<T> where T : class
+public interface IGenericRepository<T, TId> where T : class where TId : struct
 {
+    public Task<bool> AnyAsync(TId id);
     IQueryable<T> GetAll();
     IQueryable<T> Where(Expression<Func<T, bool>> predicate);
     ValueTask<T?> GetByIdAsync(int id);

@@ -16,7 +16,6 @@ builder.Services.AddControllers(options =>
 
 
 
-builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer(); 

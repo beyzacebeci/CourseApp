@@ -1,6 +1,6 @@
 ﻿namespace CourseApp.Repositories.Orders;
 
-public interface IOrderRepository : IGenericRepository<Order>
+public interface IOrderRepository : IGenericRepository<Order,int>
 {
 }
 

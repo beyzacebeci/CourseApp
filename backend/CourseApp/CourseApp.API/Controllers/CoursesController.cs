@@ -1,7 +1,9 @@
-﻿using CourseApp.Services.Courses;
+﻿using CourseApp.Repositories.Courses;
+using CourseApp.Services.Courses;
 using CourseApp.Services.Courses.Create;
 using CourseApp.Services.Courses.Update;
 using CourseApp.Services.Courses.UpdatePrice;
+using CourseApp.Services.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -19,11 +21,11 @@ public class CoursesController(ICourseService courseService) : CustomBaseControl
 
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id) => CreateActionResult(await courseService.GetByIdAsync(id));
-
+   
     [HttpPost]
     public async Task<IActionResult> Create(CreateCourseRequest request) => CreateActionResult(await courseService.CreateAsync(request));
 
-
+    [ServiceFilter(typeof(NotFoundFilter<Course, int>))]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, UpdateCourseRequest request) =>
     CreateActionResult(await courseService.UpdateAsync(id, request));
@@ -33,6 +35,7 @@ public class CoursesController(ICourseService courseService) : CustomBaseControl
     public async Task<IActionResult> UpdatePrice(UpdateCoursePriceRequest request) =>
         CreateActionResult(await courseService.UpdatePriceAsync(request));
 
+    [ServiceFilter(typeof(NotFoundFilter<Course, int>))]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id) => CreateActionResult(await courseService.DeleteAsync(id));
 }

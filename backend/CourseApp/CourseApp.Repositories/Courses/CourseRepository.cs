@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CourseApp.Repositories.Courses
 {
-    public class CourseRepository(CourseAppDbContext context) : GenericRepository<Course>(context), ICourseRepository
+    public class CourseRepository(CourseAppDbContext context) : GenericRepository<Course,int>(context), ICourseRepository
     {
 
     }

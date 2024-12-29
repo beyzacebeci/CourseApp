@@ -71,7 +71,6 @@ public class CategoryService(
                 HttpStatusCode.NotFound);
         }
 
-
         var newCategory = mapper.Map<Category>(request);
 
 
@@ -84,7 +83,7 @@ public class CategoryService(
 
     public async Task<ServiceResult> UpdateAsync(int id, UpdateCategoryRequest request)
     {
-        var isCategoryNameExist = await categoryRepository.Where(x => x.Name == request.Name && x.Id != x.Id).AnyAsync();
+        var isCategoryNameExist = await categoryRepository.Where(x => x.Name == request.Name && x.Id != id).AnyAsync();
 
         if (isCategoryNameExist)
         {

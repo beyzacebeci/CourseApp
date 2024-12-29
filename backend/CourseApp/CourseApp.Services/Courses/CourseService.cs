@@ -66,7 +66,6 @@ public class CourseService(
                 HttpStatusCode.NotFound);
         }
 
-
         var course = mapper.Map<Course>(request);
 
         await courseRepository.AddAsync(course);
@@ -76,9 +75,9 @@ public class CourseService(
 
     public async Task<ServiceResult> UpdateAsync(int id, UpdateCourseRequest request)
     {
-        var isCourseNameExist = await courseRepository.Where(x => x.Name == request.Name && x.Id != x.Id).AnyAsync();
+        var isCourseNameExist = await courseRepository.Where(x => x.Name == request.Name && x.Id != id).AnyAsync();
 
-        if (isCourseNameExist)
+        if (isCourseNameExist) 
         {
             return ServiceResult.Fail("The same course name already exists in the database.",
                 HttpStatusCode.BadRequest);
