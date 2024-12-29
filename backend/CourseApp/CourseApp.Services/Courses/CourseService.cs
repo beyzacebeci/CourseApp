@@ -1,19 +1,25 @@
-﻿using CourseApp.Repositories;
+﻿using AutoMapper;
+using CourseApp.Repositories;
 using CourseApp.Repositories.Courses;
 using CourseApp.Services.Courses.Create;
 using CourseApp.Services.Courses.Update;
 using CourseApp.Services.Courses.UpdatePrice;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace CourseApp.Services.Courses;
 
-public class CourseService(ICourseRepository courseRepository,IUnitOfWork unitOfWork) : ICourseService
+public class CourseService(ICourseRepository courseRepository,
+    IUnitOfWork unitOfWork,
+    IMapper mapper) : ICourseService
 {
     public async Task<ServiceResult<List<CourseDto>>> GetAllListAsync()
     {
         var courses = await courseRepository.GetAll().ToListAsync();
-        var coursesDto = courses.Select(c => new CourseDto(c.Id, c.Name, c.Description, c.Price)).ToList();
+
+        var coursesDto = mapper.Map<List<CourseDto>>(courses);
+
         return ServiceResult<List<CourseDto>>.Success(coursesDto);
     }
 
@@ -24,7 +30,7 @@ public class CourseService(ICourseRepository courseRepository,IUnitOfWork unitOf
         var courses = await courseRepository.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize)
             .ToListAsync(); 
 
-        var coursesDto = courses.Select(p => new CourseDto(p.Id, p.Name, p.Description, p.Price)).ToList();
+        var coursesDto = mapper.Map<List<CourseDto>>(courses);
 
 
         return ServiceResult<List<CourseDto>>.Success(coursesDto);
@@ -40,16 +46,24 @@ public class CourseService(ICourseRepository courseRepository,IUnitOfWork unitOf
             ServiceResult<CourseDto>.Fail("Course not found", HttpStatusCode.NotFound);
         }
 
-        var courseDto = new CourseDto(course!.Id,
-            course.Name,
-            course.Description,
-            course.Price);
+        var courseDto = mapper.Map<CourseDto>(course);
+
+
         return ServiceResult<CourseDto>.Success(courseDto)!;
 
     }
 
     public async Task<ServiceResult<CreateCourseResponse>> CreateAsync(CreateCourseRequest request)
     {
+        var anyProduct = await courseRepository.Where(x => x.Name == request.Name).AnyAsync();
+
+        if (anyProduct)
+        {
+            return ServiceResult<CreateCourseResponse>.Fail("kurs ismi veritabanında bulunmaktadır.",
+                HttpStatusCode.NotFound);
+        }
+
+         
         var course = new Course()
         {
             Name = request.Name,

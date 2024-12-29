@@ -161,3 +161,7 @@ C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.API\bin\Debug\net9.0
 C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.API\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.API\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.API\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.API\bin\Debug\net9.0\FluentValidation.dll
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.API\bin\Debug\net9.0\FluentValidation.AspNetCore.dll
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.API\bin\Debug\net9.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\WorkSpace\InveonFinalProject\backend\CourseApp\CourseApp.API\bin\Debug\net9.0\AutoMapper.dll

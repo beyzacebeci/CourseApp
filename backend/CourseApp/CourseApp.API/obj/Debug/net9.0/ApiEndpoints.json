@@ -98,5 +98,21 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CourseApp.API.Controllers.CoursesController",
+    "Method": "UpdatePrice",
+    "RelativePath": "api/Courses/price",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "CourseApp.Services.Courses.UpdatePrice.UpdateCoursePriceRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]
