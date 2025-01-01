@@ -3,12 +3,14 @@ using CourseApp.Application.Features.Categories.Create;
 using CourseApp.Application.Features.Categories.Update;
 using CourseApp.Domain.Entities;
 using CourseApp.Services.Categories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace CourseApp.API.Controllers;
 
 
 public class CategoriesController(ICategoryService categoryService) : CustomBaseController
 {
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetCategories() => CreateActionResult(await categoryService.GetAllListAsync());
 

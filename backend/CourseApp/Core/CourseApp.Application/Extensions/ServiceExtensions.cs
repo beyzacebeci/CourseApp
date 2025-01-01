@@ -1,4 +1,5 @@
-﻿using CourseApp.Application.Features.Categories;
+﻿using CourseApp.Application.Features.Authentication;
+using CourseApp.Application.Features.Categories;
 using CourseApp.Application.Features.Courses;
 using CourseApp.Application.Features.Orders;
 using CourseApp.Services.Categories;
@@ -21,6 +22,8 @@ public static class ServiceExtensions
         services.AddScoped<ICourseService, CourseService>();
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
+
 
         //api katmanına 
         //services.AddScoped(typeof(NotFoundFilter<,>));

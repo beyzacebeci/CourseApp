@@ -1,10 +1,12 @@
 ﻿using CourseApp.Application.Contracts.Persistence;
+using CourseApp.Domain.Entities.Identity;
 using CourseApp.Domain.Options;
 using CourseApp.Persistence;
 using CourseApp.Persistence.Categories;
 using CourseApp.Persistence.Courses;
 using CourseApp.Persistence.Interceptors;
 using CourseApp.Persistence.Orders;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +32,15 @@ public static class RepositoryExtensions
 
         });
 
+        
+        services.AddIdentity<AppUser, AppRole>(
+    opt => {
+        opt.User.RequireUniqueEmail = false;
+        opt.Password.RequireNonAlphanumeric = false;
+    }
+    ).AddEntityFrameworkStores<CourseAppDbContext>().AddDefaultTokenProviders();
+
+       
         services.AddScoped<ICourseRepository, CourseRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
