@@ -1,7 +1,7 @@
 import { Box, IconButton } from "@mui/material";
 import React from "react";
-import CourseList from "../course-list/CourseList";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import CourseList from "./CourseList";
 
 function Home() {
   return (

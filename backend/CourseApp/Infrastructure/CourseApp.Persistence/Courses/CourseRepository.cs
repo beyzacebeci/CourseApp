@@ -12,6 +12,11 @@ namespace CourseApp.Persistence.Courses
 {
     public class CourseRepository(CourseAppDbContext context) : GenericRepository<Course, int>(context), ICourseRepository
     {
+        public async Task<int> CountAsync()
+        {
+            return await context.Courses.CountAsync();
+        }
+
 
     }
 }

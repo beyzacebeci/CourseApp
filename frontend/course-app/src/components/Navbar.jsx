@@ -69,6 +69,7 @@ function Navbar() {
           >
             Courses
           </Button>
+
           <Button
             color="inherit"
             href="/create-new-estate"
@@ -79,6 +80,30 @@ function Navbar() {
             }}
           >
             <ShoppingCartOutlinedIcon />
+          </Button>
+
+          <Button
+            color="inherit"
+            href="/signin-page"
+            sx={{
+              textTransform: "none",
+              fontSize: "16px",
+              ml: 1,
+            }}
+          >
+            Sign In
+          </Button>
+
+          <Button
+            color="inherit"
+            href="/signup-page"
+            sx={{
+              textTransform: "none",
+              fontSize: "16px",
+              ml: 1,
+            }}
+          >
+            Sign Up
           </Button>
 
           <IconButton

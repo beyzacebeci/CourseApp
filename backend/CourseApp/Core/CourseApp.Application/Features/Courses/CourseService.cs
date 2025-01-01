@@ -33,8 +33,16 @@ public class CourseService(
 
 
         return ServiceResult<List<CourseDto>>.Success(coursesDto);
+
+
     }
 
+    public async Task<ServiceResult<int>> GetTotalCourseCountAsync()
+    {
+        int totalCount = await courseRepository.CountAsync();
+        return ServiceResult<int>.Success(totalCount);
+
+    }
 
 
     public async Task<ServiceResult<CourseDto?>> GetByIdAsync(int id)
@@ -115,6 +123,7 @@ public class CourseService(
         await unitOfWork.SaveChangesAsync();
         return ServiceResult.Success(HttpStatusCode.NoContent);
     }
+
 
 }
 

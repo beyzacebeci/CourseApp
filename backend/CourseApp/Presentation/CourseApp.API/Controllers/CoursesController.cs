@@ -38,5 +38,12 @@ public class CoursesController(ICourseService courseService) : CustomBaseControl
     [ServiceFilter(typeof(NotFoundFilter<Course, int>))]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id) => CreateActionResult(await courseService.DeleteAsync(id));
+
+    [HttpGet("totalCount")]
+    public async Task<IActionResult> GetTotalCourseCount()
+    {
+        var result = await courseService.GetTotalCourseCountAsync();
+        return CreateActionResult(result);
+    }
 }
 
