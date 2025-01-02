@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourseApp.Persistence.Migrations
 {
     [DbContext(typeof(CourseAppDbContext))]
-    [Migration("20241231230514_mig_1")]
+    [Migration("20250102233958_mig_1")]
     partial class mig_1
     {
         /// <inheritdoc />
@@ -47,6 +47,38 @@ namespace CourseApp.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = ".Net"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Java"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "React"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Python"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "JavaScript"
+                        });
                 });
 
             modelBuilder.Entity("CourseApp.Domain.Entities.Course", b =>
@@ -57,7 +89,7 @@ namespace CourseApp.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedTime")
@@ -84,6 +116,71 @@ namespace CourseApp.Persistence.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Courses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            CreatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = ".Net Core ile temel uygulamalar geliştirilecektir.",
+                            Name = ".Net Core Basics",
+                            Price = 120m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 2,
+                            CreatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Java Temelleri hakkında bilgi verilecektir.",
+                            Name = "Java Temelleri",
+                            Price = 140m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 3,
+                            CreatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "React ile modern web uygulamaları nasıl yapılır?",
+                            Name = "React için Giriş",
+                            Price = 100m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 4,
+                            CreatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Python dilinin temel kavramlarını öğreneceksiniz.",
+                            Name = "Python Temelleri",
+                            Price = 110m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 5,
+                            CreatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "JavaScript dilinin temellerini öğrenin ve web programlamaya adım atın.",
+                            Name = "JavaScript ile Başlangıç",
+                            Price = 130m
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryId = 1,
+                            CreatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = ".Net Core kullanarak RESTful API'ler geliştireceğiz.",
+                            Name = ".Net Core Web API",
+                            Price = 150m
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CategoryId = 3,
+                            CreatedTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "React Native ile iOS ve Android mobil uygulamaları geliştirin.",
+                            Name = "React Native ile Mobil Uygulama Geliştirme",
+                            Price = 160m
+                        });
                 });
 
             modelBuilder.Entity("CourseApp.Domain.Entities.Identity.AppRole", b =>
@@ -210,6 +307,44 @@ namespace CourseApp.Persistence.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "43cc4fb1-1189-4676-80ce-35cc2a7ba81c",
+                            Email = "educator@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            Name = "educator",
+                            NormalizedEmail = "EDUCATOR@GMAIL.COM",
+                            NormalizedUserName = "EDUCATOR",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFQNS1frjgf4DAOzA8bxykUdW0VEge1ZBAsY1xVk5gXkBr3qDBrI1Td3VBwR5SOnyA==",
+                            PhoneNumberConfirmed = false,
+                            RefreshTokenExpiryTime = new DateTime(2025, 1, 2, 23, 39, 58, 69, DateTimeKind.Utc).AddTicks(2729),
+                            Surname = "educator",
+                            TwoFactorEnabled = false,
+                            UserName = "educator"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "19a1e24d-6bd0-4e1b-acb8-abe6d8048688",
+                            Email = "user@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            Name = "user",
+                            NormalizedEmail = "USER@GMAIL.COM",
+                            NormalizedUserName = "USER",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHRHIgGURMTpDAMKs2qSjturYvSaNcxgUDVxgvA+o5euuTrle8C+p0z5YLDlDqvFsg==",
+                            PhoneNumberConfirmed = false,
+                            RefreshTokenExpiryTime = new DateTime(2025, 1, 2, 23, 39, 58, 69, DateTimeKind.Utc).AddTicks(3002),
+                            Surname = "user",
+                            TwoFactorEnabled = false,
+                            UserName = "user"
+                        });
                 });
 
             modelBuilder.Entity("CourseApp.Domain.Entities.Order", b =>
@@ -220,22 +355,89 @@ namespace CourseApp.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(20,2)");
 
+                    b.Property<DateTime?>("UpdatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("CourseApp.Domain.Entities.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("CVC")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("CardNumber")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Payment");
+                });
+
+            modelBuilder.Entity("CourseOrder", b =>
+                {
+                    b.Property<int>("CoursesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrdersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CoursesId", "OrdersId");
+
+                    b.HasIndex("OrdersId");
+
+                    b.ToTable("CourseOrder");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -320,6 +522,23 @@ namespace CourseApp.Persistence.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            RoleId = 1
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -346,10 +565,54 @@ namespace CourseApp.Persistence.Migrations
                     b.HasOne("CourseApp.Domain.Entities.Category", "Category")
                         .WithMany("Courses")
                         .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("CourseApp.Domain.Entities.Order", b =>
+                {
+                    b.HasOne("CourseApp.Domain.Entities.Identity.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CourseApp.Domain.Entities.Payment", b =>
+                {
+                    b.HasOne("CourseApp.Domain.Entities.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CourseApp.Domain.Entities.Identity.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.Navigation("Order");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CourseOrder", b =>
+                {
+                    b.HasOne("CourseApp.Domain.Entities.Course", null)
+                        .WithMany()
+                        .HasForeignKey("CoursesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CourseApp.Domain.Entities.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrdersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

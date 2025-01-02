@@ -6,6 +6,7 @@ using CourseApp.Persistence.Categories;
 using CourseApp.Persistence.Courses;
 using CourseApp.Persistence.Interceptors;
 using CourseApp.Persistence.Orders;
+using CourseApp.Persistence.Payments;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -44,6 +45,10 @@ public static class RepositoryExtensions
         services.AddScoped<ICourseRepository, CourseRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+
+
         services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
