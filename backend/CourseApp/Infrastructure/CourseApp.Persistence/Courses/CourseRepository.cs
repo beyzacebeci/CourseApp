@@ -22,7 +22,7 @@ namespace CourseApp.Persistence.Courses
 
         }
 
-        public async Task<List<Course>> GetAllPagedByCategoryIdsAsync(int pageNumber, int pageSize, List<int> categoryIds)
+        public async Task<List<Course>> GetAllPagedByCategoryIdsAsync(int pageNumber, int pageSize, List<int?> categoryIds)
         {
             return await context.Courses
                 .Where(course => categoryIds.Contains(course.CategoryId))
