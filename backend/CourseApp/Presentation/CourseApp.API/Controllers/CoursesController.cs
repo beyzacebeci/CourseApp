@@ -18,6 +18,22 @@ public class CoursesController(ICourseService courseService) : CustomBaseControl
     [HttpGet("{pageNumber:int}/{pageSize:int}")]
     public async Task<IActionResult> GetPagedAll(int pageNumber, int pageSize) => CreateActionResult(await courseService.GetPagedAllListAsync(pageNumber,pageSize));
 
+    [HttpGet("byCategories")]
+    public async Task<IActionResult> GetCoursesByCategories(
+    [FromQuery] int pageNumber,
+    [FromQuery] int pageSize,
+    [FromQuery] List<int> categoryIds)
+    {
+        return CreateActionResult(
+            await courseService.GetPagedByCategoryIdsAsync(pageNumber, pageSize, categoryIds));
+    }
+
+    [HttpGet("totalCountByCategory/{categoryId:int}")]
+    public async Task<IActionResult> GetTotalCourseCountByCategory(int categoryId)
+    {
+        var result = await courseService.GetTotalCourseCountByCategoryIdAsync(categoryId);
+        return CreateActionResult(result);
+    }
 
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id) => CreateActionResult(await courseService.GetByIdAsync(id));
@@ -38,5 +54,14 @@ public class CoursesController(ICourseService courseService) : CustomBaseControl
     [ServiceFilter(typeof(NotFoundFilter<Course, int>))]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id) => CreateActionResult(await courseService.DeleteAsync(id));
+
+    [HttpGet("totalCount")]
+    public async Task<IActionResult> GetTotalCourseCount()
+    {
+        var result = await courseService.GetTotalCourseCountAsync();
+        return CreateActionResult(result);
+    }
+
+
 }
 

@@ -10,6 +10,13 @@ public interface ICourseService
 {
     Task<ServiceResult<List<CourseDto>>> GetAllListAsync();
     Task<ServiceResult<List<CourseDto>>> GetPagedAllListAsync(int pageNumber, int pageSize);
+    //Task<ServiceResult<List<CourseDto>>> GetPagedAllListAsync(int pageNumber, int pageSize, int? categoryId);
+    Task<ServiceResult<List<CourseDto>>> GetPagedByCategoryIdsAsync(int pageNumber, int pageSize, List<int> categoryIds);
+
+
+    Task<ServiceResult<int>> GetTotalCourseCountAsync();
+    Task<ServiceResult<int>> GetTotalCourseCountByCategoryIdAsync(int categoryId);
+
     Task<ServiceResult<CourseDto?>> GetByIdAsync(int id);
     Task<ServiceResult<CreateCourseResponse>> CreateAsync(CreateCourseRequest request);
     Task<ServiceResult> UpdateAsync(int id, UpdateCourseRequest request);

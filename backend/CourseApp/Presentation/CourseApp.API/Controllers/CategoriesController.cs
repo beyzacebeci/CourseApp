@@ -10,7 +10,7 @@ namespace CourseApp.API.Controllers;
 
 public class CategoriesController(ICategoryService categoryService) : CustomBaseController
 {
-    [Authorize]
+   
     [HttpGet]
     public async Task<IActionResult> GetCategories() => CreateActionResult(await categoryService.GetAllListAsync());
 

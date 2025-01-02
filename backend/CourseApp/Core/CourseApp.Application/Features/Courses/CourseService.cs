@@ -33,8 +33,28 @@ public class CourseService(
 
 
         return ServiceResult<List<CourseDto>>.Success(coursesDto);
+
+
     }
 
+    public async Task<ServiceResult<List<CourseDto>>> GetPagedByCategoryIdsAsync(int pageNumber, int pageSize, List<int> categoryIds)
+    {
+        var courses = await courseRepository.GetAllPagedByCategoryIdsAsync(pageNumber, pageSize, categoryIds);
+        var coursesDto = mapper.Map<List<CourseDto>>(courses);
+        return ServiceResult<List<CourseDto>>.Success(coursesDto);
+    }
+
+    public async Task<ServiceResult<int>> GetTotalCourseCountAsync()
+    {
+        int totalCount = await courseRepository.CountAsync();
+        return ServiceResult<int>.Success(totalCount);
+
+    }
+    public async Task<ServiceResult<int>> GetTotalCourseCountByCategoryIdAsync(int categoryId)
+    {
+        int totalCount = await courseRepository.CountByCategoryIdAsync(categoryId);
+        return ServiceResult<int>.Success(totalCount);
+    }
 
 
     public async Task<ServiceResult<CourseDto?>> GetByIdAsync(int id)
@@ -115,6 +135,7 @@ public class CourseService(
         await unitOfWork.SaveChangesAsync();
         return ServiceResult.Success(HttpStatusCode.NoContent);
     }
+
 
 }
 
