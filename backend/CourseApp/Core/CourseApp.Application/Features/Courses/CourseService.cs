@@ -37,7 +37,7 @@ public class CourseService(
 
     }
 
-    public async Task<ServiceResult<List<CourseDto>>> GetPagedByCategoryIdsAsync(int pageNumber, int pageSize, List<int> categoryIds)
+    public async Task<ServiceResult<List<CourseDto>>> GetPagedByCategoryIdsAsync(int pageNumber, int pageSize, List<int?> categoryIds)
     {
         var courses = await courseRepository.GetAllPagedByCategoryIdsAsync(pageNumber, pageSize, categoryIds);
         var coursesDto = mapper.Map<List<CourseDto>>(courses);

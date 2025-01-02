@@ -22,7 +22,7 @@ public class CoursesController(ICourseService courseService) : CustomBaseControl
     public async Task<IActionResult> GetCoursesByCategories(
     [FromQuery] int pageNumber,
     [FromQuery] int pageSize,
-    [FromQuery] List<int> categoryIds)
+    [FromQuery] List<int?> categoryIds)
     {
         return CreateActionResult(
             await courseService.GetPagedByCategoryIdsAsync(pageNumber, pageSize, categoryIds));
