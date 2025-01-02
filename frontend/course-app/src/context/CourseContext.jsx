@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import { getAPI } from "../services/apiService";
+import axios from "axios";
 
 export const CourseContext = createContext();
 
@@ -7,49 +8,67 @@ export function CourseProvider({ children }) {
   const [courses, setCourses] = useState([]);
   const [course, setCourse] = useState([]);
   const [totalCourseCount, setTotalCourseCount] = useState(0);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
 
-  const handleSnackbar = (message, severity = "error") => {
-    setSnackbar({
-      open: true,
-      message,
-      severity,
-    });
-  };
-
-  const getCoursesByPagination = async (pageNumber, pageSize) => {
+  const getCoursesByPagination = async (
+    pageNumber,
+    pageSize,
+    categoryIds = []
+  ) => {
     try {
-      const response = await getAPI(`Courses/${pageNumber}/${pageSize}`);
+      let url;
+      if (categoryIds.length === 0) {
+        url = `Courses/${pageNumber}/${pageSize}`;
+      } else {
+        const categoryIdsQuery = categoryIds.join(",");
+        url = `Courses/byCategories?pageNumber=${pageNumber}&pageSize=${pageSize}&categoryIds=${categoryIdsQuery}`;
+      }
+
+      const response = await getAPI(url);
       if (response.status === 200) {
         setCourses(response.data);
-        console.log(response.data);
-      } else {
-        handleSnackbar("Kursları getirirken bir hata oluştu");
       }
       return response;
     } catch (error) {
-      handleSnackbar(`Hata oluştu: ${error.message}`);
+      console.error("Error fetching courses:", error);
       return error;
     }
   };
 
-  const getTotalCourseCount = async () => {
+  const getTotalCourseCount = async (categoryIds = []) => {
     try {
-      const response = await getAPI("Courses/totalCount");
-      console.log("API Yanıtı:", response);
+      let url;
+      if (categoryIds.length === 0) {
+        url = "Courses/totalCount";
+      } else if (categoryIds.length === 1) {
+        url = `Courses/totalCountByCategory/${categoryIds[0]}`;
+      } else {
+        const categoryIdsQuery = categoryIds
+          .map((id) => `categoryIds=${id}`)
+          .join("&");
+        url = `Courses/totalCountByCategories?${categoryIdsQuery}`;
+      }
+
+      const response = await getAPI(url);
       if (response.status === 200) {
         setTotalCourseCount(parseInt(response.data.data));
-      } else {
-        handleSnackbar("Toplam kurs sayısını getirirken bir hata oluştu");
       }
       return response;
     } catch (error) {
-      handleSnackbar(`Hata oluştu: ${error.message}`);
+      console.error("Error getting total course count:", error);
       return error;
+    }
+  };
+
+  const getCourseById = async (id) => {
+    try {
+      const response = await getAPI(`Courses/${id}`);
+      if (response.status === 200) {
+        return response.data.data;
+      }
+      return null;
+    } catch (error) {
+      console.error("Error fetching course:", error);
+      return null;
     }
   };
 
@@ -57,10 +76,9 @@ export function CourseProvider({ children }) {
     courses,
     course,
     getCoursesByPagination,
-    snackbar,
-    setSnackbar,
     totalCourseCount,
     getTotalCourseCount,
+    getCourseById,
   };
 
   return (

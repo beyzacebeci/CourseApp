@@ -1,21 +1,39 @@
-import { Box, IconButton } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import React from "react";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import CourseList from "./CourseList";
+import { useAuth } from "../context/AuthContext";
 
 function Home() {
+  const { user } = useAuth();
+
   return (
     <div>
       <Box
         sx={{
           height: "calc(100vh - 80px)",
           width: "100%",
-          bgcolor: "#f5f5f5", // açık, flu gri
+          bgcolor: "#f5f5f5",
           display: "flex",
+          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
+          position: "relative",
         }}
       >
+        {user && (
+          <Typography
+            variant="h4"
+            sx={{
+              mb: 2,
+              color: "#2c3e50",
+              fontWeight: "500",
+            }}
+          >
+            Hoş Geldiniz, {user.username}!
+          </Typography>
+        )}
+
         <IconButton
           onClick={() =>
             window.scrollTo({

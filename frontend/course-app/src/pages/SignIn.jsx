@@ -10,11 +10,14 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import Stack from "@mui/material/Stack";
+import { useAuth } from "../context/AuthContext";
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const { login } = useAuth();
+  const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
     userName: "",
@@ -28,6 +31,19 @@ export default function SignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
+    try {
+      const result = await login(formData);
+
+      if (result.success) {
+        navigate("/"); // veya başka bir ana sayfa
+      } else {
+        setError(result.message);
+      }
+    } catch (err) {
+      setError("An error occurred during login");
+    }
   };
 
   return (
@@ -69,7 +85,6 @@ export default function SignIn() {
                 fullWidth
                 name="password"
                 label="Password"
-                type="password"
                 id="password"
                 autoComplete="current-password"
               />
@@ -83,6 +98,11 @@ export default function SignIn() {
               </Stack>
             </Stack>
           </Box>
+          {error && (
+            <Typography color="error" variant="body2">
+              {error}
+            </Typography>
+          )}
         </Stack>
       </Container>
     </ThemeProvider>

@@ -9,14 +9,13 @@ import { Snackbar, Alert } from "@mui/material";
 import { useContext } from "react";
 import Navbar from "./components/Navbar";
 import CourseList from "./pages/CourseList";
+import { CategoryProvider } from "./context/CategoryContext";
+import CourseDetail from "./pages/CourseDetail";
+import { AuthProvider } from "./context/AuthContext";
+import { BasketProvider } from "./context/BasketContext";
+import Basket from "./pages/Basket";
 
 function AppContent() {
-  const { snackbar, setSnackbar } = useContext(CourseContext);
-
-  const handleClose = () => {
-    setSnackbar({ ...snackbar, open: false });
-  };
-
   return (
     <>
       <Navbar />
@@ -25,18 +24,9 @@ function AppContent() {
         <Route path="/signin-page" element={<SignIn />}></Route>
         <Route path="/signup-page" element={<SignUp />}></Route>
         <Route path="/courses" element={<CourseList />}></Route>
+        <Route path="/courses/:id" element={<CourseDetail />} />
+        <Route path="/basket" element={<Basket />} />
       </Routes>
-
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-      >
-        <Alert onClose={handleClose} severity={snackbar.severity}>
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </>
   );
 }
@@ -44,11 +34,17 @@ function AppContent() {
 function App() {
   return (
     <BrowserRouter>
-      <UserProvider>
-        <CourseProvider>
-          <AppContent />
-        </CourseProvider>
-      </UserProvider>
+      <BasketProvider>
+        <AuthProvider>
+          <UserProvider>
+            <CourseProvider>
+              <CategoryProvider>
+                <AppContent />
+              </CategoryProvider>
+            </CourseProvider>
+          </UserProvider>
+        </AuthProvider>
+      </BasketProvider>
     </BrowserRouter>
   );
 }
