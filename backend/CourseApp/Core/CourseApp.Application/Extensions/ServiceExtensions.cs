@@ -1,4 +1,5 @@
 ﻿using CourseApp.Application.Features.Authentication;
+using CourseApp.Application.Features.BasketItems;
 using CourseApp.Application.Features.Categories;
 using CourseApp.Application.Features.Courses;
 using CourseApp.Application.Features.Orders;
@@ -23,15 +24,13 @@ public static class ServiceExtensions
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IPaymentService, PaymentService>();
-
-
+        services.AddScoped<IBasketItemService, BasketItemService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 
         //api katmanına 
         //services.AddScoped(typeof(NotFoundFilter<,>));
         //services.AddExceptionHandler<GlobalExceptionHandler>();
-
 
         services.AddFluentValidationAutoValidation();
 

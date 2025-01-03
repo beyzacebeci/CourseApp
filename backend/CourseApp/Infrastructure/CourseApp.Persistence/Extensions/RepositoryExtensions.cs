@@ -1,7 +1,7 @@
 ﻿using CourseApp.Application.Contracts.Persistence;
 using CourseApp.Domain.Entities.Identity;
 using CourseApp.Domain.Options;
-using CourseApp.Persistence;
+using CourseApp.Persistence.BasketItems;
 using CourseApp.Persistence.Categories;
 using CourseApp.Persistence.Courses;
 using CourseApp.Persistence.Interceptors;
@@ -33,20 +33,22 @@ public static class RepositoryExtensions
 
         });
 
-        
+
         services.AddIdentity<AppUser, AppRole>(
-    opt => {
+    opt =>
+    {
         opt.User.RequireUniqueEmail = false;
         opt.Password.RequireNonAlphanumeric = false;
     }
     ).AddEntityFrameworkStores<CourseAppDbContext>().AddDefaultTokenProviders();
 
-       
+
         services.AddScoped<ICourseRepository, CourseRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IPaymentRepository, PaymentRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IBasketItemRepository, BasketItemRepository>();
 
 
         services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));

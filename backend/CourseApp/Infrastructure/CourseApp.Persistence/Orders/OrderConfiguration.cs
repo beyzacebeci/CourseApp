@@ -17,6 +17,10 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
          .HasForeignKey(o => o.UserId)
              .OnDelete(DeleteBehavior.Restrict);  // User silindiğinde Order silinmez
 
+        // Order Status için enum conversion
+        builder.Property(x => x.Status)
+            .IsRequired()
+            .HasConversion<string>();
     }
 }
 
