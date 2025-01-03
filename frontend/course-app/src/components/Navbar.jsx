@@ -49,7 +49,7 @@ function Navbar() {
           <Typography variant="h6" sx={{ ml: 2, mr: 5, fontWeight: "bold" }}>
             Course App
           </Typography>
-          <Link to="/" style={{ textDecoration: "none" }}>
+          <Link to="/" style={{ textDecoration: "none", color: "black" }}>
             <Button
               color="inherit"
               sx={{
@@ -64,7 +64,10 @@ function Navbar() {
 
         <div style={{ display: "flex", alignItems: "center" }}>
           {isEducator && (
-            <Link to="/admin-page" style={{ textDecoration: "none" }}>
+            <Link
+              to="/admin-page"
+              style={{ textDecoration: "none", color: "black" }}
+            >
               <Button
                 color="inherit"
                 sx={{
@@ -77,7 +80,10 @@ function Navbar() {
             </Link>
           )}
 
-          <Link to="/user-estate-list-page" style={{ textDecoration: "none" }}>
+          <Link
+            to="/user-estate-list-page"
+            style={{ textDecoration: "none", color: "black" }}
+          >
             <Button
               color="inherit"
               sx={{

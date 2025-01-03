@@ -23,7 +23,6 @@ function CourseCard({ course }) {
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        maxWidth: 300,
       }}
     >
       <Box sx={{ position: "relative" }}>

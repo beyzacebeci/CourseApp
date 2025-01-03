@@ -20,6 +20,8 @@ namespace CourseApp.Persistence.Users
                 NormalizedEmail = "EDUCATOR@GMAIL.COM",
                 Name = "educator",
                 Surname = "educator",
+                SecurityStamp = Guid.NewGuid().ToString(),
+                ConcurrencyStamp = Guid.NewGuid().ToString(),
                 RefreshToken = null,
                 RefreshTokenExpiryTime = DateTime.UtcNow
             };
@@ -32,6 +34,8 @@ namespace CourseApp.Persistence.Users
                 NormalizedEmail = "USER@GMAIL.COM",
                 Name = "user",
                 Surname = "user",
+                SecurityStamp = Guid.NewGuid().ToString(),
+                ConcurrencyStamp = Guid.NewGuid().ToString(),
                 RefreshToken = null,
                 RefreshTokenExpiryTime = DateTime.UtcNow
             };

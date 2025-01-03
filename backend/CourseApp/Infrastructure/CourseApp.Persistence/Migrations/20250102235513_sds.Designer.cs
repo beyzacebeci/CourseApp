@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourseApp.Persistence.Migrations
 {
     [DbContext(typeof(CourseAppDbContext))]
-    [Migration("20250102233958_mig_1")]
-    partial class mig_1
+    [Migration("20250102235513_sds")]
+    partial class sds
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -313,16 +313,17 @@ namespace CourseApp.Persistence.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "43cc4fb1-1189-4676-80ce-35cc2a7ba81c",
+                            ConcurrencyStamp = "8421b5cd-8b23-4bfb-86f9-b70876b292e3",
                             Email = "educator@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "educator",
                             NormalizedEmail = "EDUCATOR@GMAIL.COM",
                             NormalizedUserName = "EDUCATOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFQNS1frjgf4DAOzA8bxykUdW0VEge1ZBAsY1xVk5gXkBr3qDBrI1Td3VBwR5SOnyA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOICJCTekpIZk8ma4e9bISqmvhTvdAd0lbLMQYiQSc4z+jW+28c043PBIqyge6BeXA==",
                             PhoneNumberConfirmed = false,
-                            RefreshTokenExpiryTime = new DateTime(2025, 1, 2, 23, 39, 58, 69, DateTimeKind.Utc).AddTicks(2729),
+                            RefreshTokenExpiryTime = new DateTime(2025, 1, 2, 23, 55, 13, 139, DateTimeKind.Utc).AddTicks(734),
+                            SecurityStamp = "93330110-fa75-4e73-87be-74084855653a",
                             Surname = "educator",
                             TwoFactorEnabled = false,
                             UserName = "educator"
@@ -331,16 +332,17 @@ namespace CourseApp.Persistence.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "19a1e24d-6bd0-4e1b-acb8-abe6d8048688",
+                            ConcurrencyStamp = "ad0283a0-8b1a-42a8-aeb2-107e80a6ee3c",
                             Email = "user@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "user",
                             NormalizedEmail = "USER@GMAIL.COM",
                             NormalizedUserName = "USER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHRHIgGURMTpDAMKs2qSjturYvSaNcxgUDVxgvA+o5euuTrle8C+p0z5YLDlDqvFsg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEA+3W5uqhonyCKZAR1FblBca2gOfYlOJYi83Lwf5JvAC0TNg0NMXBBBksBAG79i/0w==",
                             PhoneNumberConfirmed = false,
-                            RefreshTokenExpiryTime = new DateTime(2025, 1, 2, 23, 39, 58, 69, DateTimeKind.Utc).AddTicks(3002),
+                            RefreshTokenExpiryTime = new DateTime(2025, 1, 2, 23, 55, 13, 139, DateTimeKind.Utc).AddTicks(994),
+                            SecurityStamp = "2ce374da-3d76-4382-b908-f83b54cddef4",
                             Surname = "user",
                             TwoFactorEnabled = false,
                             UserName = "user"
