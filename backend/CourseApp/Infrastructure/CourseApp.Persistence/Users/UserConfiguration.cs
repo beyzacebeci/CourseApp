@@ -1,4 +1,4 @@
-﻿using CourseApp.Domain.Entities.Identity;
+using CourseApp.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -43,7 +43,7 @@ namespace CourseApp.Persistence.Users
             educator.PasswordHash = hasher.HashPassword(educator, "Educator123.");
             user.PasswordHash = hasher.HashPassword(user, "User123.");
 
-            builder.HasData(educator,user);
+            builder.HasData(educator, user);
         }
     }
 }
