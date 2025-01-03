@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CourseApp.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class mig_1 : Migration
+    public partial class mig_3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -325,8 +325,8 @@ namespace CourseApp.Persistence.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "2858d91f-bbf6-409c-b535-9ec218fd339a", "educator@gmail.com", false, false, null, "educator", "EDUCATOR@GMAIL.COM", "EDUCATOR", "AQAAAAIAAYagAAAAEPYyUA9e2kWo+D+ji0vH7M1fNlVp/40kMKS53IUVxtm+mkG5PRiy4KLk9jsybdH8nA==", null, false, null, new DateTime(2025, 1, 3, 12, 28, 32, 487, DateTimeKind.Utc).AddTicks(2070), "d2cd273c-dcb1-4ce5-924d-1b4be9395edf", "educator", false, "educator" },
-                    { 2, 0, "e65acd80-a5b1-42d9-94b6-e7f031d0fd96", "user@gmail.com", false, false, null, "user", "USER@GMAIL.COM", "USER", "AQAAAAIAAYagAAAAENKxOrDLpPSe6MnoPyGJGgqxzTU3pwdmAyPHBjmUIQJWzcVBqZL4GYeozN1jioYRXA==", null, false, null, new DateTime(2025, 1, 3, 12, 28, 32, 487, DateTimeKind.Utc).AddTicks(2440), "3c1d99ac-ecdb-4556-b089-e10ef93821da", "user", false, "user" }
+                    { 1, 0, "d708a24d-52fa-4550-bcc4-551c05c2f273", "educator@gmail.com", false, false, null, "educator", "EDUCATOR@GMAIL.COM", "EDUCATOR", "AQAAAAIAAYagAAAAEAnEcCVV2BUW6cdVwe+M0PA/IzJ6c/TUarMS1kAI7lVmJ9EbZs9s/3BN4bdJXmMhUA==", null, false, null, new DateTime(2025, 1, 3, 12, 39, 48, 160, DateTimeKind.Utc).AddTicks(6444), "ea5980a2-7dfc-426a-8008-5ed64344def3", "educator", false, "educator" },
+                    { 2, 0, "198c3e88-8c98-40ef-a54e-0f158ec9b473", "user@gmail.com", false, false, null, "user", "USER@GMAIL.COM", "USER", "AQAAAAIAAYagAAAAEG0To/537tLtGrFlPii78BRXCiRpeww57LFvxmyl7oG58aqUH2I/IGETiqyrWWcitg==", null, false, null, new DateTime(2025, 1, 3, 12, 39, 48, 160, DateTimeKind.Utc).AddTicks(6701), "6d7ef409-f1da-4c96-bfc7-9e3bc82a55c5", "user", false, "user" }
                 });
 
             migrationBuilder.InsertData(
