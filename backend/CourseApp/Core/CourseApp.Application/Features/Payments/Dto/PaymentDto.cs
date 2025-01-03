@@ -9,7 +9,6 @@ namespace CourseApp.Application.Features.Payments.Dto
         string Address,
         string CardNumber,
         DateTime ExpirationDate,
-        string CVC,
-        PaymentStatus Status  
+        string CVC
     );
 }

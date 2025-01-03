@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourseApp.Persistence.Migrations
 {
     [DbContext(typeof(CourseAppDbContext))]
-    [Migration("20250102235513_sds")]
-    partial class sds
+    [Migration("20250103122833_mig_1")]
+    partial class mig_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,38 @@ namespace CourseApp.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("CourseApp.Domain.Entities.BasketItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(16,2)");
+
+                    b.Property<DateTime?>("UpdatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BasketItems");
+                });
 
             modelBuilder.Entity("CourseApp.Domain.Entities.Category", b =>
                 {
@@ -313,17 +345,17 @@ namespace CourseApp.Persistence.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8421b5cd-8b23-4bfb-86f9-b70876b292e3",
+                            ConcurrencyStamp = "2858d91f-bbf6-409c-b535-9ec218fd339a",
                             Email = "educator@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "educator",
                             NormalizedEmail = "EDUCATOR@GMAIL.COM",
                             NormalizedUserName = "EDUCATOR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOICJCTekpIZk8ma4e9bISqmvhTvdAd0lbLMQYiQSc4z+jW+28c043PBIqyge6BeXA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPYyUA9e2kWo+D+ji0vH7M1fNlVp/40kMKS53IUVxtm+mkG5PRiy4KLk9jsybdH8nA==",
                             PhoneNumberConfirmed = false,
-                            RefreshTokenExpiryTime = new DateTime(2025, 1, 2, 23, 55, 13, 139, DateTimeKind.Utc).AddTicks(734),
-                            SecurityStamp = "93330110-fa75-4e73-87be-74084855653a",
+                            RefreshTokenExpiryTime = new DateTime(2025, 1, 3, 12, 28, 32, 487, DateTimeKind.Utc).AddTicks(2070),
+                            SecurityStamp = "d2cd273c-dcb1-4ce5-924d-1b4be9395edf",
                             Surname = "educator",
                             TwoFactorEnabled = false,
                             UserName = "educator"
@@ -332,17 +364,17 @@ namespace CourseApp.Persistence.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ad0283a0-8b1a-42a8-aeb2-107e80a6ee3c",
+                            ConcurrencyStamp = "e65acd80-a5b1-42d9-94b6-e7f031d0fd96",
                             Email = "user@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "user",
                             NormalizedEmail = "USER@GMAIL.COM",
                             NormalizedUserName = "USER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEA+3W5uqhonyCKZAR1FblBca2gOfYlOJYi83Lwf5JvAC0TNg0NMXBBBksBAG79i/0w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENKxOrDLpPSe6MnoPyGJGgqxzTU3pwdmAyPHBjmUIQJWzcVBqZL4GYeozN1jioYRXA==",
                             PhoneNumberConfirmed = false,
-                            RefreshTokenExpiryTime = new DateTime(2025, 1, 2, 23, 55, 13, 139, DateTimeKind.Utc).AddTicks(994),
-                            SecurityStamp = "2ce374da-3d76-4382-b908-f83b54cddef4",
+                            RefreshTokenExpiryTime = new DateTime(2025, 1, 3, 12, 28, 32, 487, DateTimeKind.Utc).AddTicks(2440),
+                            SecurityStamp = "3c1d99ac-ecdb-4556-b089-e10ef93821da",
                             Surname = "user",
                             TwoFactorEnabled = false,
                             UserName = "user"
@@ -359,6 +391,10 @@ namespace CourseApp.Persistence.Migrations
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(20,2)");
@@ -408,10 +444,6 @@ namespace CourseApp.Persistence.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("UpdatedTime")
                         .HasColumnType("datetime2");
 
@@ -420,7 +452,8 @@ namespace CourseApp.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("OrderId")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -562,6 +595,25 @@ namespace CourseApp.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("CourseApp.Domain.Entities.BasketItem", b =>
+                {
+                    b.HasOne("CourseApp.Domain.Entities.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CourseApp.Domain.Entities.Identity.AppUser", "User")
+                        .WithMany("BasketItems")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CourseApp.Domain.Entities.Course", b =>
                 {
                     b.HasOne("CourseApp.Domain.Entities.Category", "Category")
@@ -586,9 +638,9 @@ namespace CourseApp.Persistence.Migrations
             modelBuilder.Entity("CourseApp.Domain.Entities.Payment", b =>
                 {
                     b.HasOne("CourseApp.Domain.Entities.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .WithOne("Payment")
+                        .HasForeignKey("CourseApp.Domain.Entities.Payment", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CourseApp.Domain.Entities.Identity.AppUser", "User")
@@ -671,6 +723,16 @@ namespace CourseApp.Persistence.Migrations
             modelBuilder.Entity("CourseApp.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Courses");
+                });
+
+            modelBuilder.Entity("CourseApp.Domain.Entities.Identity.AppUser", b =>
+                {
+                    b.Navigation("BasketItems");
+                });
+
+            modelBuilder.Entity("CourseApp.Domain.Entities.Order", b =>
+                {
+                    b.Navigation("Payment");
                 });
 #pragma warning restore 612, 618
         }

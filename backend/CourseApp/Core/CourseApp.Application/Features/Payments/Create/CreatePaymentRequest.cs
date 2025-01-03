@@ -8,8 +8,7 @@ public record CreatePaymentRequest(
         string Address,
         string CardNumber,
         DateTime ExpirationDate,
-        string CVC,
-        PaymentStatus Status
+        string CVC
     );
     
 

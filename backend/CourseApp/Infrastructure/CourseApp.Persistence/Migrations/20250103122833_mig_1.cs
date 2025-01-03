@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CourseApp.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class sds : Migration
+    public partial class mig_1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -187,6 +187,7 @@ namespace CourseApp.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "decimal(20,2)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -231,13 +232,12 @@ namespace CourseApp.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     CardNumber = table.Column<string>(type: "nvarchar(16)", maxLength: 16, nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CVC = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -255,7 +255,36 @@ namespace CourseApp.Persistence.Migrations
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BasketItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(16,2)", nullable: false),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BasketItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BasketItems_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BasketItems_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -296,8 +325,8 @@ namespace CourseApp.Persistence.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "8421b5cd-8b23-4bfb-86f9-b70876b292e3", "educator@gmail.com", false, false, null, "educator", "EDUCATOR@GMAIL.COM", "EDUCATOR", "AQAAAAIAAYagAAAAEOICJCTekpIZk8ma4e9bISqmvhTvdAd0lbLMQYiQSc4z+jW+28c043PBIqyge6BeXA==", null, false, null, new DateTime(2025, 1, 2, 23, 55, 13, 139, DateTimeKind.Utc).AddTicks(734), "93330110-fa75-4e73-87be-74084855653a", "educator", false, "educator" },
-                    { 2, 0, "ad0283a0-8b1a-42a8-aeb2-107e80a6ee3c", "user@gmail.com", false, false, null, "user", "USER@GMAIL.COM", "USER", "AQAAAAIAAYagAAAAEA+3W5uqhonyCKZAR1FblBca2gOfYlOJYi83Lwf5JvAC0TNg0NMXBBBksBAG79i/0w==", null, false, null, new DateTime(2025, 1, 2, 23, 55, 13, 139, DateTimeKind.Utc).AddTicks(994), "2ce374da-3d76-4382-b908-f83b54cddef4", "user", false, "user" }
+                    { 1, 0, "2858d91f-bbf6-409c-b535-9ec218fd339a", "educator@gmail.com", false, false, null, "educator", "EDUCATOR@GMAIL.COM", "EDUCATOR", "AQAAAAIAAYagAAAAEPYyUA9e2kWo+D+ji0vH7M1fNlVp/40kMKS53IUVxtm+mkG5PRiy4KLk9jsybdH8nA==", null, false, null, new DateTime(2025, 1, 3, 12, 28, 32, 487, DateTimeKind.Utc).AddTicks(2070), "d2cd273c-dcb1-4ce5-924d-1b4be9395edf", "educator", false, "educator" },
+                    { 2, 0, "e65acd80-a5b1-42d9-94b6-e7f031d0fd96", "user@gmail.com", false, false, null, "user", "USER@GMAIL.COM", "USER", "AQAAAAIAAYagAAAAENKxOrDLpPSe6MnoPyGJGgqxzTU3pwdmAyPHBjmUIQJWzcVBqZL4GYeozN1jioYRXA==", null, false, null, new DateTime(2025, 1, 3, 12, 28, 32, 487, DateTimeKind.Utc).AddTicks(2440), "3c1d99ac-ecdb-4556-b089-e10ef93821da", "user", false, "user" }
                 });
 
             migrationBuilder.InsertData(
@@ -376,6 +405,16 @@ namespace CourseApp.Persistence.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BasketItems_CourseId",
+                table: "BasketItems",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BasketItems_UserId",
+                table: "BasketItems",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CourseOrder_OrdersId",
                 table: "CourseOrder",
                 column: "OrdersId");
@@ -393,7 +432,8 @@ namespace CourseApp.Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Payment_OrderId",
                 table: "Payment",
-                column: "OrderId");
+                column: "OrderId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payment_UserId",
@@ -418,6 +458,9 @@ namespace CourseApp.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "BasketItems");
 
             migrationBuilder.DropTable(
                 name: "CourseOrder");

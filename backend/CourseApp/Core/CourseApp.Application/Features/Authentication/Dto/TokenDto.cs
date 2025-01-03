@@ -8,8 +8,8 @@ namespace CourseApp.Application.Features.Authentication.Dto
 {
     public record TokenDto
     {
-        public String AccessToken { get; init; }
-        public String RefreshToken { get; init; }
+        public String AccessToken { get; init; } = default!;
+        public String RefreshToken { get; init; } = default!;
 
     }
 }
