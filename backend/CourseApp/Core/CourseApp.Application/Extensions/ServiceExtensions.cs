@@ -22,7 +22,7 @@ public static class ServiceExtensions
 
         services.AddScoped<ICourseService, CourseService>();
         services.AddScoped<ICategoryService, CategoryService>();
-        services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IOrderService,OrderService>();
         services.AddScoped<IPaymentService, PaymentService>();
         services.AddScoped<IBasketItemService, BasketItemService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();

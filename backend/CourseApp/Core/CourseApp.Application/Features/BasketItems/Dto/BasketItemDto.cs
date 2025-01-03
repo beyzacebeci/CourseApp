@@ -1,14 +1,12 @@
-using CourseApp.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace CourseApp.Application.Features.BasketItems.Dto;
 
-public record BasketItemDto(
-    int Id,
-    int UserId,
-    int CourseId,
-    decimal TotalPrice,
-    DateTime CreatedTime);
+public record BasketItemDto
+{
+    public int Id { get; init; }
+    public int UserId { get; init; }
+    public int CourseId { get; init; }
+    public string CourseName { get; init; } = default!;
+    public decimal CoursePrice { get; init; }
+    public string CategoryName { get; init; } = default!;
+    public DateTime CreatedTime { get; init; }
+}

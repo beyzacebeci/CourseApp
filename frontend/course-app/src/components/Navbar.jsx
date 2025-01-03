@@ -1,5 +1,5 @@
 import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import courseIcon from "./course.png";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
@@ -7,16 +7,34 @@ import { useAuth } from "../context/AuthContext";
 import Badge from "@mui/material/Badge";
 import { useBasket } from "../context/BasketContext";
 import { Link, useNavigate } from "react-router-dom";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const isEducator = user?.roles?.includes("Educator");
-  const { basketCount } = useBasket();
+  const { basketCount, resetBasket } = useBasket();
+
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleLogout = async () => {
     await logout();
+    resetBasket();
     navigate("/");
+  };
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleProfileClick = () => {
+    navigate("/profile");
+    handleMenuClose();
   };
 
   return (
@@ -154,24 +172,61 @@ function Navbar() {
           )}
 
           {user && (
-            <IconButton
-              edge="end"
-              color="inherit"
-              aria-controls="language-menu"
-              aria-haspopup="true"
-              sx={{
-                "&:hover": {
-                  border: "0.5px solid black",
-                },
-                ml: 2,
-                mr: 1,
-                width: "48px",
-                height: "48px",
-                padding: 0,
-              }}
+            <div
+              onMouseEnter={handleMenuOpen}
+              onMouseLeave={handleMenuClose}
+              style={{ display: "flex", alignItems: "center" }}
             >
-              <AccountCircleIcon sx={{ width: "100%", height: "100%" }} />
-            </IconButton>
+              <IconButton
+                edge="end"
+                color="inherit"
+                sx={{
+                  "&:hover": {
+                    border: "0.5px solid black",
+                  },
+                  ml: 2,
+                  mr: 1,
+                  width: "48px",
+                  height: "48px",
+                  padding: 0,
+                }}
+              >
+                <AccountCircleIcon sx={{ width: "100%", height: "100%" }} />
+              </IconButton>
+
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                disableScrollLock={true}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                MenuListProps={{
+                  onMouseEnter: () => setAnchorEl(anchorEl),
+                  onMouseLeave: handleMenuClose,
+                }}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: "visible",
+                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                    mt: 1.5,
+                    "& .MuiMenuItem-root": {
+                      px: 2,
+                      py: 1,
+                    },
+                  },
+                }}
+              >
+                <MenuItem onClick={handleProfileClick}>Profilim</MenuItem>
+              </Menu>
+            </div>
           )}
         </div>
       </Toolbar>

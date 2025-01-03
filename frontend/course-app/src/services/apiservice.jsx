@@ -15,13 +15,18 @@ const handleResponse = async (apiCall) => {
     return {
       status: response.status,
       data: response.data,
-      headers: response.headers,
+      success: true,
     };
   } catch (error) {
-    return {
+    const errorData = {
       status: error.response?.status || 500,
-      data: error.response || error.message,
+      data: {
+        errorMessage: error.response?.data?.errorMessage || [error.message],
+      },
+      success: false,
     };
+    //  console.error("API Error:", errorData);
+    return errorData;
   }
 };
 

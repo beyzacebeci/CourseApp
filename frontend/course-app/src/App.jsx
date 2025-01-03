@@ -14,6 +14,10 @@ import CourseDetail from "./pages/CourseDetail";
 import { AuthProvider } from "./context/AuthContext";
 import { BasketProvider } from "./context/BasketContext";
 import Basket from "./pages/Basket";
+import Payment from "./pages/Payment";
+import { PaymentProvider } from "./context/PaymentContext";
+import { OrderProvider } from "./context/OrderContext";
+import Profile from "./pages/Profile";
 
 function AppContent() {
   return (
@@ -26,6 +30,8 @@ function AppContent() {
         <Route path="/courses" element={<CourseList />}></Route>
         <Route path="/courses/:id" element={<CourseDetail />} />
         <Route path="/basket" element={<Basket />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </>
   );
@@ -33,19 +39,23 @@ function AppContent() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <BasketProvider>
-        <AuthProvider>
-          <UserProvider>
-            <CourseProvider>
-              <CategoryProvider>
-                <AppContent />
-              </CategoryProvider>
-            </CourseProvider>
-          </UserProvider>
-        </AuthProvider>
-      </BasketProvider>
-    </BrowserRouter>
+    <PaymentProvider>
+      <OrderProvider>
+        <BrowserRouter>
+          <BasketProvider>
+            <AuthProvider>
+              <UserProvider>
+                <CourseProvider>
+                  <CategoryProvider>
+                    <AppContent />
+                  </CategoryProvider>
+                </CourseProvider>
+              </UserProvider>
+            </AuthProvider>
+          </BasketProvider>
+        </BrowserRouter>
+      </OrderProvider>
+    </PaymentProvider>
   );
 }
 

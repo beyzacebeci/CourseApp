@@ -12,11 +12,6 @@ public class BasketItemConfiguration : IEntityTypeConfiguration<BasketItem>
         // Primary key tanımlama
         builder.HasKey(x => x.Id);
 
-        // TotalPrice için hassasiyet ayarı
-        builder.Property(x => x.TotalPrice)
-            .IsRequired()
-            .HasColumnType("decimal(16,2)");
-
         builder.HasOne(x=>x.User)
             .WithMany(u => u.BasketItems)
             .HasForeignKey(b => b.UserId)

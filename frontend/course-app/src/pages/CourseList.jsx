@@ -50,16 +50,6 @@ function CourseList() {
     setSearchTerm(event.target.value);
   };
 
-  /* const handleCategoryChange = (categoryId) => {
-    setPage(1);
-    setSelectedCategories((prev) => {
-      if (prev.includes(categoryId)) {
-        return prev.filter((id) => id !== categoryId);
-      } else {
-        return [...prev, categoryId];
-      }
-    });
-  };*/
   const handleCategoryChange = (categoryId) => {
     setPage(1);
     setSelectedCategories((prev) => {

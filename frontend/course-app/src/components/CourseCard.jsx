@@ -13,6 +13,13 @@ function CourseCard({ course }) {
   const navigate = useNavigate();
   const placeholderImage = "https://via.placeholder.com/250";
 
+  const getImageSource = () => {
+    if (course.base64Image) {
+      return course.base64Image;
+    }
+    return course.imageUrl || placeholderImage;
+  };
+
   const handleImageError = (e) => {
     e.target.src = placeholderImage;
   };
@@ -29,7 +36,7 @@ function CourseCard({ course }) {
         <CardMedia
           component="img"
           height="150"
-          image={course.imageUrl || placeholderImage}
+          image={getImageSource()}
           alt={course.name}
           onError={handleImageError}
           sx={{
