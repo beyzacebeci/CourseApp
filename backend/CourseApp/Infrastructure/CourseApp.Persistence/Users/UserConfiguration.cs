@@ -1,4 +1,4 @@
-﻿using CourseApp.Domain.Entities.Identity;
+using CourseApp.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -20,6 +20,8 @@ namespace CourseApp.Persistence.Users
                 NormalizedEmail = "EDUCATOR@GMAIL.COM",
                 Name = "educator",
                 Surname = "educator",
+                SecurityStamp = Guid.NewGuid().ToString(),
+                ConcurrencyStamp = Guid.NewGuid().ToString(),
                 RefreshToken = null,
                 RefreshTokenExpiryTime = DateTime.UtcNow
             };
@@ -32,6 +34,8 @@ namespace CourseApp.Persistence.Users
                 NormalizedEmail = "USER@GMAIL.COM",
                 Name = "user",
                 Surname = "user",
+                SecurityStamp = Guid.NewGuid().ToString(),
+                ConcurrencyStamp = Guid.NewGuid().ToString(),
                 RefreshToken = null,
                 RefreshTokenExpiryTime = DateTime.UtcNow
             };
@@ -39,7 +43,7 @@ namespace CourseApp.Persistence.Users
             educator.PasswordHash = hasher.HashPassword(educator, "Educator123.");
             user.PasswordHash = hasher.HashPassword(user, "User123.");
 
-            builder.HasData(educator,user);
+            builder.HasData(educator, user);
         }
     }
 }

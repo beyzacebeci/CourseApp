@@ -33,7 +33,7 @@ function CourseList() {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const pageSize = 3;
+  const pageSize = 6;
 
   useEffect(() => {
     getCoursesByPagination(page, pageSize, selectedCategories);
@@ -170,7 +170,6 @@ function CourseList() {
                   xs: "1fr",
                   sm: "1fr 1fr",
                   md: "1fr 1fr 1fr",
-                  lg: "1fr 1fr 1fr 1fr",
                 },
                 gap: 2,
               }}
