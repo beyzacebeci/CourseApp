@@ -8,9 +8,11 @@ import {
   Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useTranslationContext } from "../context/TranslationContext";
 
 function CourseCard({ course }) {
   const navigate = useNavigate();
+  const { t } = useTranslationContext();
   const placeholderImage = "https://via.placeholder.com/250";
 
   const getImageSource = () => {
@@ -58,7 +60,7 @@ function CourseCard({ course }) {
             color: "primary.main",
           }}
         >
-          {course.price} TL
+          {t("course.price", { price: course.price })}
         </Typography>
       </Box>
       <CardContent sx={{ flexGrow: 1, p: 2 }}>
@@ -100,7 +102,7 @@ function CourseCard({ course }) {
             size="small"
             onClick={() => navigate(`/courses/${course.id}`)}
           >
-            Detaya Git
+            {t("course.details")}
           </Button>
         </Box>
       </CardContent>

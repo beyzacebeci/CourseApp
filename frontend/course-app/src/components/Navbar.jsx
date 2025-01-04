@@ -9,14 +9,19 @@ import { useBasket } from "../context/BasketContext";
 import { Link, useNavigate } from "react-router-dom";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { useTranslationContext } from "../context/TranslationContext";
+import trFlag from "../assets/tr.png";
+import engFlag from "../assets/en.png";
 
 function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const isEducator = user?.roles?.includes("Educator");
   const { basketCount, resetBasket } = useBasket();
+  const { t, changeLanguage, i18n } = useTranslationContext();
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [langAnchorEl, setLangAnchorEl] = useState(null);
 
   const handleLogout = async () => {
     await logout();
@@ -35,6 +40,19 @@ function Navbar() {
   const handleProfileClick = () => {
     navigate("/profile");
     handleMenuClose();
+  };
+
+  const handleLangMenuOpen = (event) => {
+    setLangAnchorEl(event.currentTarget);
+  };
+
+  const handleLangMenuClose = () => {
+    setLangAnchorEl(null);
+  };
+
+  const handleLanguageChange = (lng) => {
+    changeLanguage(lng);
+    handleLangMenuClose();
   };
 
   return (
@@ -75,7 +93,7 @@ function Navbar() {
                 fontSize: "16px",
               }}
             >
-              Home
+              {t("nav.home")}
             </Button>
           </Link>
         </div>
@@ -93,26 +111,28 @@ function Navbar() {
                   fontSize: "16px",
                 }}
               >
-                Educator
+                {t("nav.educator", "Educator")}
               </Button>
             </Link>
           )}
 
-          <Link
-            to="/user-courses"
-            style={{ textDecoration: "none", color: "black" }}
-          >
-            <Button
-              color="inherit"
-              sx={{
-                textTransform: "none",
-                fontSize: "16px",
-                ml: 1,
-              }}
+          {user && (
+            <Link
+              to="/user-courses"
+              style={{ textDecoration: "none", color: "black" }}
             >
-              Courses
-            </Button>
-          </Link>
+              <Button
+                color="inherit"
+                sx={{
+                  textTransform: "none",
+                  fontSize: "16px",
+                  ml: 1,
+                }}
+              >
+                {t("nav.courses", "Courses")}
+              </Button>
+            </Link>
+          )}
 
           <Link to="/basket" style={{ textDecoration: "none" }}>
             <Button
@@ -129,6 +149,69 @@ function Navbar() {
             </Button>
           </Link>
 
+          <Button
+            color="inherit"
+            onClick={handleLangMenuOpen}
+            sx={{
+              textTransform: "none",
+              fontSize: "16px",
+              ml: 1,
+            }}
+          >
+            <img
+              src={i18n.language === "tr" ? trFlag : engFlag}
+              alt="Selected Language"
+              width="24px"
+            />
+          </Button>
+
+          <Menu
+            id="language-menu"
+            anchorEl={langAnchorEl}
+            open={Boolean(langAnchorEl)}
+            onClose={handleLangMenuClose}
+            disableScrollLock={true}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            PaperProps={{
+              elevation: 0,
+              sx: {
+                overflow: "visible",
+                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                mt: 1.5,
+                "& .MuiMenuItem-root": {
+                  px: 2,
+                  py: 1,
+                },
+              },
+            }}
+          >
+            <MenuItem onClick={() => handleLanguageChange("en")}>
+              <img
+                src={engFlag}
+                alt="English"
+                width="24px"
+                style={{ marginRight: "8px" }}
+              />
+              English
+            </MenuItem>
+            <MenuItem onClick={() => handleLanguageChange("tr")}>
+              <img
+                src={trFlag}
+                alt="Türkçe"
+                width="24px"
+                style={{ marginRight: "8px" }}
+              />
+              Türkçe
+            </MenuItem>
+          </Menu>
+
           {!user ? (
             <>
               <Link to="/signin-page" style={{ textDecoration: "none" }}>
@@ -141,7 +224,7 @@ function Navbar() {
                     ml: 1,
                   }}
                 >
-                  Sign In
+                  {t("common.login")}
                 </Button>
               </Link>
 
@@ -158,7 +241,7 @@ function Navbar() {
                     },
                   }}
                 >
-                  Sign Up
+                  {t("common.register")}
                 </Button>
               </Link>
             </>
@@ -172,7 +255,7 @@ function Navbar() {
                 ml: 1,
               }}
             >
-              Logout
+              {t("common.logout")}
             </Button>
           )}
 
@@ -226,7 +309,9 @@ function Navbar() {
                   },
                 }}
               >
-                <MenuItem onClick={handleProfileClick}>Profilim</MenuItem>
+                <MenuItem onClick={handleProfileClick}>
+                  {t("nav.profile", "Profilim")}
+                </MenuItem>
               </Menu>
             </div>
           )}

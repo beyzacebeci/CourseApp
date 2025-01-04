@@ -15,9 +15,11 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useOrder } from "../../context/OrderContext";
+import { useTranslationContext } from "../../context/TranslationContext";
 
 function OrdersCard() {
   const { orders, fetchUserOrders } = useOrder();
+  const { t } = useTranslationContext();
 
   useEffect(() => {
     fetchUserOrders();
@@ -27,16 +29,16 @@ function OrdersCard() {
     <Card elevation={3}>
       <CardContent>
         <Typography variant="h5" component="h2" gutterBottom>
-          Siparişlerim
+          {t("orders.title")}
         </Typography>
         <Divider sx={{ mb: 3 }} />
         <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Sipariş ID</TableCell>
-                <TableCell>Satın Alınan Kurslar</TableCell>
-                <TableCell align="right">Toplam Fiyat</TableCell>
+                <TableCell>{t("orders.orderId")}</TableCell>
+                <TableCell>{t("orders.purchasedCourses")}</TableCell>
+                <TableCell align="right">{t("orders.totalPrice")}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

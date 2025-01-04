@@ -25,6 +25,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
+import { useTranslationContext } from "../context/TranslationContext";
 
 const Educator = () => {
   const {
@@ -46,6 +47,7 @@ const Educator = () => {
     severity: "success",
   });
   const navigate = useNavigate();
+  const { t } = useTranslationContext();
 
   useEffect(() => {
     getCoursesByPagination(page, pageSize);
@@ -87,13 +89,12 @@ const Educator = () => {
       setSnackbar({
         open: true,
         message: success
-          ? "Course deleted successfully"
-          : "Failed to delete course",
+          ? t("educator.notifications.deleteSuccess")
+          : t("educator.notifications.deleteError"),
         severity: success ? "success" : "error",
       });
 
       if (success) {
-        // Refresh the current page
         getCoursesByPagination(page, pageSize);
         getTotalCourseCount();
       }
@@ -115,9 +116,9 @@ const Educator = () => {
             mb={3}
           >
             <Typography variant="h5" component="h1">
-              All Courses
+              {t("educator.allCourses")}
             </Typography>
-            <Tooltip title="Add New Course">
+            <Tooltip title={t("educator.addNewCourse")}>
               <IconButton
                 color="primary"
                 size="large"
@@ -215,22 +216,26 @@ const Educator = () => {
         disableEnforceFocus
         disableRestoreFocus
       >
-        <DialogTitle id="delete-dialog-title">Delete Course</DialogTitle>
+        <DialogTitle id="delete-dialog-title">
+          {t("educator.deleteDialog.title")}
+        </DialogTitle>
         <DialogContent>
           <Typography>
-            Are you sure you want to delete "{courseToDelete?.name}"?
+            {t("educator.deleteDialog.confirmMessage", {
+              courseName: courseToDelete?.name,
+            })}
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteDialogOpen(false)} autoFocus>
-            Cancel
+            {t("educator.deleteDialog.cancelButton")}
           </Button>
           <Button
             onClick={handleDeleteConfirm}
             color="error"
             variant="contained"
           >
-            Delete
+            {t("educator.deleteDialog.deleteButton")}
           </Button>
         </DialogActions>
       </Dialog>

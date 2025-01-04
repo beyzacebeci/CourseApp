@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useOrder } from "../context/OrderContext";
 import { useBasket } from "../context/BasketContext";
+import { useTranslationContext } from "../context/TranslationContext";
 
 function Payment() {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ function Payment() {
     cvc: "",
     address: "",
   });
+  const { t } = useTranslationContext();
 
   const handleChange = (e) => {
     setFormData({
@@ -54,7 +56,7 @@ function Payment() {
 
         if (orderResponse.status === 200 || orderResponse.status === 201) {
           await deleteAllBasketItems();
-          alert("Ödeme işleminiz başarıyla tamamlandı!");
+          alert(t("payment.success"));
           navigate("/");
           return;
         }
@@ -69,7 +71,7 @@ function Payment() {
       alert(
         Array.isArray(errorMessage)
           ? errorMessage.join("\n")
-          : "Ödeme işlemi sırasında bir hata oluştu."
+          : t("payment.error")
       );
     }
   };
@@ -77,7 +79,7 @@ function Payment() {
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Ödeme Bilgileri
+        {t("payment.title")}
       </Typography>
       <Paper elevation={3} sx={{ p: 4 }}>
         <form onSubmit={handleSubmit}>
@@ -85,7 +87,7 @@ function Payment() {
             <TextField
               required
               fullWidth
-              label="Kart Üzerindeki İsim"
+              label={t("payment.cardName")}
               variant="outlined"
               name="cardNameSurname"
               value={formData.cardNameSurname}
@@ -94,7 +96,7 @@ function Payment() {
             <TextField
               required
               fullWidth
-              label="Kart Numarası"
+              label={t("payment.cardNumber")}
               variant="outlined"
               name="cardNumber"
               value={formData.cardNumber}
@@ -104,7 +106,7 @@ function Payment() {
               <TextField
                 required
                 fullWidth
-                label="Son Kullanma Tarihi"
+                label={t("payment.expirationDate")}
                 variant="outlined"
                 type="month"
                 name="expirationDate"
@@ -118,7 +120,7 @@ function Payment() {
               <TextField
                 required
                 fullWidth
-                label="CVV"
+                label={t("payment.cvv")}
                 variant="outlined"
                 name="cvc"
                 value={formData.cvc}
@@ -128,7 +130,7 @@ function Payment() {
             <TextField
               required
               fullWidth
-              label="Teslimat Adresi"
+              label={t("payment.address")}
               variant="outlined"
               multiline
               rows={3}
@@ -150,7 +152,7 @@ function Payment() {
                 py: 1.5,
               }}
             >
-              Ödemeyi Tamamla
+              {t("payment.completePayment")}
             </Button>
           </Stack>
         </form>

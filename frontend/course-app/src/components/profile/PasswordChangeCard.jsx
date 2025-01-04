@@ -9,10 +9,12 @@ import {
 } from "@mui/material";
 import { useAuth } from "../../context/AuthContext";
 import { useUser } from "../../context/UserContext";
+import { useTranslationContext } from "../../context/TranslationContext";
 
 function PasswordChangeCard({ setSnackbar }) {
   const { user } = useAuth();
   const { changePassword } = useUser();
+  const { t } = useTranslationContext();
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: "",
@@ -25,7 +27,7 @@ function PasswordChangeCard({ setSnackbar }) {
     if (passwordForm.newPassword !== passwordForm.confirmNewPassword) {
       setSnackbar({
         open: true,
-        message: "Yeni şifreler eşleşmiyor",
+        message: t("password.mismatchError"),
         severity: "error",
       });
       return;
@@ -60,12 +62,14 @@ function PasswordChangeCard({ setSnackbar }) {
             mb: 2,
           }}
         >
-          <Typography variant="h6">Şifre Değiştir</Typography>
+          <Typography variant="h6">{t("password.title")}</Typography>
           <Button
             variant="outlined"
             onClick={() => setIsChangingPassword(!isChangingPassword)}
           >
-            {isChangingPassword ? "İptal" : "Şifre Değiştir"}
+            {isChangingPassword
+              ? t("password.cancelButton")
+              : t("password.changeButton")}
           </Button>
         </Box>
 
@@ -75,7 +79,7 @@ function PasswordChangeCard({ setSnackbar }) {
               fullWidth
               margin="normal"
               type="password"
-              label="Mevcut Şifre"
+              label={t("password.currentPassword")}
               name="currentPassword"
               value={passwordForm.currentPassword}
               onChange={(e) =>
@@ -90,7 +94,7 @@ function PasswordChangeCard({ setSnackbar }) {
               fullWidth
               margin="normal"
               type="password"
-              label="Yeni Şifre"
+              label={t("password.newPassword")}
               name="newPassword"
               value={passwordForm.newPassword}
               onChange={(e) =>
@@ -105,7 +109,7 @@ function PasswordChangeCard({ setSnackbar }) {
               fullWidth
               margin="normal"
               type="password"
-              label="Yeni Şifre (Tekrar)"
+              label={t("password.confirmPassword")}
               name="confirmNewPassword"
               value={passwordForm.confirmNewPassword}
               onChange={(e) =>
@@ -117,7 +121,7 @@ function PasswordChangeCard({ setSnackbar }) {
               required
             />
             <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
-              Şifreyi Güncelle
+              {t("password.updateButton")}
             </Button>
           </Box>
         )}

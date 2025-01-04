@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useOrder } from "../context/OrderContext";
+import { useTranslationContext } from "../context/TranslationContext";
 import {
   Card,
   CardContent,
@@ -7,10 +8,12 @@ import {
   Typography,
   Grid,
   Container,
+  Box,
 } from "@mui/material";
 
 const UserCourses = () => {
   const { orders, fetchUserOrders } = useOrder();
+  const { t } = useTranslationContext();
 
   useEffect(() => {
     fetchUserOrders();
@@ -22,16 +25,37 @@ const UserCourses = () => {
   return (
     <Container sx={{ py: 4 }}>
       <Typography variant="h5" gutterBottom>
-        Satın Alınan Kurslar
+        {t("orders.purchasedCourses")}
         <hr />
       </Typography>
-      <Grid container spacing={3}>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 3,
+          justifyContent: "flex-start",
+        }}
+      >
         {allCourses.map((course) => (
-          <Grid item key={course.id} xs={12} sm={6} md={4}>
-            <Card>
+          <Box
+            key={course.id}
+            sx={{
+              flexBasis: {
+                xs: "100%",
+                sm: "calc(50% - 24px)",
+                md: "calc(33.333% - 24px)",
+              },
+            }}
+          >
+            <Card
+              sx={{ height: "100%", display: "flex", flexDirection: "column" }}
+            >
               <CardMedia
                 component="img"
-                height="140"
+                sx={{
+                  height: 200,
+                  objectFit: "cover",
+                }}
                 image={course.base64Image}
                 alt={course.name}
               />
@@ -44,9 +68,9 @@ const UserCourses = () => {
                 </Typography>
               </CardContent>
             </Card>
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Container>
   );
 };

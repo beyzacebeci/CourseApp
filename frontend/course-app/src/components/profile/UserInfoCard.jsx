@@ -16,10 +16,12 @@ import PersonIcon from "@mui/icons-material/Person";
 import { useAuth } from "../../context/AuthContext";
 import { useUser } from "../../context/UserContext";
 import { getAPI } from "../../services/apiService";
+import { useTranslationContext } from "../../context/TranslationContext";
 
 function UserInfoCard({ setSnackbar }) {
   const { user, updateLocalUsername } = useAuth();
   const { updateUser } = useUser();
+  const { t } = useTranslationContext();
   const [userDetails, setUserDetails] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({});
@@ -97,7 +99,7 @@ function UserInfoCard({ setSnackbar }) {
               <PersonIcon />
             </Avatar>
             <Typography variant="h5" component="h2">
-              Profil Bilgileri
+              {t("profile.title")}
             </Typography>
           </Box>
           <IconButton color="primary" onClick={() => setIsEditing(!isEditing)}>
@@ -123,7 +125,7 @@ function UserInfoCard({ setSnackbar }) {
               <TextField
                 fullWidth
                 required
-                label="Ad"
+                label={t("profile.name")}
                 name="name"
                 value={editForm.name}
                 onChange={handleInputChange}
@@ -132,7 +134,7 @@ function UserInfoCard({ setSnackbar }) {
               <TextField
                 fullWidth
                 required
-                label="Soyad"
+                label={t("profile.surname")}
                 name="surname"
                 value={editForm.surname}
                 onChange={handleInputChange}
@@ -143,7 +145,7 @@ function UserInfoCard({ setSnackbar }) {
             <TextField
               fullWidth
               required
-              label="E-posta"
+              label={t("profile.email")}
               name="email"
               type="email"
               value={editForm.email}
@@ -154,7 +156,7 @@ function UserInfoCard({ setSnackbar }) {
             <TextField
               fullWidth
               required
-              label="Kullanıcı Adı"
+              label={t("profile.username")}
               name="userName"
               value={editForm.userName}
               onChange={handleInputChange}
@@ -170,10 +172,10 @@ function UserInfoCard({ setSnackbar }) {
               }}
             >
               <Button variant="outlined" onClick={() => setIsEditing(false)}>
-                İptal
+                {t("profile.cancel")}
               </Button>
               <Button type="submit" variant="contained">
-                Kaydet
+                {t("profile.save")}
               </Button>
             </Box>
           </Box>
@@ -181,21 +183,21 @@ function UserInfoCard({ setSnackbar }) {
           <Stack spacing={3}>
             <Box>
               <Typography variant="subtitle2" color="text.secondary">
-                Kullanıcı Adı
+                {t("profile.username")}
               </Typography>
               <Typography variant="body1">{userDetails?.userName}</Typography>
             </Box>
 
             <Box>
               <Typography variant="subtitle2" color="text.secondary">
-                E-posta
+                {t("profile.email")}
               </Typography>
               <Typography variant="body1">{userDetails?.email}</Typography>
             </Box>
 
             <Box>
               <Typography variant="subtitle2" color="text.secondary">
-                Ad Soyad
+                {t("profile.fullName")}
               </Typography>
               <Typography variant="body1">
                 {`${userDetails?.name} ${userDetails?.surname}`}

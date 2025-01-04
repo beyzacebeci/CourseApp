@@ -12,7 +12,7 @@ export function CategoryProvider({ children }) {
     try {
       const response = await getAPI(`Categories/${id}`);
       if (response.status === 200) {
-        setCategory(response.data);
+        setCategory(response.data.data);
       }
       return response;
     } catch (error) {

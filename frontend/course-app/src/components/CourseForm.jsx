@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { CategoryContext } from "../context/CategoryContext";
 import { CourseContext } from "../context/CourseContext";
@@ -16,15 +16,17 @@ import {
   Stack,
   Alert,
 } from "@mui/material";
+import { useTranslationContext } from "../context/TranslationContext";
 
 const CourseForm = () => {
   const { getAllCategoriesWithCourses, categoryWithCourses } =
     useContext(CategoryContext);
   const { getCourseById, updateCourse, createCourse } =
     useContext(CourseContext);
-  const { id } = useParams(); // URL'den id parametresini al
-  const [course, setCourse] = useState(null); // course state'i ekle
+  const { id } = useParams();
+  const [course, setCourse] = useState(null);
   const navigate = useNavigate();
+  const { t } = useTranslationContext();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -37,10 +39,8 @@ const CourseForm = () => {
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    // Kategorileri yükle
     getAllCategoriesWithCourses();
 
-    // Eğer id varsa (düzenleme modu), kursu getir
     if (id) {
       const fetchCourse = async () => {
         const courseData = await getCourseById(id);
@@ -53,7 +53,6 @@ const CourseForm = () => {
   }, [id]);
 
   useEffect(() => {
-    // Kurs verisi geldiğinde form'u doldur
     if (course) {
       setFormData({
         name: course.name || "",
@@ -94,28 +93,22 @@ const CourseForm = () => {
     try {
       let success;
       if (id) {
-        // Güncelleme işlemi
         success = await updateCourse(id, formData);
       } else {
-        // Yeni kurs ekleme işlemi
         const result = await createCourse(formData);
         success = result.success;
       }
 
       if (success) {
         setSuccess(
-          id ? "Kurs başarıyla güncellendi" : "Kurs başarıyla eklendi"
+          id ? t("courseForm.success.update") : t("courseForm.success.add")
         );
         setTimeout(() => navigate("/educator"), 1000);
       } else {
-        setError(
-          id
-            ? "Kurs güncellenirken bir hata oluştu"
-            : "Kurs eklenirken bir hata oluştu"
-        );
+        setError(id ? t("courseForm.error.update") : t("courseForm.error.add"));
       }
     } catch (err) {
-      setError("Bir hata oluştu");
+      setError(t("courseForm.error.general"));
       console.error(err);
     }
   };
@@ -124,7 +117,7 @@ const CourseForm = () => {
     <Container maxWidth="md">
       <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
         <Typography variant="h5" component="h1" gutterBottom>
-          {id ? "Kurs Güncelle" : "Yeni Kurs Ekle"}
+          {id ? t("courseForm.update") : t("courseForm.addNew")}
         </Typography>
 
         {error && (
@@ -142,7 +135,7 @@ const CourseForm = () => {
           <Stack spacing={3}>
             <TextField
               name="name"
-              label="Kurs Adı"
+              label={t("courseForm.name")}
               value={formData.name}
               onChange={handleChange}
               required
@@ -151,7 +144,7 @@ const CourseForm = () => {
 
             <TextField
               name="description"
-              label="Açıklama"
+              label={t("courseForm.description")}
               value={formData.description}
               onChange={handleChange}
               multiline
@@ -162,7 +155,7 @@ const CourseForm = () => {
 
             <TextField
               name="price"
-              label="Fiyat"
+              label={t("courseForm.price")}
               type="number"
               value={formData.price}
               onChange={handleChange}
@@ -171,7 +164,7 @@ const CourseForm = () => {
             />
 
             <FormControl fullWidth required>
-              <InputLabel>Kategori</InputLabel>
+              <InputLabel>{t("courseForm.category")}</InputLabel>
               <Select
                 name="categoryId"
                 value={formData.categoryId}
@@ -187,7 +180,7 @@ const CourseForm = () => {
 
             <FormControl fullWidth>
               <Button variant="contained" component="label" color="secondary">
-                Resim Seç
+                {t("courseForm.selectImage")}
                 <input
                   type="file"
                   hidden
@@ -197,12 +190,11 @@ const CourseForm = () => {
               </Button>
             </FormControl>
 
-            {/* Resim önizleme */}
             {formData.base64Image && (
               <Box sx={{ mt: 2 }}>
                 <img
                   src={formData.base64Image}
-                  alt="Kurs resmi önizleme"
+                  alt="Course preview"
                   style={{
                     maxWidth: "200px",
                     maxHeight: "200px",
@@ -218,7 +210,7 @@ const CourseForm = () => {
               color="primary"
               size="large"
             >
-              {id ? "Güncelle" : "Ekle"}
+              {id ? t("courseForm.updateButton") : t("courseForm.add")}
             </Button>
           </Stack>
         </form>

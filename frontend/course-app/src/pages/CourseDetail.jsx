@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { CourseContext } from "../context/CourseContext";
 import { CategoryContext } from "../context/CategoryContext";
+import { useTranslationContext } from "../context/TranslationContext";
 import {
   Container,
   Typography,
@@ -9,42 +10,36 @@ import {
   Box,
   CardMedia,
   Button,
-  Alert,
   Snackbar,
+  Alert,
 } from "@mui/material";
 import { useBasket } from "../context/BasketContext";
-import { useAuth } from "../context/AuthContext";
 
 function CourseDetail() {
+  const { t } = useTranslationContext();
   const { id } = useParams();
   const { getCourseById } = useContext(CourseContext);
   const { getCategory } = useContext(CategoryContext);
   const { addToBasket } = useBasket();
-  const { user } = useAuth();
   const [course, setCourse] = useState(null);
   const [categoryName, setCategoryName] = useState("");
+  const [userId] = useState(localStorage.getItem("userId"));
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
-  const [alertSeverity, setAlertSeverity] = useState("success");
 
   useEffect(() => {
     const fetchCourse = async () => {
       const courseData = await getCourseById(id);
       if (courseData) {
         setCourse(courseData);
-        const response = await getCategory(courseData.categoryId);
-        setCategoryName(response.data.data.name || "");
+        const categoryResponse = await getCategory(courseData.categoryId);
+        setCategoryName(categoryResponse?.data?.data?.name || "");
       }
     };
     fetchCourse();
   }, [id]);
 
   const handleAddToBasket = () => {
-    if (!user) {
-      setAlertMessage(
-        "Ürünü Sepete ekleyip satın alma işlemini gerçekleştirebilmek için lütfen giriş yapın."
-      );
-      setAlertSeverity("warning");
+    if (!userId) {
       setOpenSnackbar(true);
       return;
     }
@@ -58,10 +53,7 @@ function CourseDetail() {
         categoryName: categoryName,
       };
 
-      addToBasket(basketItem, user.userId);
-      setAlertMessage("Ürün sepete eklendi");
-      setAlertSeverity("success");
-      setOpenSnackbar(true);
+      addToBasket(basketItem, userId);
     }
   };
 
@@ -70,17 +62,6 @@ function CourseDetail() {
       return;
     }
     setOpenSnackbar(false);
-  };
-
-  const getImageSource = () => {
-    if (course?.base64Image) {
-      return course.base64Image;
-    }
-    return course?.imageUrl || "https://via.placeholder.com/250";
-  };
-
-  const handleImageError = (e) => {
-    e.target.src = "https://via.placeholder.com/250";
   };
 
   if (!course) {
@@ -94,9 +75,8 @@ function CourseDetail() {
           <CardMedia
             component="img"
             sx={{ width: 300, height: 200, objectFit: "cover" }}
-            image={getImageSource()}
+            image={course.base64Image || "https://via.placeholder.com/250"}
             alt={course.name}
-            onError={handleImageError}
           />
           <Box
             sx={{
@@ -109,38 +89,38 @@ function CourseDetail() {
               {course.name}
             </Typography>
             <Typography variant="body1" color="text.secondary" gutterBottom>
-              Category: {categoryName}
+              {t("courseDetail.category", { categoryName: categoryName })}
             </Typography>
             <Typography variant="body1" color="text.secondary" gutterBottom>
-              Price: {course.price} TL
+              {t("courseDetail.price", { price: course.price.toString() })}
             </Typography>
             <Typography variant="body1" color="text.secondary" gutterBottom>
-              Description: {course.description}
+              {course.description}
             </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddToBasket}
+              sx={{ mt: 2 }}
+            >
+              {t("courseDetail.addToBasket")}
+            </Button>
           </Box>
-
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleAddToBasket}
-            sx={{ mt: 2, alignSelf: "flex-end" }}
-          >
-            Satın Al
-          </Button>
         </Box>
       </Paper>
+
       <Snackbar
         open={openSnackbar}
-        autoHideDuration={3000}
+        autoHideDuration={6000}
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert
           onClose={handleCloseSnackbar}
-          severity={alertSeverity}
+          severity="warning"
           sx={{ width: "100%" }}
         >
-          {alertMessage}
+          {t("courseDetail.loginRequired")}
         </Alert>
       </Snackbar>
     </Container>

@@ -21,6 +21,9 @@ import Profile from "./pages/Profile";
 import Educator from "./pages/Educator";
 import CourseForm from "./components/CourseForm";
 import UserCourses from "./pages/UserCourses";
+import { I18nextProvider } from "react-i18next";
+import i18n from "./i18n";
+import { TranslationProvider } from "./context/TranslationContext";
 
 function AppContent() {
   return (
@@ -46,23 +49,27 @@ function AppContent() {
 
 function App() {
   return (
-    <PaymentProvider>
-      <OrderProvider>
-        <BrowserRouter>
-          <BasketProvider>
-            <AuthProvider>
-              <UserProvider>
-                <CourseProvider>
-                  <CategoryProvider>
-                    <AppContent />
-                  </CategoryProvider>
-                </CourseProvider>
-              </UserProvider>
-            </AuthProvider>
-          </BasketProvider>
-        </BrowserRouter>
-      </OrderProvider>
-    </PaymentProvider>
+    <I18nextProvider i18n={i18n}>
+      <TranslationProvider>
+        <PaymentProvider>
+          <OrderProvider>
+            <BrowserRouter>
+              <BasketProvider>
+                <AuthProvider>
+                  <UserProvider>
+                    <CourseProvider>
+                      <CategoryProvider>
+                        <AppContent />
+                      </CategoryProvider>
+                    </CourseProvider>
+                  </UserProvider>
+                </AuthProvider>
+              </BasketProvider>
+            </BrowserRouter>
+          </OrderProvider>
+        </PaymentProvider>
+      </TranslationProvider>
+    </I18nextProvider>
   );
 }
 
