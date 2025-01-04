@@ -13,6 +13,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using Microsoft.EntityFrameworkCore;
 
 namespace CourseApp.Application.Features.Authentication
 {
@@ -31,6 +32,87 @@ namespace CourseApp.Application.Features.Authentication
             _configuration = configuration;
         }
 
+        public async Task<ServiceResult<AppUser>> GetUserById(int userId)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userId.ToString());
+
+                if (user == null)
+                    return ServiceResult<AppUser>.Fail("User not found", HttpStatusCode.NotFound);
+
+                return ServiceResult<AppUser>.Success(user);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<AppUser>.Fail(ex.Message);
+            }
+        }
+        public async Task<ServiceResult<bool>> UpdateUser(int userId, UserForUpdateDto userForUpdateDto)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userId.ToString());
+
+                if (user == null)
+                    return ServiceResult<bool>.Fail("User not found", HttpStatusCode.NotFound);
+
+                user.Name = userForUpdateDto.Name;
+                user.Surname = userForUpdateDto.Surname;
+                user.Email = userForUpdateDto.Email ?? user.Email;
+                user.UserName = userForUpdateDto.UserName ?? user.UserName;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (!result.Succeeded)
+                    return ServiceResult<bool>.Fail(result.Errors.First().Description);
+
+                return ServiceResult<bool>.Success(true);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<bool>.Fail(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResult<IEnumerable<AppUser>>> GetAllUsers()
+        {
+            try
+            {
+                var users = await _userManager.Users.ToListAsync();
+                return ServiceResult<IEnumerable<AppUser>>.Success(users);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<IEnumerable<AppUser>>.Fail(ex.Message);
+            }
+        }
+
+
+
+        public async Task<ServiceResult<bool>> ChangePassword(int userId, ChangePasswordDto changePasswordDto)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userId.ToString());
+
+                if (user == null)
+                    return ServiceResult<bool>.Fail("User not found", HttpStatusCode.NotFound);
+
+                var result = await _userManager.ChangePasswordAsync(user,
+                    changePasswordDto.CurrentPassword,
+                    changePasswordDto.NewPassword);
+
+                if (!result.Succeeded)
+                    return ServiceResult<bool>.Fail(result.Errors.First().Description);
+
+                return ServiceResult<bool>.Success(true);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<bool>.Fail(ex.Message);
+            }
+        }
         public async Task<ServiceResult<TokenDto>> CreateToken(bool populateExp)
         {
             try

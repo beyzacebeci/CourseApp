@@ -16,10 +16,12 @@ IBasketItemRepository
             .ToListAsync();
     }
 
-    public async Task DeleteAllAsync()
+    public async Task DeleteAllAsync(int userId)
     {
-        var allItems = await context.BasketItems.ToListAsync();
-        context.BasketItems.RemoveRange(allItems);
+        var userItems = await context.BasketItems
+            .Where(x => x.UserId == userId)
+            .ToListAsync();
+        context.BasketItems.RemoveRange(userItems);
     }
 
 }

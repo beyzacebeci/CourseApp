@@ -83,9 +83,9 @@ namespace CourseApp.Application.Features.BasketItems
             var basketsDto = mapper.Map<List<BasketItemDto>>(baskets);
             return ServiceResult<List<BasketItemDto>>.Success(basketsDto);
         }
-        public async Task<ServiceResult> DeleteAllAsync()
+        public async Task<ServiceResult> DeleteAllAsync(int userId)
         {
-            await basketRepository.DeleteAllAsync();
+            await basketRepository.DeleteAllAsync(userId);
             await unitOfWork.SaveChangesAsync();
 
             return ServiceResult.Success(HttpStatusCode.NoContent);

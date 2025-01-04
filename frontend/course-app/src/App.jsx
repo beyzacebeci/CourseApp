@@ -18,6 +18,9 @@ import Payment from "./pages/Payment";
 import { PaymentProvider } from "./context/PaymentContext";
 import { OrderProvider } from "./context/OrderContext";
 import Profile from "./pages/Profile";
+import Educator from "./pages/Educator";
+import CourseForm from "./components/CourseForm";
+import UserCourses from "./pages/UserCourses";
 
 function AppContent() {
   return (
@@ -32,6 +35,10 @@ function AppContent() {
         <Route path="/basket" element={<Basket />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/educator" element={<Educator />} />
+        <Route path="/courses/new" element={<CourseForm />} />
+        <Route path="/courses/edit/:id" element={<CourseForm />} />
+        <Route path="/user-courses" element={<UserCourses />} />
       </Routes>
     </>
   );

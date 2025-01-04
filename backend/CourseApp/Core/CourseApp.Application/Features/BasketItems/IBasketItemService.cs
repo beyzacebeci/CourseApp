@@ -13,7 +13,7 @@ public interface IBasketItemService
     Task<ServiceResult<int>> CreateAsync(CreateBasketItemRequest request);
     Task<ServiceResult> UpdateAsync(int id, UpdateBasketRequest request);
     Task<ServiceResult> DeleteAsync(int id);
-    Task<ServiceResult> DeleteAllAsync();
+    Task<ServiceResult> DeleteAllAsync(int userId);
 
 
 }

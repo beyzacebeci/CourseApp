@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace CourseApp.API.Controllers;
 
-
 public class CategoriesController(ICategoryService categoryService) : CustomBaseController
 {
    
@@ -27,16 +26,18 @@ public class CategoriesController(ICategoryService categoryService) : CustomBase
     public async Task<IActionResult> GetCategoryWithProducts(int id) =>
         CreateActionResult(await categoryService.GetCategoryWithCoursesAsync(id));
 
+    [Authorize(Roles = "Educator")]
     [HttpPost]
     public async Task<IActionResult> CreateCategory(CreateCategoryRequest request) =>
         CreateActionResult(await categoryService.CreateAsync(request));
 
+    [Authorize(Roles = "Educator")]
     [ServiceFilter(typeof(NotFoundFilter<Category, int>))]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateCategory(int id, UpdateCategoryRequest request) =>
         CreateActionResult(await categoryService.UpdateAsync(id, request));
 
-
+    [Authorize(Roles = "Educator")]
     [ServiceFilter(typeof(NotFoundFilter<Category, int>))]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCategory(int id) =>

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { getAPI, postAPI, deleteAPI } from "../services/apiService";
 
 const BasketContext = createContext();
 
@@ -36,21 +37,15 @@ export const BasketProvider = ({ children }) => {
         totalPrice: course.price,
       };
 
-      const response = await fetch("https://localhost:7146/api/BasketItems", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(request),
-      });
+      const response = await postAPI("BasketItems", request);
 
-      if (!response.ok) {
-        throw new Error("Failed to add item to basket");
+      if (response.success) {
+        await fetchBasketCount();
+      } else {
+        throw new Error(
+          response.data.errorMessage || "Failed to add item to basket"
+        );
       }
-
-      // Sepete ürün eklenince sayıyı güncelle
-      await fetchBasketCount();
     } catch (error) {
       console.error("Error adding to basket:", error);
     }
@@ -58,21 +53,8 @@ export const BasketProvider = ({ children }) => {
 
   const getBasketItems = async (userId) => {
     try {
-      const response = await fetch(
-        `https://localhost:7146/api/BasketItems/user/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch basket items");
-      }
-
-      const result = await response.json();
-      return result.data;
+      const response = await getAPI(`BasketItems/user/${userId}`);
+      return response.success ? response.data.data : [];
     } catch (error) {
       console.error("Error fetching basket items:", error);
       return [];
@@ -81,22 +63,15 @@ export const BasketProvider = ({ children }) => {
 
   const removeFromBasket = async (basketItemId) => {
     try {
-      const response = await fetch(
-        `https://localhost:7146/api/BasketItems/${basketItemId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await deleteAPI(`BasketItems/${basketItemId}`);
 
-      if (!response.ok) {
-        throw new Error("Failed to remove item from basket");
+      if (response.success) {
+        await fetchBasketCount();
+      } else {
+        throw new Error(
+          response.data.errorMessage || "Failed to remove item from basket"
+        );
       }
-
-      // Sepetten ürün silinince sayıyı güncelle
-      await fetchBasketCount();
     } catch (error) {
       console.error("Error removing from basket:", error);
     }
@@ -108,22 +83,13 @@ export const BasketProvider = ({ children }) => {
 
   const deleteAllBasketItems = async () => {
     try {
-      const response = await fetch(
-        "https://localhost:7146/api/BasketItems/delete-all",
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await deleteAPI("BasketItems/delete-all");
 
-      if (!response.ok) {
-        throw new Error("Failed to clear basket");
+      if (response.success) {
+        setBasketCount(0);
+      } else {
+        throw new Error(response.data.errorMessage || "Failed to clear basket");
       }
-
-      // Sepet temizlenince sayıyı sıfırla
-      setBasketCount(0);
     } catch (error) {
       console.error("Error clearing basket:", error);
     }

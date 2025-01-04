@@ -83,7 +83,7 @@ function Navbar() {
         <div style={{ display: "flex", alignItems: "center" }}>
           {isEducator && (
             <Link
-              to="/admin-page"
+              to="/educator"
               style={{ textDecoration: "none", color: "black" }}
             >
               <Button
@@ -99,7 +99,7 @@ function Navbar() {
           )}
 
           <Link
-            to="/user-estate-list-page"
+            to="/user-courses"
             style={{ textDecoration: "none", color: "black" }}
           >
             <Button
@@ -137,6 +137,7 @@ function Navbar() {
                   sx={{
                     textTransform: "none",
                     fontSize: "16px",
+                    color: "black",
                     ml: 1,
                   }}
                 >
@@ -146,11 +147,15 @@ function Navbar() {
 
               <Link to="/signup-page" style={{ textDecoration: "none" }}>
                 <Button
-                  color="inherit"
                   sx={{
                     textTransform: "none",
                     fontSize: "16px",
                     ml: 1,
+                    backgroundColor: "black",
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: "#333",
+                    },
                   }}
                 >
                   Sign Up
@@ -172,12 +177,12 @@ function Navbar() {
           )}
 
           {user && (
-            <div
-              onMouseEnter={handleMenuOpen}
-              onMouseLeave={handleMenuClose}
-              style={{ display: "flex", alignItems: "center" }}
-            >
+            <div>
               <IconButton
+                aria-label="profile menu"
+                aria-controls="profile-menu"
+                aria-haspopup="true"
+                onClick={handleMenuOpen}
                 edge="end"
                 color="inherit"
                 sx={{
@@ -195,6 +200,7 @@ function Navbar() {
               </IconButton>
 
               <Menu
+                id="profile-menu"
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
@@ -206,10 +212,6 @@ function Navbar() {
                 transformOrigin={{
                   vertical: "top",
                   horizontal: "right",
-                }}
-                MenuListProps={{
-                  onMouseEnter: () => setAnchorEl(anchorEl),
-                  onMouseLeave: handleMenuClose,
                 }}
                 PaperProps={{
                   elevation: 0,

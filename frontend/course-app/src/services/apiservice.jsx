@@ -5,9 +5,14 @@ const api = axios.create({
   timeout: 6000,
 });
 
-//localStorageden tokeni al
-const token = localStorage.getItem("token");
-if (token) api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+// Token kontrolünü interceptor olarak ekleyelim
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 const handleResponse = async (apiCall) => {
   try {

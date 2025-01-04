@@ -1,6 +1,5 @@
 import { createContext, useState } from "react";
-import { getAPI } from "../services/apiService";
-import axios from "axios";
+import { getAPI, deleteAPI, putAPI, postAPI } from "../services/apiService";
 
 export const CourseContext = createContext();
 
@@ -72,6 +71,59 @@ export function CourseProvider({ children }) {
     }
   };
 
+  const deleteCourse = async (id) => {
+    try {
+      const response = await deleteAPI(`Courses/${id}`);
+      if (response.status === 204) {
+        setCourses((prevCourses) => ({
+          ...prevCourses,
+          data: prevCourses.data.filter((course) => course.id !== id),
+        }));
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Error deleting course:", error);
+      return false;
+    }
+  };
+
+  const updateCourse = async (id, courseData) => {
+    try {
+      const response = await putAPI(`Courses/${id}`, courseData);
+      if (response.status === 204) {
+        setCourses((prevCourses) => ({
+          ...prevCourses,
+          data: prevCourses.data.map((course) =>
+            course.id === id ? { ...course, ...courseData } : course
+          ),
+        }));
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Error updating course:", error);
+      return false;
+    }
+  };
+
+  const createCourse = async (courseData) => {
+    try {
+      const response = await postAPI("Courses", courseData);
+      if (response.status === 201) {
+        setCourses((prevCourses) => ({
+          ...prevCourses,
+          data: [...prevCourses.data, response.data.data],
+        }));
+        return { success: true, data: response.data.data };
+      }
+      return { success: false, error: "Kurs eklenemedi" };
+    } catch (error) {
+      console.error("Error creating course:", error);
+      return { success: false, error: error.message };
+    }
+  };
+
   const values = {
     courses,
     course,
@@ -79,6 +131,9 @@ export function CourseProvider({ children }) {
     totalCourseCount,
     getTotalCourseCount,
     getCourseById,
+    deleteCourse,
+    updateCourse,
+    createCourse,
   };
 
   return (

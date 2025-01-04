@@ -1,64 +1,57 @@
-import React, { useEffect } from "react";
-import { useOrder } from "../context/OrderContext";
+import React, { useState } from "react";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
   Container,
+  Snackbar,
+  Alert,
+  Box,
+  Stack,
   Typography,
-  List,
-  ListItem,
-  ListItemText,
 } from "@mui/material";
+import UserInfoCard from "../components/profile/UserInfoCard";
+import PasswordChangeCard from "../components/profile/PasswordChangeCard";
+import OrdersCard from "../components/profile/OrdersCard";
 
 function Profile() {
-  const { orders, fetchUserOrders } = useOrder();
-
-  useEffect(() => {
-    fetchUserOrders();
-  }, []);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
 
   return (
-    <Container sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Siparişlerim
-      </Typography>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Sipariş ID</TableCell>
-              <TableCell>Satın Alınan Kurslar</TableCell>
-              <TableCell>Toplam Fiyat</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {orders.map((order) => (
-              <TableRow key={order.id}>
-                <TableCell>{order.id}</TableCell>
+    <Container maxWidth="lg" sx={{ mt: 6, mb: 6 }}>
+      <Stack spacing={4}>
+        <Box>
+          <Box
+            sx={{
+              display: "flex",
+              gap: 4,
+              flexDirection: { xs: "column", md: "row" },
+            }}
+          >
+            <Box sx={{ flex: { xs: "1", md: "2" } }}>
+              <UserInfoCard setSnackbar={setSnackbar} />
+            </Box>
+            <Box sx={{ flex: "1" }}>
+              <PasswordChangeCard setSnackbar={setSnackbar} />
+            </Box>
+          </Box>
+        </Box>
 
-                <TableCell>
-                  <List dense>
-                    {order.courses.map((course) => (
-                      <ListItem key={course.id}>
-                        <ListItemText
-                          primary={course.name}
-                          secondary={`${course.price} TL`}
-                        />
-                      </ListItem>
-                    ))}
-                  </List>
-                </TableCell>
-                <TableCell>{order.totalPrice} TL</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+        <Box>
+          <Box>
+            <OrdersCard />
+          </Box>
+        </Box>
+      </Stack>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={5000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      >
+        <Alert severity={snackbar.severity}>{snackbar.message}</Alert>
+      </Snackbar>
     </Container>
   );
 }

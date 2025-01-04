@@ -4,6 +4,7 @@ using CourseApp.Application.Features.Courses.Create;
 using CourseApp.Application.Features.Courses.Update;
 using CourseApp.Application.Features.Courses.UpdatePrice;
 using CourseApp.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -26,8 +27,14 @@ public class CoursesController(ICourseService courseService) : CustomBaseControl
     {
         return CreateActionResult(
             await courseService.GetPagedByCategoryIdsAsync(pageNumber, pageSize, categoryIds));
+    } 
+    
+    [HttpGet("totalCount")]
+    public async Task<IActionResult> GetTotalCourseCount()
+    {
+        var result = await courseService.GetTotalCourseCountAsync();
+        return CreateActionResult(result);
     }
-
     [HttpGet("totalCountByCategory/{categoryId:int}")]
     public async Task<IActionResult> GetTotalCourseCountByCategory(int categoryId)
     {
@@ -37,30 +44,28 @@ public class CoursesController(ICourseService courseService) : CustomBaseControl
 
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id) => CreateActionResult(await courseService.GetByIdAsync(id));
-   
+
+    [Authorize(Roles = "Educator")]
     [HttpPost]
     public async Task<IActionResult> Create(CreateCourseRequest request) => CreateActionResult(await courseService.CreateAsync(request));
 
     [ServiceFilter(typeof(NotFoundFilter<Course, int>))]
+    [Authorize(Roles = "Educator")]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, UpdateCourseRequest request) =>
     CreateActionResult(await courseService.UpdateAsync(id, request));
 
-
+    [Authorize(Roles = "Educator")]
     [HttpPatch("price")]
     public async Task<IActionResult> UpdatePrice(UpdateCoursePriceRequest request) =>
         CreateActionResult(await courseService.UpdatePriceAsync(request));
 
     [ServiceFilter(typeof(NotFoundFilter<Course, int>))]
+    [Authorize(Roles = "Educator")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id) => CreateActionResult(await courseService.DeleteAsync(id));
 
-    [HttpGet("totalCount")]
-    public async Task<IActionResult> GetTotalCourseCount()
-    {
-        var result = await courseService.GetTotalCourseCountAsync();
-        return CreateActionResult(result);
-    }
+
 
 
 }

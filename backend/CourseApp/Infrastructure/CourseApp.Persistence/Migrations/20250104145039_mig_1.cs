@@ -325,8 +325,8 @@ namespace CourseApp.Persistence.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "Surname", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, "5fed3fa4-b11a-4cfe-ba5e-e487005f2654", "educator@gmail.com", false, false, null, "educator", "EDUCATOR@GMAIL.COM", "EDUCATOR", "AQAAAAIAAYagAAAAEBg01utNVyVitx518bIbOAPaMNNcjQtVNO59sUjUeAcc5D5q0nK82fmzDf8rPiOacA==", null, false, null, new DateTime(2025, 1, 3, 23, 41, 49, 779, DateTimeKind.Utc).AddTicks(8521), "1451fab3-7828-401c-ad83-847488c53fda", "educator", false, "educator" },
-                    { 2, 0, "426d0e23-0d92-4037-ad7c-be423973266b", "user@gmail.com", false, false, null, "user", "USER@GMAIL.COM", "USER", "AQAAAAIAAYagAAAAEKAMfXNUPUsQ7T/A4FGhV1pujeEj1zrtQ/9QcVQqpdzjnEwnzdujGNOS13C70kuE6A==", null, false, null, new DateTime(2025, 1, 3, 23, 41, 49, 779, DateTimeKind.Utc).AddTicks(8779), "c6e86c0a-a6d5-44ba-ba70-6854ef78016a", "user", false, "user" }
+                    { 1, 0, "346ae1ca-bfae-49d8-ae47-e8e88ddb5903", "educator@gmail.com", false, false, null, "educator", "EDUCATOR@GMAIL.COM", "EDUCATOR", "AQAAAAIAAYagAAAAEELfmxA2Ll4GbaHJhOR1CQxuvJSD5nCC1AawlUvESO7/ZLBTWlvCgK5BcyHF/azCOQ==", null, false, null, new DateTime(2025, 1, 4, 14, 50, 38, 587, DateTimeKind.Utc).AddTicks(6654), "5ea437b1-9dd4-4f9c-a5c4-06416d649eec", "educator", false, "educator" },
+                    { 2, 0, "d8392dd3-164f-4c57-9f4f-02f5a44e5115", "user@gmail.com", false, false, null, "user", "USER@GMAIL.COM", "USER", "AQAAAAIAAYagAAAAEHluSmtAVQ/IUuSiCvMDMfdFz1LR5xLf0Iqfe6vmLchxKUKZSIXDzcuAngEDeVNCRw==", null, false, null, new DateTime(2025, 1, 4, 14, 50, 38, 587, DateTimeKind.Utc).AddTicks(6930), "911a82a6-a98e-4ef4-8eb4-9fcb39b68cbc", "user", false, "user" }
                 });
 
             migrationBuilder.InsertData(
