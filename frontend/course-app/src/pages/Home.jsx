@@ -3,9 +3,11 @@ import React from "react";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import CourseList from "./CourseList";
 import { useAuth } from "../context/AuthContext";
+import { useTranslationContext } from "../context/TranslationContext";
 
 function Home() {
   const { user } = useAuth();
+  const { t } = useTranslationContext();
 
   return (
     <div>
@@ -30,7 +32,7 @@ function Home() {
               fontWeight: "500",
             }}
           >
-            Hoş Geldiniz, {user.username}!
+            {t("home.welcome", { username: user.username })}
           </Typography>
         )}
 

@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using AutoMapper;
 using CourseApp.Application.Contracts.Persistence;
 using CourseApp.Application.Features.BasketItems.Create;
 using CourseApp.Application.Features.BasketItems.Dto;
 using CourseApp.Application.Features.Baskets.Update;
 using CourseApp.Domain.Entities;
+using System.Net;
 
 namespace CourseApp.Application.Features.BasketItems
 {
@@ -17,14 +13,6 @@ namespace CourseApp.Application.Features.BasketItems
     IUnitOfWork unitOfWork,
     IMapper mapper) : IBasketItemService
     {
-        public async Task<ServiceResult<List<BasketItemDto>>> GetAllListAsync()
-        {
-            var baskets = await basketRepository.GetAllAsync();
-
-            var basketsDto = mapper.Map<List<BasketItemDto>>(baskets);
-
-            return ServiceResult<List<BasketItemDto>>.Success(basketsDto);
-        }
 
         public async Task<ServiceResult<BasketItemDto>> GetByIdAsync(int id)
         {
@@ -89,6 +77,19 @@ namespace CourseApp.Application.Features.BasketItems
             return ServiceResult.Success(HttpStatusCode.NoContent);
         }
 
+        public async Task<ServiceResult<List<BasketItemDto>>> GetAllByUserIdAsync(int userId)
+        {
+            var baskets = await basketRepository.GetAllByUserIdAsync(userId);
+            var basketsDto = mapper.Map<List<BasketItemDto>>(baskets);
+            return ServiceResult<List<BasketItemDto>>.Success(basketsDto);
+        }
+        public async Task<ServiceResult> DeleteAllAsync(int userId)
+        {
+            await basketRepository.DeleteAllAsync(userId);
+            await unitOfWork.SaveChangesAsync();
+
+            return ServiceResult.Success(HttpStatusCode.NoContent);
+        }
     }
 
 }

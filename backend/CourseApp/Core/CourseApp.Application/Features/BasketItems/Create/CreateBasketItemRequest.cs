@@ -4,4 +4,4 @@ namespace CourseApp.Application.Features.BasketItems.Create;
 
 public record CreateBasketItemRequest(
 int UserId,
-decimal TotalPrice);
+int CourseId);

@@ -5,9 +5,14 @@ const api = axios.create({
   timeout: 6000,
 });
 
-//localStorageden tokeni al
-const token = localStorage.getItem("token");
-if (token) api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+// Token kontrolünü interceptor olarak ekleyelim
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 const handleResponse = async (apiCall) => {
   try {
@@ -15,13 +20,18 @@ const handleResponse = async (apiCall) => {
     return {
       status: response.status,
       data: response.data,
-      headers: response.headers,
+      success: true,
     };
   } catch (error) {
-    return {
+    const errorData = {
       status: error.response?.status || 500,
-      data: error.response || error.message,
+      data: {
+        errorMessage: error.response?.data?.errorMessage || [error.message],
+      },
+      success: false,
     };
+    //  console.error("API Error:", errorData);
+    return errorData;
   }
 };
 

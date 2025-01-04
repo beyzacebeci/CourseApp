@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { CourseContext } from "../context/CourseContext";
 import { CategoryContext } from "../context/CategoryContext";
+import { useTranslationContext } from "../context/TranslationContext";
 import {
   Container,
   Typography,
@@ -9,30 +10,40 @@ import {
   Box,
   CardMedia,
   Button,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import { useBasket } from "../context/BasketContext";
 
 function CourseDetail() {
+  const { t } = useTranslationContext();
   const { id } = useParams();
   const { getCourseById } = useContext(CourseContext);
-  const { getCategoryById } = useContext(CategoryContext);
+  const { getCategory } = useContext(CategoryContext);
   const { addToBasket } = useBasket();
   const [course, setCourse] = useState(null);
   const [categoryName, setCategoryName] = useState("");
+  const [userId] = useState(localStorage.getItem("userId"));
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   useEffect(() => {
     const fetchCourse = async () => {
       const courseData = await getCourseById(id);
       if (courseData) {
         setCourse(courseData);
-        const category = await getCategoryById(courseData.categoryId);
-        setCategoryName(category?.name || "");
+        const categoryResponse = await getCategory(courseData.categoryId);
+        setCategoryName(categoryResponse?.data?.data?.name || "");
       }
     };
     fetchCourse();
   }, [id]);
 
   const handleAddToBasket = () => {
+    if (!userId) {
+      setOpenSnackbar(true);
+      return;
+    }
+
     if (course) {
       const basketItem = {
         id: course.id,
@@ -42,8 +53,15 @@ function CourseDetail() {
         categoryName: categoryName,
       };
 
-      addToBasket(basketItem);
+      addToBasket(basketItem, userId);
     }
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
   };
 
   if (!course) {
@@ -57,7 +75,7 @@ function CourseDetail() {
           <CardMedia
             component="img"
             sx={{ width: 300, height: 200, objectFit: "cover" }}
-            image="https://via.placeholder.com/250"
+            image={course.base64Image || "https://via.placeholder.com/250"}
             alt={course.name}
           />
           <Box
@@ -71,13 +89,13 @@ function CourseDetail() {
               {course.name}
             </Typography>
             <Typography variant="body1" color="text.secondary" gutterBottom>
-              Category: {categoryName}
+              {t("courseDetail.category", { categoryName: categoryName })}
             </Typography>
             <Typography variant="body1" color="text.secondary" gutterBottom>
-              Price: {course.price} TL
+              {t("courseDetail.price", { price: course.price.toString() })}
             </Typography>
             <Typography variant="body1" color="text.secondary" gutterBottom>
-              Description: {course.description}
+              {course.description}
             </Typography>
             <Button
               variant="contained"
@@ -85,11 +103,26 @@ function CourseDetail() {
               onClick={handleAddToBasket}
               sx={{ mt: 2 }}
             >
-              Sepete Ekle
+              {t("courseDetail.addToBasket")}
             </Button>
           </Box>
         </Box>
       </Paper>
+
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="warning"
+          sx={{ width: "100%" }}
+        >
+          {t("courseDetail.loginRequired")}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }

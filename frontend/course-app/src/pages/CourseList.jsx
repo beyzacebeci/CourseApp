@@ -20,8 +20,10 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
+import { useTranslationContext } from "../context/TranslationContext";
 
 function CourseList() {
+  const { t } = useTranslationContext();
   const {
     courses,
     getCoursesByPagination,
@@ -50,16 +52,6 @@ function CourseList() {
     setSearchTerm(event.target.value);
   };
 
-  /* const handleCategoryChange = (categoryId) => {
-    setPage(1);
-    setSelectedCategories((prev) => {
-      if (prev.includes(categoryId)) {
-        return prev.filter((id) => id !== categoryId);
-      } else {
-        return [...prev, categoryId];
-      }
-    });
-  };*/
   const handleCategoryChange = (categoryId) => {
     setPage(1);
     setSelectedCategories((prev) => {
@@ -107,7 +99,7 @@ function CourseList() {
             }}
           >
             <Typography variant="h6" sx={{ mb: 2 }}>
-              Categories
+              {t("courseList.categories")}
             </Typography>
             <Divider sx={{ mb: 2 }} />
             <FormGroup>
@@ -126,10 +118,7 @@ function CourseList() {
               ))}
             </FormGroup>
           </Paper>
-
-          {/* Sağ Taraf - Ana İçerik */}
           <Stack spacing={3} sx={{ flex: 1 }}>
-            {/* Üst Arama Çubuğu */}
             <Paper
               elevation={1}
               sx={{
@@ -142,7 +131,7 @@ function CourseList() {
             >
               <TextField
                 size="small"
-                placeholder="Kurs ara..."
+                placeholder={t("courseList.searchPlaceholder")}
                 value={searchTerm}
                 onChange={handleSearchChange}
                 sx={{ width: "300px" }}
@@ -155,7 +144,7 @@ function CourseList() {
                 }}
               />
               {(searchTerm || selectedCategories.length > 0) && (
-                <Tooltip title="Filtreleri Temizle">
+                <Tooltip title={t("courseList.clearFilters")}>
                   <IconButton onClick={clearFilters} size="small">
                     <ClearIcon />
                   </IconButton>

@@ -1,16 +1,75 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { postAPI } from "../services/apiService";
+import { postAPI, putAPI } from "../services/apiService";
 
 export const UserContext = createContext();
 
+export const useUser = () => {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error("useUser must be used within a UserProvider");
+  }
+  return context;
+};
+
 export const UserProvider = ({ children }) => {
   const navigate = useNavigate();
+
   const addUser = async (data) => {
     const url = "/authentication";
     return await postAPI(url, data)
       .then((res) => res)
       .catch((error) => error);
+  };
+
+  const updateUser = async (userId, data) => {
+    try {
+      const response = await putAPI(`Users/${userId}`, data);
+      if (response.success) {
+        return {
+          success: true,
+          message: "Profil başarıyla güncellendi",
+          data: response.data,
+        };
+      }
+      return {
+        success: false,
+        message:
+          response.data?.errorMessage?.[0] ||
+          "Güncelleme sırasında bir hata oluştu",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.message || "Bir hata oluştu",
+      };
+    }
+  };
+
+  const changePassword = async (userId, passwordData) => {
+    try {
+      const response = await postAPI(
+        `Users/${userId}/change-password`,
+        passwordData
+      );
+      if (response.success) {
+        return {
+          success: true,
+          message: "Şifre başarıyla güncellendi",
+        };
+      }
+      return {
+        success: false,
+        message:
+          response.data?.errorMessage?.[0] ||
+          "Şifre güncellenirken bir hata oluştu",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.message || "Bir hata oluştu",
+      };
+    }
   };
 
   const handleAddUser = async (form) => {
@@ -46,7 +105,11 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const values = { handleAddUser };
+  const values = {
+    handleAddUser,
+    updateUser,
+    changePassword,
+  };
 
   return <UserContext.Provider value={values}>{children}</UserContext.Provider>;
 };

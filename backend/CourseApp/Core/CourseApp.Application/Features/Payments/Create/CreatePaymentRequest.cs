@@ -3,11 +3,11 @@
 namespace CourseApp.Application.Features.Payments.Create;
 
 public record CreatePaymentRequest(
-        int OrderId,
         int UserId,
         string Address,
+        string CardNameSurname,
         string CardNumber,
-        DateTime ExpirationDate,
+        string ExpirationDate,
         string CVC
     );
     

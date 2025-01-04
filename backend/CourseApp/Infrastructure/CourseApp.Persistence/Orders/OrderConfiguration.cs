@@ -15,12 +15,16 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.HasOne(o => o.User)
             .WithMany()
          .HasForeignKey(o => o.UserId)
-             .OnDelete(DeleteBehavior.Restrict);  // User silindiğinde Order silinmez
+             .OnDelete(DeleteBehavior.Restrict);  
 
-        // Order Status için enum conversion
-        builder.Property(x => x.Status)
-            .IsRequired()
-            .HasConversion<string>();
+
+        builder.HasOne(p => p.Payment)
+            .WithOne(o => o.Order)  
+            .HasForeignKey<Order>(p => p.PaymentId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
+
     }
 }
 

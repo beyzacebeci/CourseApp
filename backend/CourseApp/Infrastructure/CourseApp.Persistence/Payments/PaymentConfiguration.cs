@@ -15,13 +15,6 @@ public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
         builder.Property(x => x.CVC).IsRequired().HasMaxLength(3);
         builder.Property(x => x.ExpirationDate).IsRequired();
 
-
-        builder.HasOne(p => p.Order)
-            .WithOne(o => o.Payment)  // WithMany() yerine WithOne() kullanılmalı
-            .HasForeignKey<Payment>(p => p.OrderId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-
     }
 }
 

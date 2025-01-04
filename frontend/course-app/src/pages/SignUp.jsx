@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../context/UserContext";
+import { useTranslationContext } from "../context/TranslationContext";
 
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {
@@ -20,6 +21,7 @@ import {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const { t } = useTranslationContext();
   const { handleAddUser } = useContext(UserContext);
 
   const [formData, setFormData] = useState({
@@ -43,10 +45,9 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Form verilerinin eksiksiz olduğunu kontrol et
     const { name, surname, email, userName, password } = formData;
     if (!name || !surname || !email || !userName || !password) {
-      setSnackbarMessage("All fields are required.");
+      setSnackbarMessage(t("signUp.error.requiredFields"));
       setSnackbarSeverity("error");
       setOpenSnackbar(true);
       return;
@@ -82,7 +83,7 @@ export default function SignUp() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign Up
+            {t("signUp.title")}
           </Typography>
 
           <Box
@@ -99,7 +100,7 @@ export default function SignUp() {
                   value={formData.name}
                   fullWidth
                   id="name"
-                  label="First Name"
+                  label={t("signUp.firstName")}
                   autoFocus
                   onChange={handleChange}
                 />
@@ -107,7 +108,7 @@ export default function SignUp() {
                   fullWidth
                   id="surname"
                   value={formData.surname}
-                  label="Last Name"
+                  label={t("signUp.lastName")}
                   name="surname"
                   autoComplete="family-name"
                   onChange={handleChange}
@@ -117,7 +118,7 @@ export default function SignUp() {
                 fullWidth
                 id="email"
                 value={formData.email}
-                label="Email"
+                label={t("signUp.email")}
                 name="email"
                 autoComplete="email"
                 onChange={handleChange}
@@ -126,28 +127,27 @@ export default function SignUp() {
                 fullWidth
                 id="username"
                 value={formData.userName}
-                label="User Name"
+                label={t("signUp.username")}
                 name="userName"
                 autoComplete="username"
                 onChange={handleChange}
               />
-
               <TextField
                 fullWidth
                 value={formData.password}
                 name="password"
-                label="Password"
+                label={t("signUp.password")}
                 type="password"
                 id="password"
                 autoComplete="new-password"
                 onChange={handleChange}
               />
               <Button type="submit" fullWidth variant="contained">
-                sign up
+                {t("signUp.submit")}
               </Button>
               <Stack direction="row" justifyContent="flex-end">
                 <Link href="/signin-page" variant="body2">
-                  Already have an account? Sign in
+                  {t("signUp.haveAccount")}
                 </Link>
               </Stack>
             </Stack>
