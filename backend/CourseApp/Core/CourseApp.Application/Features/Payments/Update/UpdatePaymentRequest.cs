@@ -8,7 +8,6 @@ public record UpdatePaymentRequest(
             string Address,
             string CardNumber,
             DateTime ExpirationDate,
-            string CVC,
-            PaymentStatus Status
+            string CVC
         );
 

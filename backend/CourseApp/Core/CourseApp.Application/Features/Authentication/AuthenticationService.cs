@@ -12,6 +12,8 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net;
+using Microsoft.EntityFrameworkCore;
 
 namespace CourseApp.Application.Features.Authentication
 {
@@ -21,7 +23,7 @@ namespace CourseApp.Application.Features.Authentication
         private readonly UserManager<AppUser> _userManager;
         private readonly IConfiguration _configuration;
 
-        private AppUser? _user;
+        private AppUser _user = default!;
 
         public AuthenticationService(IMapper mapper, UserManager<AppUser> userManager, IConfiguration configuration)
         {
@@ -30,50 +32,152 @@ namespace CourseApp.Application.Features.Authentication
             _configuration = configuration;
         }
 
-        public async Task<TokenDto> CreateToken(bool populateExp)
+        public async Task<ServiceResult<AppUser>> GetUserById(int userId)
         {
-            var signinCredentials = GetSiginCredentials();
-            var claims = await GetClaims();
-            var tokenOptions = GenerateTokenOptions(signinCredentials, claims);
-
-            var refreshToken = GenerateRefreshToken();
-            _user.RefreshToken = refreshToken;
-
-            if (populateExp)
-                _user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
-
-            await _userManager.UpdateAsync(_user);
-
-            var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-            return new TokenDto()
+            try
             {
-                AccessToken = accessToken,
-                RefreshToken = refreshToken
-            };
-        }
+                var user = await _userManager.FindByIdAsync(userId.ToString());
 
-        public async Task<IdentityResult> RegisterUser(UserForRegistrationDto userForRegistrationDto)
-        {
-            var user = _mapper.Map<AppUser>(userForRegistrationDto);
+                if (user == null)
+                    return ServiceResult<AppUser>.Fail("User not found", HttpStatusCode.NotFound);
 
-            var result = await _userManager
-                .CreateAsync(user, userForRegistrationDto.Password);
-
-            if (result.Succeeded)
-                await _userManager.AddToRolesAsync(user, userForRegistrationDto.Roles);
-            return result;
-        }
-
-       public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuthDto)
-        {
-            _user = await _userManager.FindByNameAsync(userForAuthDto.UserName);
-            var result = (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuthDto.Password));
-            if (!result)
-            {
-                throw new UnauthorizedAccessException("Authentication failed. Wrong username or password.");
-
+                return ServiceResult<AppUser>.Success(user);
             }
-            return result;
+            catch (Exception ex)
+            {
+                return ServiceResult<AppUser>.Fail(ex.Message);
+            }
+        }
+        public async Task<ServiceResult<bool>> UpdateUser(int userId, UserForUpdateDto userForUpdateDto)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userId.ToString());
+
+                if (user == null)
+                    return ServiceResult<bool>.Fail("User not found", HttpStatusCode.NotFound);
+
+                user.Name = userForUpdateDto.Name;
+                user.Surname = userForUpdateDto.Surname;
+                user.Email = userForUpdateDto.Email ?? user.Email;
+                user.UserName = userForUpdateDto.UserName ?? user.UserName;
+
+                var result = await _userManager.UpdateAsync(user);
+
+                if (!result.Succeeded)
+                    return ServiceResult<bool>.Fail(result.Errors.First().Description);
+
+                return ServiceResult<bool>.Success(true);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<bool>.Fail(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResult<IEnumerable<AppUser>>> GetAllUsers()
+        {
+            try
+            {
+                var users = await _userManager.Users.ToListAsync();
+                return ServiceResult<IEnumerable<AppUser>>.Success(users);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<IEnumerable<AppUser>>.Fail(ex.Message);
+            }
+        }
+
+
+
+        public async Task<ServiceResult<bool>> ChangePassword(int userId, ChangePasswordDto changePasswordDto)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userId.ToString());
+
+                if (user == null)
+                    return ServiceResult<bool>.Fail("User not found", HttpStatusCode.NotFound);
+
+                var result = await _userManager.ChangePasswordAsync(user,
+                    changePasswordDto.CurrentPassword,
+                    changePasswordDto.NewPassword);
+
+                if (!result.Succeeded)
+                    return ServiceResult<bool>.Fail(result.Errors.First().Description);
+
+                return ServiceResult<bool>.Success(true);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<bool>.Fail(ex.Message);
+            }
+        }
+        public async Task<ServiceResult<TokenDto>> CreateToken(bool populateExp)
+        {
+            try
+            {
+                var signinCredentials = GetSiginCredentials();
+                var claims = await GetClaims();
+                var tokenOptions = GenerateTokenOptions(signinCredentials, claims);
+
+                var refreshToken = GenerateRefreshToken();
+                _user.RefreshToken = refreshToken;
+
+                if (populateExp)
+                    _user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+
+                await _userManager.UpdateAsync(_user);
+
+                var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+                var tokenDto = new TokenDto()
+                {
+                    AccessToken = accessToken,
+                    RefreshToken = refreshToken
+                };
+
+                return ServiceResult<TokenDto>.Success(tokenDto);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<TokenDto>.Fail(ex.Message, HttpStatusCode.InternalServerError);
+            }
+        }
+
+        public async Task<ServiceResult<IdentityResult>> RegisterUser(UserForRegistrationDto userForRegistrationDto)
+        {
+            try
+            {
+                var user = _mapper.Map<AppUser>(userForRegistrationDto);
+                var result = await _userManager.CreateAsync(user, userForRegistrationDto.Password);
+
+                if (result.Succeeded)
+                    await _userManager.AddToRolesAsync(user, userForRegistrationDto.Roles);
+
+                return ServiceResult<IdentityResult>.Success(result);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<IdentityResult>.Fail(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResult<bool>> ValidateUser(UserForAuthenticationDto userForAuthDto)
+        {
+            try
+            {
+                _user = await _userManager.FindByNameAsync(userForAuthDto.UserName);
+                var result = (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuthDto.Password));
+
+                if (!result)
+                    return ServiceResult<bool>.Fail("Authentication failed. Wrong username or password.", HttpStatusCode.Unauthorized);
+
+                return ServiceResult<bool>.Success(true);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<bool>.Fail(ex.Message);
+            }
         }
 
         //-------------
@@ -158,18 +262,31 @@ namespace CourseApp.Application.Features.Authentication
             }
             return principal;
         }
-        public async Task<TokenDto> RefreshToken(TokenDto tokenDto)
+        public async Task<ServiceResult<TokenDto>> RefreshToken(TokenDto tokenDto)
         {
-            var principal = GetPrincipalFromExpiredToken(tokenDto.AccessToken);
-            var user = await _userManager.FindByNameAsync(principal.Identity.Name);
+            try
+            {
+                var principal = GetPrincipalFromExpiredToken(tokenDto.AccessToken);
+                var user = await _userManager.FindByNameAsync(principal.Identity.Name);
 
-            if (user is null ||
-                user.RefreshToken != tokenDto.RefreshToken ||
-                user.RefreshTokenExpiryTime <= DateTime.Now)
-                throw new UnauthorizedAccessException("Invalid refresh token or expired refresh token.");
+                if (user is null ||
+                    user.RefreshToken != tokenDto.RefreshToken ||
+                    user.RefreshTokenExpiryTime <= DateTime.Now)
+                {
+                    return ServiceResult<TokenDto>.Fail("Invalid refresh token or expired refresh token.", HttpStatusCode.Unauthorized);
+                }
 
-            _user = user;
-            return await CreateToken(populateExp: false);
+                _user = user;
+                return await CreateToken(populateExp: false);
+            }
+            catch (SecurityTokenException ex)
+            {
+                return ServiceResult<TokenDto>.Fail(ex.Message, HttpStatusCode.Unauthorized);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<TokenDto>.Fail(ex.Message);
+            }
         }
 
 

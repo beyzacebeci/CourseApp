@@ -1,74 +1,170 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Typography,
   Paper,
-  Box,
-  Button,
   List,
   ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  IconButton,
   Divider,
+  Box,
+  Button,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useBasket } from "../context/BasketContext";
+import { Delete as DeleteIcon } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 function Basket() {
-  const { basketItems, removeFromBasket } = useBasket();
+  const [basketItems, setBasketItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const { getBasketItems, removeFromBasket, fetchBasketCount } = useBasket();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const navigate = useNavigate();
 
-  const totalPrice = basketItems.reduce((total, item) => total + item.price, 0);
+  useEffect(() => {
+    fetchBasketItems();
+  }, [getBasketItems, fetchBasketCount]);
+
+  const fetchBasketItems = async () => {
+    const userId = localStorage.getItem("userId");
+    const items = await getBasketItems(userId);
+    setBasketItems(items);
+    const total = items.reduce((sum, item) => sum + item.coursePrice, 0);
+    setTotalPrice(total);
+  };
+
+  const handleDeleteClick = (itemId) => {
+    setSelectedItemId(itemId);
+    setOpenDialog(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (selectedItemId) {
+      await removeFromBasket(selectedItemId);
+      await fetchBasketItems();
+    }
+    setOpenDialog(false);
+  };
+
+  const handleCancelDelete = () => {
+    setOpenDialog(false);
+    setSelectedItemId(null);
+  };
+
+  const handlePayment = () => {
+    const courseIds = basketItems.map((item) => item.courseId);
+    navigate("/payment", {
+      state: {
+        totalPrice: totalPrice,
+        courseIds: courseIds,
+      },
+    });
+  };
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom align="left">
         Alışveriş Sepeti
       </Typography>
+      <Typography variant="subtitle1" gutterBottom align="left">
+        Sepette {basketItems.length} Kurs Var
+        <hr />
+      </Typography>
 
-      <Paper elevation={2} sx={{ p: 3 }}>
-        {basketItems.length === 0 ? (
-          <Typography>Sepetiniz boş</Typography>
-        ) : (
-          <>
+      <Box sx={{ display: "flex", gap: 2 }}>
+        <Paper elevation={2} sx={{ p: 3, flex: 2 }}>
+          {basketItems.length === 0 ? (
+            <Typography>Sepetiniz boş</Typography>
+          ) : (
             <List>
-              {basketItems.map((item) => (
+              {basketItems.map((item, index) => (
                 <React.Fragment key={item.id}>
-                  <ListItem>
-                    <ListItemText
-                      primary={item.name}
-                      secondary={`${item.price} TL`}
-                    />
-                    <ListItemSecondaryAction>
+                  <ListItem
+                    secondaryAction={
                       <IconButton
                         edge="end"
-                        onClick={() => removeFromBasket(item.id)}
+                        aria-label="delete"
+                        onClick={() => handleDeleteClick(item.id)}
+                        sx={{ color: "error.main" }}
                       >
                         <DeleteIcon />
                       </IconButton>
-                    </ListItemSecondaryAction>
+                    }
+                  >
+                    <Box sx={{ width: "100%" }}>
+                      <Typography variant="h6">{item.courseName}</Typography>
+                      <Typography color="text.secondary">
+                        Kategori: {item.categoryName}
+                      </Typography>
+                      <Typography color="primary" sx={{ mt: 1 }}>
+                        {item.coursePrice} TL
+                      </Typography>
+                    </Box>
                   </ListItem>
-                  <Divider />
+                  {index < basketItems.length - 1 && <Divider />}
                 </React.Fragment>
               ))}
             </List>
+          )}
+        </Paper>
 
-            <Box
+        {basketItems.length > 0 && (
+          <Paper elevation={2} sx={{ p: 3, flex: 1, height: "fit-content" }}>
+            <Typography variant="h6" gutterBottom>
+              Toplam:
+            </Typography>
+            <Typography
+              variant="h4"
+              color="primary"
+              sx={{ mb: 2, fontWeight: "bold" }}
+            >
+              {totalPrice} TL
+            </Typography>
+            <Button
+              variant="contained"
+              fullWidth
+              size="large"
+              onClick={handlePayment}
               sx={{
-                mt: 3,
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                backgroundColor: "#A435F0",
+                "&:hover": {
+                  backgroundColor: "#8710ED",
+                },
+                textTransform: "none",
+                py: 1.5,
               }}
             >
-              <Typography variant="h6">Toplam: {totalPrice} TL</Typography>
-              <Button variant="contained" color="primary" size="large">
-                Ödeme Bilgileri
-              </Button>
-            </Box>
-          </>
+              Ödeme Bilgileri
+            </Button>
+          </Paper>
         )}
-      </Paper>
+      </Box>
+
+      <Dialog open={openDialog} onClose={handleCancelDelete}>
+        <DialogTitle>Ürünü Sil</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Bu ürünü sepetten silmek istediğinize emin misiniz?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelDelete} color="primary">
+            İptal
+          </Button>
+          <Button
+            onClick={handleConfirmDelete}
+            color="error"
+            variant="contained"
+          >
+            Evet, Sil
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 }

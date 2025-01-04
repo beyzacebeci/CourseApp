@@ -15,7 +15,15 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.HasOne(o => o.User)
             .WithMany()
          .HasForeignKey(o => o.UserId)
-             .OnDelete(DeleteBehavior.Restrict);  // User silindiğinde Order silinmez
+             .OnDelete(DeleteBehavior.Restrict);  
+
+
+        builder.HasOne(p => p.Payment)
+            .WithOne(o => o.Order)  
+            .HasForeignKey<Order>(p => p.PaymentId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
 
     }
 }

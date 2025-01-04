@@ -87,6 +87,8 @@ export const AuthProvider = ({ children }) => {
         exp,
       });
 
+      await basket.fetchBasketCount();
+
       return {
         success: true,
         message: "Giriş başarılı",
@@ -114,8 +116,16 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const updateLocalUsername = (newUsername) => {
+    localStorage.setItem("username", newUsername);
+    setUser((prev) => ({
+      ...prev,
+      username: newUsername,
+    }));
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, updateLocalUsername }}>
       {children}
     </AuthContext.Provider>
   );

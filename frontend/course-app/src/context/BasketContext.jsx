@@ -1,39 +1,110 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { getAPI, postAPI, deleteAPI } from "../services/apiService";
 
 const BasketContext = createContext();
 
 export const useBasket = () => useContext(BasketContext);
 
 export const BasketProvider = ({ children }) => {
-  const [basketItems, setBasketItems] = useState(() => {
-    const savedItems = localStorage.getItem("basketItems");
-    return savedItems ? JSON.parse(savedItems) : [];
-  });
+  const [basketCount, setBasketCount] = useState(0);
 
-  useEffect(() => {
-    localStorage.setItem("basketItems", JSON.stringify(basketItems));
-  }, [basketItems]);
-
-  const addToBasket = (course) => {
-    const isExist = basketItems.find((item) => item.id === course.id);
-    if (!isExist) {
-      setBasketItems((prevItems) => [...prevItems, course]);
+  const fetchBasketCount = async () => {
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      try {
+        const items = await getBasketItems(userId);
+        setBasketCount(items.length);
+      } catch (error) {
+        console.error("Error fetching basket count:", error);
+      }
     }
   };
 
-  const removeFromBasket = (courseId) => {
-    setBasketItems((prevItems) =>
-      prevItems.filter((item) => item.id !== courseId)
-    );
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      fetchBasketCount();
+    } else {
+      setBasketCount(0);
+    }
+  }, [localStorage.getItem("userId")]);
+
+  const addToBasket = async (course, userId) => {
+    try {
+      const request = {
+        userId: userId,
+        courseId: course.id,
+        totalPrice: course.price,
+      };
+
+      const response = await postAPI("BasketItems", request);
+
+      if (response.success) {
+        await fetchBasketCount();
+      } else {
+        throw new Error(
+          response.data.errorMessage || "Failed to add item to basket"
+        );
+      }
+    } catch (error) {
+      console.error("Error adding to basket:", error);
+    }
+  };
+
+  const getBasketItems = async (userId) => {
+    try {
+      const response = await getAPI(`BasketItems/user/${userId}`);
+      return response.success ? response.data.data : [];
+    } catch (error) {
+      console.error("Error fetching basket items:", error);
+      return [];
+    }
+  };
+
+  const removeFromBasket = async (basketItemId) => {
+    try {
+      const response = await deleteAPI(`BasketItems/${basketItemId}`);
+
+      if (response.success) {
+        await fetchBasketCount();
+      } else {
+        throw new Error(
+          response.data.errorMessage || "Failed to remove item from basket"
+        );
+      }
+    } catch (error) {
+      console.error("Error removing from basket:", error);
+    }
+  };
+
+  const resetBasket = () => {
+    setBasketCount(0);
+  };
+
+  const deleteAllBasketItems = async () => {
+    try {
+      const response = await deleteAPI("BasketItems/delete-all");
+
+      if (response.success) {
+        setBasketCount(0);
+      } else {
+        throw new Error(response.data.errorMessage || "Failed to clear basket");
+      }
+    } catch (error) {
+      console.error("Error clearing basket:", error);
+    }
   };
 
   return (
     <BasketContext.Provider
       value={{
-        basketItems,
         addToBasket,
+        getBasketItems,
+        basketCount,
+        fetchBasketCount,
         removeFromBasket,
-        basketCount: basketItems.length,
+        resetBasket,
+        deleteAllBasketItems,
       }}
     >
       {children}

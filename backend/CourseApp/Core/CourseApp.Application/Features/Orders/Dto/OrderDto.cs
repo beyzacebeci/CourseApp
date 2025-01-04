@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CourseApp.Application.Features.Courses.Dto;
+using CourseApp.Domain.Entities;
 
 namespace CourseApp.Application.Features.Orders.Dto
 {
-    public record OrderDto(int Id, int UserId, decimal TotalPrice);
+    public record OrderDto(int Id, int UserId, decimal TotalPrice, 
+        List<CourseDto> Courses);
 }

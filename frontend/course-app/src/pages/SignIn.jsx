@@ -11,6 +11,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import { useAuth } from "../context/AuthContext";
+import { useTranslationContext } from "../context/TranslationContext";
 
 const defaultTheme = createTheme();
 
@@ -18,6 +19,7 @@ export default function SignIn() {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [error, setError] = useState("");
+  const { t } = useTranslationContext();
 
   const [formData, setFormData] = useState({
     userName: "",
@@ -60,7 +62,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign In
+            {t("signIn.title")}
           </Typography>
           <Box
             component="form"
@@ -74,7 +76,7 @@ export default function SignIn() {
                 onChange={handleChange}
                 fullWidth
                 id="username"
-                label="Username"
+                label={t("signIn.username")}
                 name="userName"
                 autoComplete="username"
                 autoFocus
@@ -84,23 +86,24 @@ export default function SignIn() {
                 onChange={handleChange}
                 fullWidth
                 name="password"
-                label="Password"
+                label={t("signIn.password")}
+                type="password"
                 id="password"
                 autoComplete="current-password"
               />
               <Button type="submit" fullWidth variant="contained">
-                Sign In
+                {t("signIn.submit")}
               </Button>
               <Stack direction="row" justifyContent="flex-end">
                 <Link href="/signup-page" variant="body2">
-                  Don't have an account? Sign Up
+                  {t("signIn.noAccount")}
                 </Link>
               </Stack>
             </Stack>
           </Box>
           {error && (
             <Typography color="error" variant="body2">
-              {error}
+              {t("signIn.error")}
             </Typography>
           )}
         </Stack>

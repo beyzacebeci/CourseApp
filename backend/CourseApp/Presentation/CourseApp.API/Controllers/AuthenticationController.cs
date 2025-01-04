@@ -1,6 +1,5 @@
 ﻿using CourseApp.Application.Features.Authentication;
 using CourseApp.Application.Features.Authentication.Dto;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseApp.API.Controllers
@@ -9,27 +8,23 @@ namespace CourseApp.API.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private readonly IAuthenticationService authService;
+        private readonly IAuthenticationService _authService;
 
         public AuthenticationController(IAuthenticationService authService)
         {
-            this.authService = authService;
+            _authService = authService;
         }
 
         [HttpPost]
         public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistrationDto)
         {
-            var result = await authService
-                .RegisterUser(userForRegistrationDto);
+            var result = await _authService.RegisterUser(userForRegistrationDto);
 
-            if (!result.Succeeded)
-            {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.TryAddModelError(error.Code, error.Description);
-                }
-                return BadRequest(ModelState);
-            }
+            if (!result.IsSuccess)
+                return BadRequest(result);
+
+            if (!result.Data.Succeeded)
+                return BadRequest(result.Data.Errors);
 
             return StatusCode(201);
         }
@@ -37,22 +32,28 @@ namespace CourseApp.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
         {
-            if (!await authService.ValidateUser(user))
-                return Unauthorized(); // 401
+            var validationResult = await _authService.ValidateUser(user);
 
-            var tokenDto = await authService
-                .CreateToken(populateExp: true);
-            return Ok(tokenDto);
+            if (!validationResult.IsSuccess)
+                return Unauthorized(validationResult);
+
+            var tokenResult = await _authService.CreateToken(populateExp: true);
+
+            if (!tokenResult.IsSuccess)
+                return BadRequest(tokenResult);
+
+            return Ok(tokenResult.Data);
         }
 
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh([FromBody] TokenDto tokenDto)
         {
-            var tokenDtoToReturn = await authService
-                .RefreshToken(tokenDto);
-            return Ok(tokenDtoToReturn);
+            var result = await _authService.RefreshToken(tokenDto);
+
+            if (!result.IsSuccess)
+                return BadRequest(result);
+
+            return Ok(result.Data);
         }
-
-
     }
 }
