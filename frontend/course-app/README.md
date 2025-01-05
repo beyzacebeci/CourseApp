@@ -1,80 +1,80 @@
-# CourseLab - Online Eğitim Platformu
+# CourseLab - Online Education Platform
 
-CourseLab, kullanıcıların çevrimiçi kurslar satın alabileceği, eğitmenlerin kurs oluşturabileceği ve yönetebileceği modern bir eğitim platformudur.
+CourseLab is a modern education platform where users can purchase online courses, and instructors can create and manage courses.
 
-## Teknolojiler
+## Technologies
 
 ### Frontend
 
-- **React 18** - UI geliştirme için modern JavaScript kütüphanesi
-- **Vite** - Hızlı ve optimize edilmiş build tool ve development server
-- **Material-UI (MUI)** - React component kütüphanesi ve tasarım sistemi
-- **React Router** - Sayfa yönlendirme ve navigasyon yönetimi
-- **i18next** - Çoklu dil desteği (Türkçe/İngilizce)
-- **Axios** - HTTP istekleri için Promise tabanlı HTTP client
+- **React 18** - Modern JavaScript library for UI development
+- **Vite** - Fast and optimized build tool and development server
+- **Material-UI (MUI)** - React component library and design system
+- **React Router** - Page routing and navigation management
+- **i18next** - Multi-language support (Turkish/English)
+- **Axios** - Promise-based HTTP client for HTTP requests
 
 ### State Management
 
-- Context API - React'in built-in state management çözümü
-- Custom hooks - State ve business logic yönetimi için özelleştirilmiş hooks
+- Context API - React's built-in state management solution
+- Custom hooks - Customized hooks for state and business logic management
 
 ### Backend Integration
 
-- RESTful API entegrasyonu
-- JWT tabanlı kimlik doğrulama
-- Axios interceptors ile token yönetimi
+- RESTful API integration
+- JWT-based authentication
+- Token management with Axios interceptors
 
-## Özellikler
+## Features
 
-- 🔐 Kullanıcı Kimlik Doğrulama (Login/Register)
-- 🌐 Çoklu Dil Desteği (TR/EN)
-- 📚 Kurs Listeleme ve Detay Görüntüleme
-- 🛒 Sepet Yönetimi
-- 💳 Ödeme İşlemleri
-- 👤 Kullanıcı Profil Yönetimi
-- 📝 Eğitmen Paneli
-- 🔍 Kurs Arama ve Filtreleme
-- 📱 Responsive Tasarım
+- 🔐 User Authentication (Login/Register)
+- 🌐 Multi-language Support (TR/EN)
+- 📚 Course Listing and Detail View
+- 🛒 Cart Management
+- 💳 Payment Processing
+- 👤 User Profile Management
+- 📝 Instructor Panel
+- 🔍 Course Search and Filtering
+- 📱 Responsive Design
 
-## Proje Yapısı
+## Project Structure
 
 src/  
-├── assets/ # Resimler ve statik dosyalar  
-├── components/ # Yeniden kullanılabilir UI bileşenleri  
-├── context/ # Context API state yönetimi  
-├── locales/ # Dil dosyaları (TR/EN)  
-├── pages/ # Sayfa bileşenleri  
-└── services/ # API servisleri
+├── assets/ # Images and static files  
+├── components/ # Reusable UI components  
+├── context/ # Context API state management  
+├── locales/ # Language files (TR/EN)  
+├── pages/ # Page components  
+└── services/ # API services
 
-# CourseLab Kurulum Kılavuzu
+# CourseLab Installation Guide
 
-## Gereksinimler
+## Requirements
 
-Projeyi çalıştırmak için aşağıdaki yazılımların yüklü olması gerekmektedir:
+The following software must be installed to run the project:
 
-- Node.js (v14.0.0 veya üzeri)
-- npm (v6.0.0 veya üzeri)
+- Node.js (v14.0.0 or higher)
+- npm (v6.0.0 or higher)
 - Git
 
-## Kurulum Adımları
+## Installation Steps
 
-# Projeyi Başlatma Adımları
+# Steps to Start the Project
 
-Projeyi geliştirme ortamınızda çalıştırmak için aşağıdaki adımları takip edin.
+Follow these steps to run the project in your development environment.
 
-### 1. Repository'yi Klonlayın
+### 1. Clone the Repository
 
 ```bash
-git clone [repo-url]
+git clone https://github.com/beyzacebeci/CourseApp.git
 ```
 
-### 2. Bağımlılıkları Yükleyin
+### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Development sunucusunu başlatın
+### 3. Start the Development Server
 
 ```bash
 npm run dev
@@ -82,20 +82,20 @@ npm run dev
 
 ## Context Providers
 
-Uygulama aşağıdaki context provider'ları kullanmaktadır:
+The application uses the following context providers:
 
-- `AuthProvider` - Kimlik doğrulama yönetimi
-- `BasketProvider` - Sepet işlemleri
-- `CategoryProvider` - Kategori yönetimi
-- `CourseProvider` - Kurs işlemleri
-- `OrderProvider` - Sipariş yönetimi
-- `PaymentProvider` - Ödeme işlemleri
-- `TranslationProvider` - Dil yönetimi
-- `UserProvider` - Kullanıcı işlemleri
+- `AuthProvider` - Authentication management
+- `BasketProvider` - Cart operations
+- `CategoryProvider` - Category management
+- `CourseProvider` - Course operations
+- `OrderProvider` - Order management
+- `PaymentProvider` - Payment processing
+- `TranslationProvider` - Language management
+- `UserProvider` - User operations
 
-  ## Stil ve Tasarım
+## Style and Design
 
 - Material-UI (MUI) component library
-- Responsive tasarım
-- Custom theme ve styling
-- CSS-in-JS yaklaşımı
+- Responsive design
+- Custom theme and styling
+- CSS-in-JS approach
