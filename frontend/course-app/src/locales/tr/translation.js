@@ -52,7 +52,8 @@ export default {
     error: {
       add: "Kurs eklenirken bir hata oluştu",
       update: "Kurs güncellenirken bir hata oluştu",
-      general: "Bir hata oluştu"
+      general: "Bir hata oluştu",
+      duplicateName: "Bu kurs adı zaten veritabanında mevcut."
     }
   },
   courseList: {

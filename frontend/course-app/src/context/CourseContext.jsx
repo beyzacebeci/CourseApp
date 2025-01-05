@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { getAPI } from "../services/apiService";
+import { getAPI, deleteAPI, putAPI, postAPI } from "../services/apiService";
 import axios from "axios";
 
 export const CourseContext = createContext();
@@ -72,6 +72,44 @@ export function CourseProvider({ children }) {
     }
   };
 
+  const deleteCourse = async (courseId) => {
+    try {
+      const response = await deleteAPI(`Courses/${courseId}`);
+      return response.status === 204;
+    } catch (error) {
+      console.error("Error deleting course:", error);
+      return false;
+    }
+  };
+
+  const updateCourse = async (id, courseData) => {
+    try {
+      const response = await putAPI(`Courses/${id}`, courseData);
+      return { success: response.status === 204 };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.errorMessage?.[0] || error.message,
+      };
+    }
+  };
+
+  const createCourse = async (courseData) => {
+    try {
+      const response = await postAPI("Courses", courseData);
+      return {
+        success: response.success,
+        data: response.data,
+        error: response.data?.errorMessage?.[0] || response.data?.message,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  };
+
   const values = {
     courses,
     course,
@@ -79,6 +117,9 @@ export function CourseProvider({ children }) {
     totalCourseCount,
     getTotalCourseCount,
     getCourseById,
+    deleteCourse,
+    updateCourse,
+    createCourse,
   };
 
   return (

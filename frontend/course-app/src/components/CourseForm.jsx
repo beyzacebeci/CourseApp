@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { CategoryContext } from "../context/CategoryContext";
 import { CourseContext } from "../context/CourseContext";
@@ -17,6 +17,8 @@ import {
   Alert,
 } from "@mui/material";
 import { useTranslationContext } from "../context/TranslationContext";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import SaveIcon from "@mui/icons-material/Save";
 
 const CourseForm = () => {
   const { getAllCategoriesWithCourses, categoryWithCourses } =
@@ -59,6 +61,7 @@ const CourseForm = () => {
         description: course.description || "",
         price: course.price || "",
         categoryId: course.categoryId ? course.categoryId.toString() : "",
+        base64Image: course.base64Image || "",
       });
     }
   }, [course]);
@@ -91,21 +94,20 @@ const CourseForm = () => {
     setSuccess("");
 
     try {
-      let success;
+      let result;
       if (id) {
-        success = await updateCourse(id, formData);
+        result = await updateCourse(id, formData);
       } else {
-        const result = await createCourse(formData);
-        success = result.success;
+        result = await createCourse(formData);
       }
 
-      if (success) {
+      if (result.success) {
         setSuccess(
           id ? t("courseForm.success.update") : t("courseForm.success.add")
         );
-        setTimeout(() => navigate("/educator"), 1000);
+        setTimeout(() => navigate("/educator"), 500);
       } else {
-        setError(id ? t("courseForm.error.update") : t("courseForm.error.add"));
+        setError(result.error || t("courseForm.error.general"));
       }
     } catch (err) {
       setError(t("courseForm.error.general"));
@@ -167,7 +169,7 @@ const CourseForm = () => {
               <InputLabel>{t("courseForm.category")}</InputLabel>
               <Select
                 name="categoryId"
-                value={formData.categoryId}
+                value={formData.categoryId || ""}
                 onChange={handleChange}
               >
                 {categoryWithCourses?.map((category) => (
@@ -179,7 +181,12 @@ const CourseForm = () => {
             </FormControl>
 
             <FormControl fullWidth>
-              <Button variant="contained" component="label" color="secondary">
+              <Button
+                variant="contained"
+                component="label"
+                color="secondary"
+                startIcon={<AddPhotoAlternateIcon />}
+              >
                 {t("courseForm.selectImage")}
                 <input
                   type="file"
@@ -209,6 +216,7 @@ const CourseForm = () => {
               variant="contained"
               color="primary"
               size="large"
+              startIcon={<SaveIcon />}
             >
               {id ? t("courseForm.updateButton") : t("courseForm.add")}
             </Button>

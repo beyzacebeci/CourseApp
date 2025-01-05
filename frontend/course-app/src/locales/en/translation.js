@@ -52,7 +52,8 @@ export default {
     error: {
       add: "Error adding course",
       update: "Error updating course",
-      general: "An error occurred"
+      general: "An error occurred",
+      duplicateName: "The same course name already exists in the database."
     }
   },
   courseList: {
