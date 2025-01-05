@@ -25,6 +25,8 @@ function CourseDetail() {
   const [categoryName, setCategoryName] = useState("");
   const [userId] = useState(localStorage.getItem("userId"));
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("warning");
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -38,8 +40,10 @@ function CourseDetail() {
     fetchCourse();
   }, [id]);
 
-  const handleAddToBasket = () => {
+  const handleAddToBasket = async () => {
     if (!userId) {
+      setSnackbarMessage(t("courseDetail.loginRequired"));
+      setSnackbarSeverity("warning");
       setOpenSnackbar(true);
       return;
     }
@@ -53,7 +57,12 @@ function CourseDetail() {
         categoryName: categoryName,
       };
 
-      addToBasket(basketItem, userId);
+      const result = await addToBasket(basketItem, userId);
+      if (!result.success) {
+        setSnackbarMessage(result.error);
+        setSnackbarSeverity("error");
+        setOpenSnackbar(true);
+      }
     }
   };
 
@@ -117,10 +126,10 @@ function CourseDetail() {
       >
         <Alert
           onClose={handleCloseSnackbar}
-          severity="warning"
+          severity={snackbarSeverity}
           sx={{ width: "100%" }}
         >
-          {t("courseDetail.loginRequired")}
+          {snackbarMessage}
         </Alert>
       </Snackbar>
     </Container>

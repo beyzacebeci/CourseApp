@@ -66,7 +66,7 @@ namespace CourseApp.API.Controllers
             return CreateActionResult(await _basketService.GetAllByUserIdAsync(userId));
         }
 
-        [ServiceFilter(typeof(NotFoundFilter<Category, int>))]
+        [ServiceFilter(typeof(NotFoundFilter<BasketItem, int>))]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBasketItem(int id)
         {

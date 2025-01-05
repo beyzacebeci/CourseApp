@@ -26,25 +26,43 @@ export default function SignIn() {
     password: "",
   });
 
+  const [touched, setTouched] = useState({
+    userName: false,
+    password: false,
+  });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleBlur = (field) => {
+    setTouched((prev) => ({ ...prev, [field]: true }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
+    // Form validation
+    if (!formData.userName || !formData.password) {
+      setError(t("validation.fillAllFields"));
+      setTouched({
+        userName: true,
+        password: true,
+      });
+      return;
+    }
+
     try {
       const result = await login(formData);
-
       if (result.success) {
-        navigate("/"); // veya başka bir ana sayfa
+        navigate("/");
       } else {
-        setError(result.message);
+        setError(t(result.message));
       }
     } catch (err) {
-      setError("An error occurred during login");
+      setError(t("signIn.error"));
     }
   };
 
@@ -72,8 +90,16 @@ export default function SignIn() {
           >
             <Stack spacing={2}>
               <TextField
+                required
                 value={formData.userName}
                 onChange={handleChange}
+                onBlur={() => handleBlur("userName")}
+                error={touched.userName && !formData.userName}
+                helperText={
+                  touched.userName && !formData.userName
+                    ? t("validation.required")
+                    : ""
+                }
                 fullWidth
                 id="username"
                 label={t("signIn.username")}
@@ -82,8 +108,16 @@ export default function SignIn() {
                 autoFocus
               />
               <TextField
+                required
                 value={formData.password}
                 onChange={handleChange}
+                onBlur={() => handleBlur("password")}
+                error={touched.password && !formData.password}
+                helperText={
+                  touched.password && !formData.password
+                    ? t("validation.required")
+                    : ""
+                }
                 fullWidth
                 name="password"
                 label={t("signIn.password")}
@@ -103,7 +137,7 @@ export default function SignIn() {
           </Box>
           {error && (
             <Typography color="error" variant="body2">
-              {t("signIn.error")}
+              {error}
             </Typography>
           )}
         </Stack>

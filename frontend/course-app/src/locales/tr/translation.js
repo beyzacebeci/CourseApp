@@ -11,14 +11,15 @@ export default {
     about: "Hakkımızda",
     contact: "İletişim",
     educator: "Eğitmen",
-    courses: "Kurslar",
+    courses: "Kurslarım",
     profile: "Profilim"
   },
   orders: {
     title: "Siparişlerim",
-    orderId: "Sipariş ID",
+    orderId: "Sipariş Numarası",
     purchasedCourses: "Satın Alınan Kurslar",
-    totalPrice: "Toplam Fiyat"
+    totalPrice: "Toplam Fiyat",
+    createdTime: "Sipariş Tarihi"
   },
   password: {
     title: "Şifre Değiştir",
@@ -74,7 +75,22 @@ export default {
     }
   },
   home: {
-    welcome: "Hoş Geldiniz, {{username}}!"
+    welcome: "Hoş Geldiniz, {{username}}!",
+    carousel: {
+      slide1: {
+        title: "2025'i kariyer yılınız yapın",
+        description: "İhtiyacınız olan yetkinlikleri CourseLab ile alın!"
+      },
+      slide2: {
+        title: "Sertifikalar: İdeal kariyer adımı,",
+        description: "COMPTIA, AWS Cloud ve daha pek çok sertifika sınavına hazırlanın."
+      }
+    },
+    viewCourses: "Kurslara Göz At",
+    infoSection: {
+      title: "Geleceğinizi Şekillendiren Bilgi Merkezi",
+      description: "Yapay zekadan dijital pazarlamaya, yazılımdan kişisel gelişime - CourseLab ile sınırsız öğrenme yolculuğunuza başlayın. Her seviyeye uygun, uzman eğitmenler eşliğinde kariyer hedeflerinize ulaşın."
+    }
   },
   payment: {
     title: "Ödeme Bilgileri",
@@ -99,7 +115,9 @@ export default {
     password: "Şifre",
     submit: "Giriş Yap",
     noAccount: "Hesabınız yok mu? Kayıt Olun",
-    error: "Giriş sırasında bir hata oluştu"
+    error: "Giriş sırasında bir hata oluştu",
+    success: "Giriş başarılı",
+    error: "Kullanıcı adı veya şifre hatalı"
   },
   signUp: {
     title: "Kayıt Ol",
@@ -113,5 +131,23 @@ export default {
     error: {
       requiredFields: "Tüm alanların doldurulması zorunludur."
     }
+  },
+  profile: {
+    title: "Profil Bilgileri",
+    name: "Ad",
+    surname: "Soyad",
+    email: "E-posta",
+    username: "Kullanıcı Adı",
+    cancel: "İptal",
+    save: "Kaydet",
+    fullName: "Ad Soyad"
+  },
+  validation: {
+    required: "Bu alan zorunludur",
+    email: "Geçerli bir e-posta adresi giriniz",
+    minLength: "En az {{length}} karakter olmalıdır",
+    maxLength: "En fazla {{length}} karakter olmalıdır",
+    passwordMatch: "Şifreler eşleşmelidir",
+    fillAllFields: "Lütfen tüm alanları doldurunuz"
   }
 }

@@ -16,6 +16,9 @@ import {
 } from "@mui/material";
 import { useOrder } from "../../context/OrderContext";
 import { useTranslationContext } from "../../context/TranslationContext";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ReceiptIcon from "@mui/icons-material/Receipt";
+import DateRangeIcon from "@mui/icons-material/DateRange";
 
 function OrdersCard() {
   const { orders, fetchUserOrders } = useOrder();
@@ -28,7 +31,13 @@ function OrdersCard() {
   return (
     <Card elevation={3}>
       <CardContent>
-        <Typography variant="h5" component="h2" gutterBottom>
+        <Typography
+          variant="h5"
+          component="h2"
+          gutterBottom
+          sx={{ display: "flex", alignItems: "center", gap: 1 }}
+        >
+          <ShoppingCartIcon />
           {t("orders.title")}
         </Typography>
         <Divider sx={{ mb: 3 }} />
@@ -36,9 +45,47 @@ function OrdersCard() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>{t("orders.orderId")}</TableCell>
-                <TableCell>{t("orders.purchasedCourses")}</TableCell>
-                <TableCell align="right">{t("orders.totalPrice")}</TableCell>
+                <TableCell>
+                  <div
+                    style={{ display: "flex", alignItems: "center", gap: 1 }}
+                  >
+                    <ReceiptIcon fontSize="small" />
+                    {t("orders.orderId")}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div
+                    style={{ display: "flex", alignItems: "center", gap: 1 }}
+                  >
+                    <ShoppingCartIcon fontSize="small" />
+                    {t("orders.purchasedCourses")}
+                  </div>
+                </TableCell>
+                <TableCell align="right">
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <DateRangeIcon fontSize="small" />
+                    {t("orders.createdTime")}
+                  </div>
+                </TableCell>
+                <TableCell align="right">
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    {t("orders.totalPrice")}
+                  </div>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -56,6 +103,9 @@ function OrdersCard() {
                         </ListItem>
                       ))}
                     </List>
+                  </TableCell>
+                  <TableCell align="right">
+                    {new Date(order.createdTime).toLocaleDateString()}
                   </TableCell>
                   <TableCell align="right">{order.totalPrice} TL</TableCell>
                 </TableRow>
