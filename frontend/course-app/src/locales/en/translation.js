@@ -104,7 +104,7 @@ export default {
     viewCourses: "Browse Courses",
     infoSection: {
       title: "Knowledge Center Shaping Your Future",
-      description: "From artificial intelligence to digital marketing, from software to personal development - start your unlimited learning journey with CourseLab. Achieve your career goals with expert instructors suitable for all levels."
+      description: "From artificial intelligence to digital marketing, from software to personal development start your unlimited learning journey with CourseLab. Achieve your career goals with expert instructors suitable for all levels."
     }
   },
   payment: {

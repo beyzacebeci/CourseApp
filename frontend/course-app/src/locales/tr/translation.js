@@ -104,7 +104,7 @@ export default {
     viewCourses: "Kurslara Göz At",
     infoSection: {
       title: "Geleceğinizi Şekillendiren Bilgi Merkezi",
-      description: "Yapay zekadan dijital pazarlamaya, yazılımdan kişisel gelişime - CourseLab ile sınırsız öğrenme yolculuğunuza başlayın. Her seviyeye uygun, uzman eğitmenler eşliğinde kariyer hedeflerinize ulaşın."
+      description: "Yapay zekadan dijital pazarlamaya, yazılımdan kişisel gelişime  CourseLab ile sınırsız öğrenme yolculuğunuza başlayın. Her seviyeye uygun, uzman eğitmenler eşliğinde kariyer hedeflerinize ulaşın."
     }
   },
   payment: {

@@ -42,7 +42,7 @@ function Home() {
           overflow: "auto",
         }}
       >
-        <Box sx={{ width: "60%", maxWidth: 1200 }}>
+        <Box sx={{ width: "80%", maxWidth: 1200 }}>
           <Carousel
             navButtonsProps={{
               style: {
@@ -65,7 +65,7 @@ function Home() {
               <Box
                 key={index}
                 sx={{
-                  height: 300,
+                  height: 450,
                   width: "100%",
                   backgroundColor: "#e0e0e0",
                   display: "flex",
@@ -152,16 +152,17 @@ function Home() {
                 color: "#2c3e50",
                 fontWeight: "600",
                 mb: 2,
-                fontSize: "1.8rem",
+                fontSize: "2rem",
               }}
             >
               {t("home.infoSection.title")}
+              <hr />
             </Typography>
             <Typography
               variant="body1"
               sx={{
                 color: "#666",
-                fontSize: "1.1rem",
+                fontSize: "1.4rem",
               }}
             >
               {t("home.infoSection.description")}

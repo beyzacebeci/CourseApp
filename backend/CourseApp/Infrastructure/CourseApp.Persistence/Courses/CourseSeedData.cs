@@ -33,7 +33,7 @@ namespace CourseApp.Persistence.Courses
             },
             new Course
             {
-                Id = 4,
+                Id = 3,
                 Name = "Python Temelleri",
                 Description = "Python dilinin temel kavramlarını öğreneceksiniz.",
                 Price = 110,
@@ -42,7 +42,7 @@ namespace CourseApp.Persistence.Courses
             },
             new Course
             {
-                Id = 5,
+                Id = 4,
                 Name = "JavaScript ile Başlangıç",
                 Description = "JavaScript dilinin temellerini öğrenin ve web programlamaya adım atın.",
                 Price = 130,
@@ -51,7 +51,7 @@ namespace CourseApp.Persistence.Courses
             },
             new Course
             {
-                Id = 6,
+                Id = 5,
                 Name = ".Net Core Web API",
                 Description = ".Net Core kullanarak RESTful API'ler geliştireceğiz.",
                 Price = 150,
@@ -60,7 +60,7 @@ namespace CourseApp.Persistence.Courses
             },
             new Course
             {
-                Id = 7,
+                Id = 6,
                 Name = "React Native ile Mobil Uygulama Geliştirme",
                 Description = "React Native ile iOS ve Android mobil uygulamaları geliştirin.",
                 Price = 160,
