@@ -17,8 +17,10 @@ import {
 import { useBasket } from "../context/BasketContext";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { useTranslationContext } from "../context/TranslationContext";
 
 function Basket() {
+  const { t } = useTranslationContext();
   const [basketItems, setBasketItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const { getBasketItems, removeFromBasket, fetchBasketCount } = useBasket();
@@ -69,17 +71,17 @@ function Basket() {
   return (
     <Container maxWidth="md" sx={{ py: 2 }}>
       <Typography variant="h5" gutterBottom align="left">
-        Alışveriş Sepeti
+        {t("basket.title")}
       </Typography>
       <Typography variant="subtitle1" gutterBottom align="left">
-        Sepette {basketItems.length} Kurs Var
+        {t("basket.itemCount", { count: basketItems.length })}
         <hr />
       </Typography>
 
       <Box sx={{ display: "flex", gap: 2 }}>
         <Paper elevation={2} sx={{ p: 3, flex: 2 }}>
           {basketItems.length === 0 ? (
-            <Typography>Sepetiniz boş</Typography>
+            <Typography>{t("basket.empty")}</Typography>
           ) : (
             <List>
               {basketItems.map((item, index) => (
@@ -116,7 +118,7 @@ function Basket() {
         {basketItems.length > 0 && (
           <Paper elevation={2} sx={{ p: 3, flex: 1, height: "fit-content" }}>
             <Typography variant="h6" gutterBottom>
-              Toplam:
+              {t("basket.total")}:
             </Typography>
             <Typography
               variant="h4"
@@ -139,29 +141,27 @@ function Basket() {
                 py: 1.5,
               }}
             >
-              Ödeme Bilgileri
+              {t("basket.proceedToPayment")}
             </Button>
           </Paper>
         )}
       </Box>
 
       <Dialog open={openDialog} onClose={handleCancelDelete}>
-        <DialogTitle>Ürünü Sil</DialogTitle>
+        <DialogTitle>{t("basket.deleteDialog.title")}</DialogTitle>
         <DialogContent>
-          <Typography>
-            Bu ürünü sepetten silmek istediğinize emin misiniz?
-          </Typography>
+          <Typography>{t("basket.deleteDialog.message")}</Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancelDelete} color="primary">
-            İptal
+            {t("common.cancel")}
           </Button>
           <Button
             onClick={handleConfirmDelete}
             color="error"
             variant="contained"
           >
-            Evet, Sil
+            {t("basket.deleteDialog.confirm")}
           </Button>
         </DialogActions>
       </Dialog>

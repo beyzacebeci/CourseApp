@@ -47,7 +47,7 @@ export default function SignUp() {
 
     const { name, surname, email, userName, password } = formData;
     if (!name || !surname || !email || !userName || !password) {
-      setSnackbarMessage(t("signUp.error.requiredFields"));
+      setSnackbarMessage(t("validation.fillAllFields"));
       setSnackbarSeverity("error");
       setOpenSnackbar(true);
       return;
@@ -55,11 +55,11 @@ export default function SignUp() {
 
     const result = await handleAddUser(formData);
     if (result.success) {
-      setSnackbarMessage(result.message);
+      setSnackbarMessage(t(result.message));
       setSnackbarSeverity("success");
       setOpenSnackbar(true);
     } else {
-      setSnackbarMessage(result.message);
+      setSnackbarMessage(t(result.message));
       setSnackbarSeverity("error");
       setOpenSnackbar(true);
     }

@@ -31,7 +31,6 @@ public class UsersController : ControllerBase
     [HttpGet("{userId}")]
     public async Task<IActionResult> GetUser(int userId)
     {
-        // Sadece kendi bilgilerini veya eğitimci ise herkesi görebilir
         if (userId != GetCurrentUserId() && !IsEducator())
         {
             return Forbid();
@@ -48,7 +47,6 @@ public class UsersController : ControllerBase
     [HttpPut("{userId}")]
     public async Task<IActionResult> UpdateUser(int userId, [FromBody] UserForUpdateDto userForUpdateDto)
     {
-        // Sadece kendi bilgilerini güncelleyebilir
         if (userId != GetCurrentUserId())
         {
             return Forbid();
@@ -65,7 +63,6 @@ public class UsersController : ControllerBase
     [HttpPost("{userId}/change-password")]
     public async Task<IActionResult> ChangePassword(int userId, [FromBody] ChangePasswordDto changePasswordDto)
     {
-        // Sadece kendi şifresini değiştirebilir
         if (userId != GetCurrentUserId())
         {
             return Forbid();
@@ -83,7 +80,6 @@ public class UsersController : ControllerBase
     [Authorize(Roles = "Educator")]
     public async Task<IActionResult> GetAllUsers()
     {
-        // Bu endpoint sadece Educator rolüne sahip kullanıcılar tarafından erişilebilir
         var result = await _authService.GetAllUsers();
 
         if (!result.IsSuccess)

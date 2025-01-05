@@ -2,6 +2,7 @@ import { createContext, useState, useContext, useEffect } from "react";
 import { postAPI } from "../services/apiService";
 import { useBasket } from "./BasketContext";
 import { useTranslationContext } from "./TranslationContext";
+import axios from "axios";
 
 const AuthContext = createContext();
 
@@ -40,8 +41,11 @@ export const AuthProvider = ({ children }) => {
   const login = async (form) => {
     const url = "/authentication/login";
     try {
-      const res = await postAPI(url, form);
-      const token = res.data.accessToken;
+      const response = await axios.post(
+        "https://localhost:7146/api/authentication/login",
+        form
+      );
+      const token = response.data.accessToken;
 
       if (!token) {
         return {
@@ -78,7 +82,7 @@ export const AuthProvider = ({ children }) => {
       const isEducator = roles.includes("Educator");
       localStorage.setItem("isEducator", isEducator);
 
-      const refreshToken = res.data.refreshToken;
+      const refreshToken = response.data.refreshToken;
       if (refreshToken) {
         localStorage.setItem("refreshToken", refreshToken);
       }
@@ -99,7 +103,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       return {
         success: false,
-        message: "signIn.error",
+        message: error.response?.data?.errorMessage?.[0] || "signIn.error",
       };
     }
   };

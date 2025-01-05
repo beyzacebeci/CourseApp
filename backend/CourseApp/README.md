@@ -132,6 +132,15 @@ Two main roles are available:
 - **User**: Basic access to courses and shopping features
 - **Educator**: Additional access to course management features
 
+### Default Users
+
+The system comes with two pre-configured users:
+
+| Role     | Username | Password     |
+| -------- | -------- | ------------ |
+| Educator | educator | Educator123. |
+| User     | user     | User123.     |
+
 ## 📝 API Documentation
 
 When running in development mode, access the Swagger documentation at:

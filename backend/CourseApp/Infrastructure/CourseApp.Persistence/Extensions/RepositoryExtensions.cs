@@ -37,7 +37,7 @@ public static class RepositoryExtensions
         services.AddIdentity<AppUser, AppRole>(
     opt =>
     {
-        opt.User.RequireUniqueEmail = false;
+        opt.User.RequireUniqueEmail = true;
         opt.Password.RequireNonAlphanumeric = false;
     }
     ).AddEntityFrameworkStores<CourseAppDbContext>().AddDefaultTokenProviders();

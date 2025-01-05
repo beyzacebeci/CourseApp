@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-import { getAPI } from "../services/apiService";
+import { getAPI, postAPI, putAPI, deleteAPI } from "../services/apiService";
 
 export const CategoryContext = createContext();
 
@@ -49,6 +49,54 @@ export function CategoryProvider({ children }) {
     }
   };
 
+  const createCategory = async (categoryData) => {
+    try {
+      const response = await postAPI("Categories", categoryData);
+      return {
+        success: response.success,
+        data: response.data,
+        error: response.data?.errorMessage?.[0] || response.data?.message,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  };
+
+  const updateCategory = async (id, categoryData) => {
+    try {
+      const response = await putAPI(`Categories/${id}`, categoryData);
+      return {
+        success: response.success,
+        data: response.data,
+        error: response.data?.errorMessage?.[0] || response.data?.message,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  };
+
+  const deleteCategory = async (id) => {
+    try {
+      const response = await deleteAPI(`Categories/${id}`);
+      return {
+        success: response.success,
+        data: response.data,
+        error: response.data?.errorMessage?.[0] || response.data?.message,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+      };
+    }
+  };
+
   const values = {
     categories,
     category,
@@ -56,6 +104,9 @@ export function CategoryProvider({ children }) {
     getCategory,
     getAllCategoriesWithCourses,
     getCategoryWithCourses,
+    createCategory,
+    updateCategory,
+    deleteCategory,
   };
 
   return (

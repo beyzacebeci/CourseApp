@@ -4,7 +4,8 @@ export default {
     hello: "Merhaba",
     login: "Giriş Yap",
     register: "Kayıt Ol",
-    logout: "Çıkış Yap"
+    logout: "Çıkış Yap",
+    back: "Geri Dön"
   },
   nav: {
     home: "Ana Sayfa",
@@ -72,7 +73,20 @@ export default {
     },
     notifications: {
       deleteSuccess: "Kurs başarıyla silindi",
-      deleteError: "Kurs silinirken bir hata oluştu"
+      deleteError: "Kurs silinirken bir hata oluştu",
+      categoryAddSuccess: "Kategori başarıyla eklendi",
+      categoryAddError: "Kategori eklenirken bir hata oluştu",
+      categoryUpdateSuccess: "Kategori başarıyla güncellendi",
+      categoryUpdateError: "Kategori güncellenirken bir hata oluştu",
+      categoryDeleteSuccess: "Kategori başarıyla silindi",
+      categoryDeleteError: "Kategori silinirken bir hata oluştu"
+    },
+    addNewCategory: "Yeni Kategori Ekle",
+    addCategory: {
+      title: "Kategori Yönetimi",
+      name: "Kategori Adı",
+      add: "Ekle",
+      cancel: "İptal"
     }
   },
   home: {
@@ -150,5 +164,25 @@ export default {
     maxLength: "En fazla {{length}} karakter olmalıdır",
     passwordMatch: "Şifreler eşleşmelidir",
     fillAllFields: "Lütfen tüm alanları doldurunuz"
+  },
+  basket: {
+    title: "Alışveriş Sepeti",
+    itemCount: "Sepette {{count}} Kurs Var",
+    empty: "Sepetiniz boş",
+    total: "Toplam",
+    proceedToPayment: "Ödeme Bilgileri",
+    deleteDialog: {
+      title: "Ürünü Sil",
+      message: "Bu ürünü sepetten silmek istediğinize emin misiniz?",
+      confirm: "Evet, Sil"
+    }
+  },
+  auth: {
+    userCreatedSuccessfully: "Kullanıcı başarıyla oluşturuldu",
+    errorOccurred: "Bir hata oluştu",
+    profileUpdateSuccess: "Profil başarıyla güncellendi",
+    profileUpdateError: "Profil güncellenirken bir hata oluştu",
+    passwordUpdateSuccess: "Şifre başarıyla güncellendi",
+    passwordUpdateError: "Şifre güncellenirken bir hata oluştu"
   }
 }

@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import { useAuth } from "../context/AuthContext";
 import { useTranslationContext } from "../context/TranslationContext";
+import { Alert, Snackbar } from "@mui/material";
 
 const defaultTheme = createTheme();
 
@@ -31,6 +32,10 @@ export default function SignIn() {
     password: false,
   });
 
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -40,13 +45,19 @@ export default function SignIn() {
     setTouched((prev) => ({ ...prev, [field]: true }));
   };
 
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     // Form validation
     if (!formData.userName || !formData.password) {
-      setError(t("validation.fillAllFields"));
+      setSnackbarMessage(t("validation.fillAllFields"));
+      setSnackbarSeverity("error");
+      setOpenSnackbar(true);
       setTouched({
         userName: true,
         password: true,
@@ -57,12 +68,21 @@ export default function SignIn() {
     try {
       const result = await login(formData);
       if (result.success) {
-        navigate("/");
+        setSnackbarMessage(t("signIn.success"));
+        setSnackbarSeverity("success");
+        setOpenSnackbar(true);
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
       } else {
-        setError(t(result.message));
+        setSnackbarMessage(t(result.message));
+        setSnackbarSeverity("error");
+        setOpenSnackbar(true);
       }
     } catch (err) {
-      setError(t("signIn.error"));
+      setSnackbarMessage(t("signIn.error"));
+      setSnackbarSeverity("error");
+      setOpenSnackbar(true);
     }
   };
 
@@ -142,6 +162,20 @@ export default function SignIn() {
           )}
         </Stack>
       </Container>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbarSeverity}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </ThemeProvider>
   );
 }

@@ -65,8 +65,8 @@ function UserInfoCard({ setSnackbar }) {
 
     setSnackbar({
       open: true,
-      message: result.message,
-      severity: result.success ? "error" : "success",
+      message: t(result.message),
+      severity: result.success ? "success" : "error",
     });
   };
 

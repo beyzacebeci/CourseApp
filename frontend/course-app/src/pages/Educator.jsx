@@ -20,12 +20,19 @@ import {
   Button,
   Snackbar,
   Alert,
+  TextField,
+  List,
+  ListItem,
+  ListItemText,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import { useTranslationContext } from "../context/TranslationContext";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
 
 const Educator = () => {
   const {
@@ -35,7 +42,14 @@ const Educator = () => {
     totalCourseCount,
     deleteCourse,
   } = useContext(CourseContext);
-  const { getCategory } = useContext(CategoryContext);
+  const {
+    getCategory,
+    createCategory,
+    updateCategory,
+    deleteCategory,
+    getAllCategoriesWithCourses,
+    categoryWithCourses,
+  } = useContext(CategoryContext);
   const [page, setPage] = useState(1);
   const [categoryNames, setCategoryNames] = useState({});
   const pageSize = 6;
@@ -48,6 +62,10 @@ const Educator = () => {
   });
   const navigate = useNavigate();
   const { t } = useTranslationContext();
+  const [categoryDialogOpen, setCategoryDialogOpen] = useState(false);
+  const [newCategory, setNewCategory] = useState("");
+  const [categoryError, setCategoryError] = useState("");
+  const [editingCategory, setEditingCategory] = useState(null);
 
   useEffect(() => {
     getCoursesByPagination(page, pageSize);
@@ -69,6 +87,12 @@ const Educator = () => {
     };
     fetchCategoryNames();
   }, [courses]);
+
+  useEffect(() => {
+    if (categoryDialogOpen) {
+      getAllCategoriesWithCourses();
+    }
+  }, [categoryDialogOpen]);
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -105,6 +129,78 @@ const Educator = () => {
     setSnackbar((prev) => ({ ...prev, open: false }));
   };
 
+  const handleAddCategory = async () => {
+    setCategoryError("");
+
+    if (!newCategory.trim()) {
+      setCategoryError(t("validation.required"));
+      return;
+    }
+
+    const result = await createCategory({ name: newCategory });
+    if (result.success) {
+      setSnackbar({
+        open: true,
+        message: t("educator.notifications.categoryAddSuccess"),
+        severity: "success",
+      });
+      setCategoryDialogOpen(false);
+      setNewCategory("");
+    } else {
+      setSnackbar({
+        open: true,
+        message: result.error || t("educator.notifications.categoryAddError"),
+        severity: "error",
+      });
+    }
+  };
+
+  const handleEditCategory = async (category) => {
+    if (!editingCategory?.name?.trim()) {
+      setCategoryError(t("validation.required"));
+      return;
+    }
+
+    const result = await updateCategory(category.id, {
+      name: editingCategory.name,
+    });
+    if (result.success) {
+      setSnackbar({
+        open: true,
+        message: t("educator.notifications.categoryUpdateSuccess"),
+        severity: "success",
+      });
+      getAllCategoriesWithCourses();
+      setEditingCategory(null);
+    } else {
+      setSnackbar({
+        open: true,
+        message:
+          result.error || t("educator.notifications.categoryUpdateError"),
+        severity: "error",
+      });
+    }
+  };
+
+  const handleDeleteCategory = async (category) => {
+    const result = await deleteCategory(category.id);
+    if (result.success) {
+      setSnackbar({
+        open: true,
+        message: t("educator.notifications.categoryDeleteSuccess"),
+        severity: "success",
+      });
+      getAllCategoriesWithCourses();
+    } else {
+      setSnackbar({
+        open: true,
+        message:
+          result.error || t("educator.notifications.categoryDeleteError"),
+        severity: "error",
+      });
+    }
+  };
+
   return (
     <Box sx={{ bgcolor: "#f5f5f5", py: 4, minHeight: "calc(100vh - 80px)" }}>
       <Container maxWidth="lg">
@@ -115,18 +211,36 @@ const Educator = () => {
             alignItems="center"
             mb={3}
           >
-            <Typography variant="h5" component="h1">
-              {t("educator.allCourses")}
-            </Typography>
-            <Tooltip title={t("educator.addNewCourse")}>
-              <IconButton
-                color="primary"
-                size="large"
-                onClick={() => navigate("/courses/new")}
-              >
-                <AddIcon />
-              </IconButton>
-            </Tooltip>
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Tooltip title={t("common.back")}>
+                <IconButton onClick={() => navigate("/")} color="primary">
+                  <ArrowBackIcon />
+                </IconButton>
+              </Tooltip>
+              <Typography variant="h5" component="h1">
+                {t("educator.allCourses")}
+              </Typography>
+            </Stack>
+            <Stack direction="row" spacing={1}>
+              <Tooltip title={t("educator.addNewCategory")}>
+                <IconButton
+                  color="secondary"
+                  size="large"
+                  onClick={() => setCategoryDialogOpen(true)}
+                >
+                  <AddIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title={t("educator.addNewCourse")}>
+                <IconButton
+                  color="primary"
+                  size="large"
+                  onClick={() => navigate("/courses/new")}
+                >
+                  <AddIcon />
+                </IconButton>
+              </Tooltip>
+            </Stack>
           </Stack>
 
           <Stack spacing={2}>
@@ -206,6 +320,134 @@ const Educator = () => {
               shape="rounded"
             />
           </Stack>
+
+          <Dialog
+            open={categoryDialogOpen}
+            onClose={() => {
+              setCategoryDialogOpen(false);
+              setCategoryError("");
+              setNewCategory("");
+              setEditingCategory(null);
+            }}
+            aria-labelledby="add-category-dialog-title"
+            maxWidth="sm"
+            fullWidth
+          >
+            <DialogTitle id="add-category-dialog-title">
+              {t("educator.addCategory.title")}
+            </DialogTitle>
+            <DialogContent>
+              <TextField
+                autoFocus
+                margin="dense"
+                label={t("educator.addCategory.name")}
+                type="text"
+                fullWidth
+                value={newCategory}
+                onChange={(e) => {
+                  setNewCategory(e.target.value);
+                  setCategoryError("");
+                }}
+                error={!!categoryError}
+                helperText={categoryError}
+                required
+              />
+
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  mt: 2,
+                  mb: 2,
+                }}
+              >
+                <Button
+                  onClick={() => {
+                    setCategoryDialogOpen(false);
+                    setCategoryError("");
+                    setNewCategory("");
+                    setEditingCategory(null);
+                  }}
+                  sx={{ mr: 1 }}
+                >
+                  {t("educator.addCategory.cancel")}
+                </Button>
+                <Button
+                  onClick={handleAddCategory}
+                  variant="contained"
+                  color="primary"
+                >
+                  {t("educator.addCategory.add")}
+                </Button>
+              </Box>
+
+              <List>
+                {categoryWithCourses?.map((category) => (
+                  <ListItem
+                    key={category.id}
+                    secondaryAction={
+                      <Stack direction="row" spacing={1}>
+                        {editingCategory?.id === category.id ? (
+                          <>
+                            <IconButton
+                              edge="end"
+                              color="primary"
+                              onClick={() => handleEditCategory(category)}
+                            >
+                              <CheckIcon />
+                            </IconButton>
+                            <IconButton
+                              edge="end"
+                              onClick={() => setEditingCategory(null)}
+                            >
+                              <CloseIcon />
+                            </IconButton>
+                          </>
+                        ) : (
+                          <>
+                            <IconButton
+                              edge="end"
+                              onClick={() =>
+                                setEditingCategory({
+                                  id: category.id,
+                                  name: category.name,
+                                })
+                              }
+                            >
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton
+                              edge="end"
+                              color="error"
+                              onClick={() => handleDeleteCategory(category)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </>
+                        )}
+                      </Stack>
+                    }
+                  >
+                    {editingCategory?.id === category.id ? (
+                      <TextField
+                        fullWidth
+                        value={editingCategory.name}
+                        onChange={(e) =>
+                          setEditingCategory({
+                            ...editingCategory,
+                            name: e.target.value,
+                          })
+                        }
+                        size="small"
+                      />
+                    ) : (
+                      <ListItemText primary={category.name} />
+                    )}
+                  </ListItem>
+                ))}
+              </List>
+            </DialogContent>
+          </Dialog>
         </Paper>
       </Container>
 

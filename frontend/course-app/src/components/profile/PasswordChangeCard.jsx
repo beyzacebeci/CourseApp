@@ -52,7 +52,7 @@ function PasswordChangeCard({ setSnackbar }) {
 
     setSnackbar({
       open: true,
-      message: result.message,
+      message: t(result.message),
       severity: result.success ? "success" : "error",
     });
   };

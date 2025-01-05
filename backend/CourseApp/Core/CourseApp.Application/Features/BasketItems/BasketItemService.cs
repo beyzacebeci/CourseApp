@@ -50,13 +50,7 @@ namespace CourseApp.Application.Features.BasketItems
 
         public async Task<ServiceResult> UpdateAsync(int id, UpdateBasketRequest request)
         {
-            //var isCategoryNameExist = await basketRepository.AnyAsync(x => x.Name == request.Name && x.Id != id);
 
-            //if (isCategoryNameExist)
-            //{
-            //    return ServiceResult.Fail("The same category name already exists in the database.",
-            //        HttpStatusCode.BadRequest);
-            //}
 
             var basket = mapper.Map<BasketItem>(request);
             basket.Id = id;

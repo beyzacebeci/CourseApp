@@ -1,6 +1,7 @@
 import React, { createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { postAPI, putAPI } from "../services/apiService";
+import axios from "axios";
 
 export const UserContext = createContext();
 
@@ -15,11 +16,32 @@ export const useUser = () => {
 export const UserProvider = ({ children }) => {
   const navigate = useNavigate();
 
-  const addUser = async (data) => {
-    const url = "/authentication";
-    return await postAPI(url, data)
-      .then((res) => res)
-      .catch((error) => error);
+  const handleAddUser = async (form) => {
+    try {
+      const response = await axios.post(
+        "https://localhost:7146/api/authentication",
+        form
+      );
+
+      if (response.status === 201) {
+        setTimeout(() => navigate("/signin-page"), 1000);
+        return { success: true, message: "auth.userCreatedSuccessfully" };
+      }
+    } catch (error) {
+      console.log("Registration Error:", error.response);
+
+      if (
+        error.response?.status === 400 &&
+        Array.isArray(error.response.data)
+      ) {
+        return {
+          success: false,
+          message: error.response.data[0].description,
+        };
+      }
+
+      return { success: false, message: "auth.errorOccurred" };
+    }
   };
 
   const updateUser = async (userId, data) => {
@@ -28,20 +50,18 @@ export const UserProvider = ({ children }) => {
       if (response.success) {
         return {
           success: true,
-          message: "Profil başarıyla güncellendi",
+          message: "auth.profileUpdateSuccess",
           data: response.data,
         };
       }
       return {
         success: false,
-        message:
-          response.data?.errorMessage?.[0] ||
-          "Güncelleme sırasında bir hata oluştu",
+        message: response.data?.errorMessage?.[0] || "auth.profileUpdateError",
       };
     } catch (error) {
       return {
         success: false,
-        message: error.message || "Bir hata oluştu",
+        message: error.message || "auth.errorOccurred",
       };
     }
   };
@@ -55,53 +75,18 @@ export const UserProvider = ({ children }) => {
       if (response.success) {
         return {
           success: true,
-          message: "Şifre başarıyla güncellendi",
+          message: "auth.passwordUpdateSuccess",
         };
       }
       return {
         success: false,
-        message:
-          response.data?.errorMessage?.[0] ||
-          "Şifre güncellenirken bir hata oluştu",
+        message: response.data?.errorMessage?.[0] || "auth.passwordUpdateError",
       };
     } catch (error) {
       return {
         success: false,
-        message: error.message || "Bir hata oluştu",
+        message: error.message || "auth.errorOccurred",
       };
-    }
-  };
-
-  const handleAddUser = async (form) => {
-    try {
-      const response = await addUser(form);
-
-      if (response.status === 201) {
-        setTimeout(() => {
-          navigate("/signin-page");
-        }, 2000);
-
-        return {
-          success: true,
-          message: "userCreatedSuccessfully",
-        }; // Başarılı durumda
-      } else if (response.status === 400) {
-        const errorMessages = response.data.data;
-        const errorKeys = [
-          "DuplicateUserName",
-          "PasswordTooShort",
-          "PasswordRequiresDigit",
-        ];
-
-        for (const key of errorKeys) {
-          if (errorMessages[key]) {
-            return { success: false, message: errorMessages[key] }; // Hata durumunda
-          }
-        }
-      }
-      return { success: false, message: "errorOccurred" }; // Genel hata
-    } catch (error) {
-      return { success: false, message: "errorOccurred" }; // Yakalanan hata
     }
   };
 

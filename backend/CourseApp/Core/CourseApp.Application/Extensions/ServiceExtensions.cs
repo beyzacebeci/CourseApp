@@ -28,10 +28,6 @@ public static class ServiceExtensions
         services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 
-        //api katmanına 
-        //services.AddScoped(typeof(NotFoundFilter<,>));
-        //services.AddExceptionHandler<GlobalExceptionHandler>();
-
         services.AddFluentValidationAutoValidation();
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());

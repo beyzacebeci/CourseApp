@@ -15,10 +15,13 @@ import {
   Paper,
   Stack,
   Alert,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
 import { useTranslationContext } from "../context/TranslationContext";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import SaveIcon from "@mui/icons-material/Save";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const CourseForm = () => {
   const { getAllCategoriesWithCourses, categoryWithCourses } =
@@ -118,9 +121,16 @@ const CourseForm = () => {
   return (
     <Container maxWidth="md">
       <Paper elevation={3} sx={{ p: 4, mt: 4 }}>
-        <Typography variant="h5" component="h1" gutterBottom>
-          {id ? t("courseForm.update") : t("courseForm.addNew")}
-        </Typography>
+        <Stack direction="row" alignItems="center" spacing={1} mb={3}>
+          <Tooltip title={t("common.back")}>
+            <IconButton onClick={() => navigate("/educator")} color="primary">
+              <ArrowBackIcon />
+            </IconButton>
+          </Tooltip>
+          <Typography variant="h5" component="h1">
+            {id ? t("courseForm.update") : t("courseForm.addNew")}
+          </Typography>
+        </Stack>
 
         {error && (
           <Alert severity="error" sx={{ mb: 2 }}>

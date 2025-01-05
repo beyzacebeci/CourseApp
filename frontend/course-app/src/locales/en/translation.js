@@ -4,7 +4,8 @@ export default {
     hello: "Hello",
     login: "Sign In",
     register: "Sign Up",
-    logout: "Logout"
+    logout: "Logout",
+    back: "Go Back"
   },
   nav: {
     home: "Home",
@@ -72,7 +73,20 @@ export default {
     },
     notifications: {
       deleteSuccess: "Course deleted successfully",
-      deleteError: "Failed to delete course"
+      deleteError: "Failed to delete course",
+      categoryAddSuccess: "Category added successfully",
+      categoryAddError: "Error adding category",
+      categoryUpdateSuccess: "Category updated successfully",
+      categoryUpdateError: "Error updating category",
+      categoryDeleteSuccess: "Category deleted successfully",
+      categoryDeleteError: "Error deleting category"
+    },
+    addNewCategory: "Add New Category",
+    addCategory: {
+      title: "Category Management",
+      name: "Category Name",
+      add: "Add",
+      cancel: "Cancel"
     }
   },
   home: {
@@ -150,6 +164,26 @@ export default {
     maxLength: "Must be less than {{length}} characters",
     passwordMatch: "Passwords must match",
     fillAllFields: "Please fill in all fields"
+  },
+  basket: {
+    title: "Shopping Cart",
+    itemCount: "{{count}} Courses in Cart",
+    empty: "Your cart is empty",
+    total: "Total",
+    proceedToPayment: "Payment Details",
+    deleteDialog: {
+      title: "Delete Item",
+      message: "Are you sure you want to remove this item from your cart?",
+      confirm: "Yes, Delete"
+    }
+  },
+  auth: {
+    userCreatedSuccessfully: "User created successfully",
+    errorOccurred: "An error occurred",
+    profileUpdateSuccess: "Profile updated successfully",
+    profileUpdateError: "Error updating profile",
+    passwordUpdateSuccess: "Password updated successfully",
+    passwordUpdateError: "Error updating password"
   }
 }
 
