@@ -57,7 +57,7 @@ function Payment() {
         if (orderResponse.status === 200 || orderResponse.status === 201) {
           await deleteAllBasketItems();
           alert(t("payment.success"));
-          navigate("/");
+          navigate("/user-courses");
           return;
         }
 

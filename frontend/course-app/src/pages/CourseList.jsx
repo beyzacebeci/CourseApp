@@ -17,6 +17,7 @@ import {
   Divider,
   IconButton,
   Tooltip,
+  CircularProgress,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -36,11 +37,17 @@ function CourseList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const pageSize = 6;
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getCoursesByPagination(page, pageSize, selectedCategories);
-    getTotalCourseCount(selectedCategories);
-    getAllCategoriesWithCourses();
+    setIsLoading(true);
+    Promise.all([
+      getCoursesByPagination(page, pageSize, selectedCategories),
+      getTotalCourseCount(selectedCategories),
+      getAllCategoriesWithCourses(),
+    ]).finally(() => {
+      setIsLoading(false);
+    });
   }, [page, selectedCategories]);
 
   const handlePageChange = (event, value) => {
@@ -81,8 +88,8 @@ function CourseList() {
     <Box
       sx={{
         bgcolor: "#f5f5f5",
-        py: 4,
-        minHeight: "calc(100vh - 80px)",
+        pb: 4,
+        minHeight: "calc(100vh)",
       }}
     >
       <Container maxWidth="lg">
@@ -151,22 +158,28 @@ function CourseList() {
                 </Tooltip>
               )}
             </Paper>
-            {/* Kurs Kartları Grid */}
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: {
-                  xs: "1fr",
-                  sm: "1fr 1fr",
-                  md: "1fr 1fr 1fr",
-                },
-                gap: 2,
-              }}
-            >
-              {filteredCourses?.map((course) => (
-                <CourseCard key={course.id} course={course} />
-              ))}
-            </Box>
+            {/* Loading spinner */}
+            {isLoading ? (
+              <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
+                <CircularProgress />
+              </Box>
+            ) : (
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: {
+                    xs: "1fr",
+                    sm: "1fr 1fr",
+                    md: "1fr 1fr 1fr",
+                  },
+                  gap: 2,
+                }}
+              >
+                {filteredCourses?.map((course) => (
+                  <CourseCard key={course.id} course={course} />
+                ))}
+              </Box>
+            )}
             {/* Pagination */}
             <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
               <Pagination

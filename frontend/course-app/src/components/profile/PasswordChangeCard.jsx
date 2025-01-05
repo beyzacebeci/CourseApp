@@ -10,6 +10,7 @@ import {
 import { useAuth } from "../../context/AuthContext";
 import { useUser } from "../../context/UserContext";
 import { useTranslationContext } from "../../context/TranslationContext";
+import { VpnKey, Lock, Visibility, VisibilityOff } from "@mui/icons-material";
 
 function PasswordChangeCard({ setSnackbar }) {
   const { user } = useAuth();
@@ -20,6 +21,11 @@ function PasswordChangeCard({ setSnackbar }) {
     currentPassword: "",
     newPassword: "",
     confirmNewPassword: "",
+  });
+  const [showPasswords, setShowPasswords] = useState({
+    current: false,
+    new: false,
+    confirm: false,
   });
 
   const handlePasswordChange = async (e) => {
@@ -62,7 +68,10 @@ function PasswordChangeCard({ setSnackbar }) {
             mb: 2,
           }}
         >
-          <Typography variant="h6">{t("password.title")}</Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <VpnKey />
+            <Typography variant="h6">{t("password.title")}</Typography>
+          </Box>
           <Button
             variant="outlined"
             onClick={() => setIsChangingPassword(!isChangingPassword)}
@@ -78,7 +87,6 @@ function PasswordChangeCard({ setSnackbar }) {
             <TextField
               fullWidth
               margin="normal"
-              type="password"
               label={t("password.currentPassword")}
               name="currentPassword"
               value={passwordForm.currentPassword}
@@ -89,11 +97,26 @@ function PasswordChangeCard({ setSnackbar }) {
                 })
               }
               required
+              InputProps={{
+                startAdornment: <Lock sx={{ mr: 1, color: "action.active" }} />,
+                endAdornment: (
+                  <Button
+                    onClick={() =>
+                      setShowPasswords((prev) => ({
+                        ...prev,
+                        current: !prev.current,
+                      }))
+                    }
+                  >
+                    {showPasswords.current ? <VisibilityOff /> : <Visibility />}
+                  </Button>
+                ),
+              }}
+              type={showPasswords.current ? "text" : "password"}
             />
             <TextField
               fullWidth
               margin="normal"
-              type="password"
               label={t("password.newPassword")}
               name="newPassword"
               value={passwordForm.newPassword}
@@ -104,11 +127,23 @@ function PasswordChangeCard({ setSnackbar }) {
                 })
               }
               required
+              InputProps={{
+                startAdornment: <Lock sx={{ mr: 1, color: "action.active" }} />,
+                endAdornment: (
+                  <Button
+                    onClick={() =>
+                      setShowPasswords((prev) => ({ ...prev, new: !prev.new }))
+                    }
+                  >
+                    {showPasswords.new ? <VisibilityOff /> : <Visibility />}
+                  </Button>
+                ),
+              }}
+              type={showPasswords.new ? "text" : "password"}
             />
             <TextField
               fullWidth
               margin="normal"
-              type="password"
               label={t("password.confirmPassword")}
               name="confirmNewPassword"
               value={passwordForm.confirmNewPassword}
@@ -119,6 +154,22 @@ function PasswordChangeCard({ setSnackbar }) {
                 })
               }
               required
+              InputProps={{
+                startAdornment: <Lock sx={{ mr: 1, color: "action.active" }} />,
+                endAdornment: (
+                  <Button
+                    onClick={() =>
+                      setShowPasswords((prev) => ({
+                        ...prev,
+                        confirm: !prev.confirm,
+                      }))
+                    }
+                  >
+                    {showPasswords.confirm ? <VisibilityOff /> : <Visibility />}
+                  </Button>
+                ),
+              }}
+              type={showPasswords.confirm ? "text" : "password"}
             />
             <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
               {t("password.updateButton")}

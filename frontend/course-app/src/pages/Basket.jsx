@@ -67,8 +67,8 @@ function Basket() {
   };
 
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
-      <Typography variant="h4" gutterBottom align="left">
+    <Container maxWidth="md" sx={{ py: 2 }}>
+      <Typography variant="h5" gutterBottom align="left">
         Alışveriş Sepeti
       </Typography>
       <Typography variant="subtitle1" gutterBottom align="left">
