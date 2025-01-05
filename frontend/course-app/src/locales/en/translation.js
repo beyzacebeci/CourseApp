@@ -11,14 +11,15 @@ export default {
     about: "About",
     contact: "Contact",
     educator: "Educator",
-    courses: "Courses",
+    courses: "My Courses",
     profile: "My Profile"
   },
   orders: {
     title: "My Orders",
-    orderId: "Order ID",
+    orderId: "Order Number",
     purchasedCourses: "Purchased Courses",
-    totalPrice: "Total Price"
+    totalPrice: "Total Price",
+    createdTime: "Created Time"
   },
   password: {
     title: "Change Password",
@@ -74,7 +75,22 @@ export default {
     }
   },
   home: {
-    welcome: "Welcome, {{username}}!"
+    welcome: "Welcome, {{username}}!",
+    carousel: {
+      slide1: {
+        title: "Make 2025 Your Career Year",
+        description: "Get the skills you need with CourseLab!"
+      },
+      slide2: {
+        title: "Certifications: The Ideal Career Step",
+        description: "Prepare for COMPTIA, AWS Cloud and many more certification exams."
+      }
+    },
+    viewCourses: "Browse Courses",
+    infoSection: {
+      title: "Knowledge Center Shaping Your Future",
+      description: "From artificial intelligence to digital marketing, from software to personal development - start your unlimited learning journey with CourseLab. Achieve your career goals with expert instructors suitable for all levels."
+    }
   },
   payment: {
     title: "Payment Information",
@@ -99,7 +115,9 @@ export default {
     password: "Password",
     submit: "Sign In",
     noAccount: "Don't have an account? Sign Up",
-    error: "An error occurred during login"
+    error: "An error occurred during login",
+    success: "Login successful",
+    invalid: "Invalid username or password"
   },
   signUp: {
     title: "Sign Up",
@@ -113,6 +131,24 @@ export default {
     error: {
       requiredFields: "All fields are required."
     }
+  },
+  profile: {
+    title: "Profile Information",
+    name: "First Name",
+    surname: "Last Name",
+    email: "Email",
+    username: "Username",
+    cancel: "Cancel",
+    save: "Save",
+    fullName: "Full Name"
+  },
+  validation: {
+    required: "This field is required",
+    email: "Please enter a valid email",
+    minLength: "Must be at least {{length}} characters",
+    maxLength: "Must be less than {{length}} characters",
+    passwordMatch: "Passwords must match",
+    fillAllFields: "Please fill in all fields"
   }
 }
 

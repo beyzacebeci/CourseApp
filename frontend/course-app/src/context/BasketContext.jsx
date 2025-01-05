@@ -41,13 +41,14 @@ export const BasketProvider = ({ children }) => {
 
       if (response.success) {
         await fetchBasketCount();
+        return { success: true };
       } else {
         throw new Error(
           response.data.errorMessage || "Failed to add item to basket"
         );
       }
     } catch (error) {
-      console.error("Error adding to basket:", error);
+      return { success: false, error: error.message };
     }
   };
 

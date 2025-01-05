@@ -1,12 +1,15 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { postAPI } from "../services/apiService";
 import { useBasket } from "./BasketContext";
+import { useTranslationContext } from "./TranslationContext";
 
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
+  const { t } = useTranslationContext();
+
   const [user, setUser] = useState(() => {
     // Sayfa yüklendiğinde localStorage'dan kullanıcı bilgilerini kontrol et
     const token = localStorage.getItem("token");
@@ -43,7 +46,7 @@ export const AuthProvider = ({ children }) => {
       if (!token) {
         return {
           success: false,
-          message: "Token alınamadı",
+          message: "signIn.invalid",
         };
       }
 
@@ -91,12 +94,12 @@ export const AuthProvider = ({ children }) => {
 
       return {
         success: true,
-        message: "Giriş başarılı",
+        message: "signIn.success",
       };
     } catch (error) {
       return {
         success: false,
-        message: "Kullanıcı adı veya şifre hatalı",
+        message: "signIn.error",
       };
     }
   };

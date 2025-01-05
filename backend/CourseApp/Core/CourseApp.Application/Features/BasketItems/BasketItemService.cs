@@ -29,17 +29,18 @@ namespace CourseApp.Application.Features.BasketItems
         public async Task<ServiceResult<int>> CreateAsync(CreateBasketItemRequest request)
 
         {
-            //var anyCategory = await basketRepository.AnyAsync(x => x.Name == request.Name);
+            var existingBasketItem = await basketRepository.AnyAsync(x =>
+                x.CourseId == request.CourseId &&
+                x.UserId == request.UserId);
 
-            //if (anyCategory)
-            //{
-            //    return ServiceResult<int>.Fail("The same category name already exists in the database.",
-            //        HttpStatusCode.NotFound);
-            //}
+            if (existingBasketItem)
+            {
+                return ServiceResult<int>.Fail(
+                    "This course is already in your basket.",
+                    HttpStatusCode.BadRequest);
+            }
 
             var newBasket = mapper.Map<BasketItem>(request);
-
-
             await basketRepository.AddAsync(newBasket);
             await unitOfWork.SaveChangesAsync();
 
@@ -67,16 +68,6 @@ namespace CourseApp.Application.Features.BasketItems
 
         }
 
-        public async Task<ServiceResult> DeleteAsync(int id)
-        {
-            var basket = await basketRepository.GetByIdAsync(id);
-
-            basketRepository.Delete(basket!);
-            await unitOfWork.SaveChangesAsync();
-
-            return ServiceResult.Success(HttpStatusCode.NoContent);
-        }
-
         public async Task<ServiceResult<List<BasketItemDto>>> GetAllByUserIdAsync(int userId)
         {
             var baskets = await basketRepository.GetAllByUserIdAsync(userId);
@@ -86,6 +77,16 @@ namespace CourseApp.Application.Features.BasketItems
         public async Task<ServiceResult> DeleteAllAsync(int userId)
         {
             await basketRepository.DeleteAllAsync(userId);
+            await unitOfWork.SaveChangesAsync();
+
+            return ServiceResult.Success(HttpStatusCode.NoContent);
+        }
+
+        public async Task<ServiceResult> DeleteAsync(int id)
+        {
+            var basket = await basketRepository.GetByIdAsync(id);
+
+            basketRepository.Delete(basket!);
             await unitOfWork.SaveChangesAsync();
 
             return ServiceResult.Success(HttpStatusCode.NoContent);

@@ -60,7 +60,7 @@ function Navbar() {
       position="static"
       color="default"
       sx={{
-        height: "80px",
+        height: "75px",
         boxShadow: "none",
         borderBottom: "1px solid #908f8f",
         pt: 1,
@@ -82,8 +82,19 @@ function Navbar() {
               style={{ display: "block", marginLeft: "16px" }}
             />
           </Link>
-          <Typography variant="h6" sx={{ ml: 2, mr: 5, fontWeight: "bold" }}>
-            Course App
+          <Typography
+            variant="h6"
+            sx={{
+              ml: 2,
+              mr: 3,
+              fontWeight: "700",
+              background: "linear-gradient(45deg, #1a237e 30%, #3949ab 90%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              letterSpacing: "0.5px",
+            }}
+          >
+            CourseLab
           </Typography>
           <Link to="/" style={{ textDecoration: "none", color: "black" }}>
             <Button
@@ -260,7 +271,7 @@ function Navbar() {
           )}
 
           {user && (
-            <div>
+            <div style={{ textAlign: "center" }}>
               <IconButton
                 aria-label="profile menu"
                 aria-controls="profile-menu"
@@ -273,7 +284,6 @@ function Navbar() {
                     border: "0.5px solid black",
                   },
                   ml: 2,
-                  mr: 1,
                   width: "48px",
                   height: "48px",
                   padding: 0,
